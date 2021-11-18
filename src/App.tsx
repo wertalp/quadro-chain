@@ -32,9 +32,17 @@ import { setConstantValue } from 'typescript';
     const createChain =  () : BlockChain => {
        console.log("starting ... creating Chain ") ;
        myChain = new BlockChain("QuadroChain",createRootNode()) ;
-       myChain.addnextNode(new ShapeNode(20))
-              .addnextNode(new ShapeNode(30))
-              .addnextNode(new ShapeNode(40));
+       myChain.addnextNode(new ShapeNode(10))
+       .addnextNode(new ShapeNode(20))
+       .addnextNode(new ShapeNode(30))
+       .addnextNode(new ShapeNode(40))
+       .addnextNode(new ShapeNode(50))
+       .addnextNode(new ShapeNode(60))
+       .addnextNode(new ShapeNode(70))
+       .addnextNode(new ShapeNode(80))
+       .addnextNode(new ShapeNode(90))
+       .addnextNode(new ShapeNode(100))
+       .addnextNode(new ShapeNode(110)) ;
               console.log("starting ... creating Chain ") ;
       return myChain ;      
     }
@@ -50,7 +58,15 @@ import { setConstantValue } from 'typescript';
     console.log("starting ... adding Node") ;
     myChain.addnextNode(new ShapeNode(10))
            .addnextNode(new ShapeNode(20))
-           .addnextNode(new ShapeNode(30));
+           .addnextNode(new ShapeNode(30))
+           .addnextNode(new ShapeNode(40))
+           .addnextNode(new ShapeNode(50))
+           .addnextNode(new ShapeNode(60))
+           .addnextNode(new ShapeNode(70))
+           .addnextNode(new ShapeNode(80))
+           .addnextNode(new ShapeNode(90))
+           .addnextNode(new ShapeNode(100))
+           .addnextNode(new ShapeNode(110)) ;
     isLoading = false ;
   
   } ;

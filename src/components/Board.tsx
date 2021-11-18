@@ -24,12 +24,10 @@ const Board : React.FC<BlockChainProps> = (props : BlockChainProps) =>  {
        },[]) ;
 
        if( chain){
-           chain.getallValues().map( )
          console.log("Traverse BlockChain Node: Value" + chain.RootNode.amount);
          htmlBlockInfo = "Fertig geladen" ;
        }
 
-         
     return (
         <div>
         <h3> Graph Component</h3>
@@ -37,11 +35,8 @@ const Board : React.FC<BlockChainProps> = (props : BlockChainProps) =>  {
         <div id="DrawBoard" >
         <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }>  {isLoaded ? htmlBlockInfo : props.amounts[3]} </Button>
         { chain && <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }>  {isLoaded ? htmlBlockInfo : chain.Chainname} </Button>}
-        { chain && <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }>  {isLoaded ? htmlBlockInfo : chain.Chainname} </Button>}
-        { chain && <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }>  {isLoaded ? htmlBlockInfo : chain.Chainname} </Button>}
-        { chain && <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }>  {isLoaded ? htmlBlockInfo : chain.Chainname} </Button>}
-
         { chain && <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }> DOT </Button>}
+        { chain && chain.getallValues().map( (item, index) => ( <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }>  {isLoaded ? htmlBlockInfo : item} </Button>))}
         </div>
         </div>
     )
