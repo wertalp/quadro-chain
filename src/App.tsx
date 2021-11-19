@@ -1,10 +1,11 @@
-import React, { FunctionComponent, useEffect, useState} from 'react' ;
+import React, { ChangeEventHandler, FunctionComponent, useEffect, useState} from 'react' ;
 import logo from './logo.svg';
 import './App.css';
 import {ShapeNode, Point, BlockChainProps} from './data-models/index-models'  ;
 import {BlockChain} from './data-models/chain-models' ;
 import Board from './components/Board' ;
-import { setConstantValue } from 'typescript';
+import Button from 'react-bootstrap/esm/Button';
+import { render } from '@testing-library/react';
 
 
 
@@ -12,73 +13,79 @@ import { setConstantValue } from 'typescript';
    let myChain    : BlockChain  = null ; 
    let isLoading  : boolean     = true ;
    let testMapper : Array<number>    = [2,3,4,5,6,7]; 
-   let promiseBC : Promise<BlockChain> ;
 
 
-   const [chain, setChain] = useState<BlockChain>(null)
+   const [chain,     setChain] = useState<BlockChain>(null) ;
+   const [name ,      setName] = useState<string>("")       ;
+   const [counter, setCounter] = useState<number>(0)        ;  
+   const [rerender, setRerender] = useState(false);
   
+
    useEffect( 
      () => {  
            console.log("starting ... hooking; use Effect ") ;
-           promiseBC.then(  chain =>   setChain(chain) )
-           //printmyChain();
+           setCounter(counter+1) ;
+           handleStart() ;
         },[] )
 
 
     const createRootNode = () => {
-        return new ShapeNode(10) ;
+        return new ShapeNode(1) ;
     }
 
     const createChain =  () : BlockChain => {
-       console.log("starting ... creating Chain ") ;
-       myChain = new BlockChain("QuadroChain",createRootNode()) ;
-       myChain.addnextNode(new ShapeNode(10))
-       .addnextNode(new ShapeNode(20))
-       .addnextNode(new ShapeNode(30))
-       .addnextNode(new ShapeNode(40))
-       .addnextNode(new ShapeNode(50))
-       .addnextNode(new ShapeNode(60))
-       .addnextNode(new ShapeNode(70))
-       .addnextNode(new ShapeNode(80))
-       .addnextNode(new ShapeNode(90))
-       .addnextNode(new ShapeNode(100))
-       .addnextNode(new ShapeNode(110)) ;
-              console.log("starting ... creating Chain ") ;
-      return myChain ;      
+        console.log("starting ... creating Chain ") ;
+        myChain = new BlockChain("QuadroChain",createRootNode()) ;
+        console.log("starting ... creating Chain ") ;
+        return myChain ;      
     }
 
-
-    promiseBC = new Promise<BlockChain>( ( resolve , rejected ) =>  {
-      resolve( createChain())
-      rejected(null)
-      }
-  ) 
-
+  const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve , rejected ) =>  {
+        resolve( createChain())
+        rejected(null)   }
+        )
+    
   const addtoChain = async () => {
-    console.log("starting ... adding Node") ;
-    myChain.addnextNode(new ShapeNode(10))
-           .addnextNode(new ShapeNode(20))
-           .addnextNode(new ShapeNode(30))
-           .addnextNode(new ShapeNode(40))
-           .addnextNode(new ShapeNode(50))
-           .addnextNode(new ShapeNode(60))
-           .addnextNode(new ShapeNode(70))
-           .addnextNode(new ShapeNode(80))
-           .addnextNode(new ShapeNode(90))
-           .addnextNode(new ShapeNode(100))
-           .addnextNode(new ShapeNode(110)) ;
-    isLoading = false ;
-  
-  } ;
+        console.log("starting ... adding Node") ;
+        myChain.addnextNode(new ShapeNode(10))
+        isLoading = false ;
+      } ;
 
   const printmyChain = () => {
-      myChain.drawChain() ;
+        myChain.drawChain() ;
+    };
+    
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        setChain(chain.addnextNode(new ShapeNode(counter)) ) ;
+        setRerender(!rerender); 
+  }
+
+  const handleStart = () => {
+        promiseBC.then( item =>  setChain(item));  
+        //myChain.addnextNode(new ShapeNode(100)) ;
+        setChain(myChain)    ;
+        setRerender(!render) ;
     }
-   
-  return (
-    <div className="App">
-      { chain && <Board blockChain={chain} amounts={testMapper}> </Board> }
-    </div>
-  )}
+
+  const updateInputValue = (event: any) => {
+        setCounter(event.target.value)
+    }
+    
+return (
+  <div className="App">
+      <form onSubmit={ (e) => handleSubmit(e)}>
+      <label>
+        Knoten:
+        <input type="number" value={counter} onChange={evt => updateInputValue(evt)} />
+      </label>
+      <input type="submit" value="ADD" />
+    </form>
+    <p> {counter}</p>
+    { chain && <Board blockChain={chain} amounts={testMapper}> </Board> }
+  </div>
+)}
 
 export default App;

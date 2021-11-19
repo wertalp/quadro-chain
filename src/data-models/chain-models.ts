@@ -8,14 +8,13 @@ export class BlockChain {
     private currentNode : ShapeNode ;
     private lastNode    : ShapeNode ;
     
-    constructor( _chainName : string, 
-                 _rootNode  : ShapeNode  )
-    {
-        this.chainName   = _chainName    ;
-        this.rootNode    = _rootNode     ;
-        this.currentNode = this.rootNode ;
-    }
-
+constructor( _chainName : string, 
+                _rootNode  : ShapeNode  )
+{
+    this.chainName   = _chainName    ;
+    this.rootNode    = _rootNode     ;
+    this.currentNode = this.rootNode ;
+}
 
 public addnextNode = (itemNode : ShapeNode) => { 
     this.currentNode.nextNode = itemNode ;
@@ -23,62 +22,57 @@ public addnextNode = (itemNode : ShapeNode) => {
     this.currentNode = itemNode ;
     console.log("adding Node",itemNode.amount.toString()) ;
     return this ;
-
 } ;
 
-
-private findLastNode = (currentNode : ShapeNode): ShapeNode => {
-    
+private findLastNode = (currentNode : ShapeNode): ShapeNode => {  
     let lastNode : ShapeNode = null ;
-         if ( ! currentNode.nextNode ){
-             return currentNode ;
-         }
-        while ( this.findLastNode( currentNode.nextNode) )
-            { try{ lastNode = currentNode.nextNode ; }
-            catch(e)
-            { console.log(e);};
+    if ( ! currentNode.nextNode ){
+        return currentNode ; }
+    while ( this.findLastNode( currentNode.nextNode) )
+    { try{ lastNode = currentNode.nextNode ; }
+        catch(e)
+        { console.log(e);};
         } ;
-            return lastNode ;
+    return lastNode ;
 }
 
+drawChain   = () =>  {
+    this.currentNode = this.rootNode ;
+    while ( this.currentNode ){
+    console.log("here we paint node " +this.currentNode.amount );
+    this.currentNode = this.currentNode.nextNode ;
+    }
+};
 
-    drawChain   = () =>  {
-        this.currentNode = this.rootNode ;
-        while ( this.currentNode ){
-            console.log("here we paint node " +this.currentNode.amount );
-            this.currentNode = this.currentNode.nextNode ;
+get Chainname() : string  {
+    return this.chainName ;
+} ;
+set Chainname(_name : string) {
+    this.chainName = _name ;
+}
+
+get CurrentNode() : ShapeNode  {
+    return this.currentNode ;
+} ;
+set CurrentNode( _cnode : ShapeNode) {
+    this.currentNode = _cnode ;
+};
+
+get RootNode() : ShapeNode {
+    return this.rootNode  ;
+}
+
+getallValues =  (): number[] => {
+    let amounts : number[] = [] ;
+    let currNode : ShapeNode = null ;
+        currNode = this.rootNode ;
+    
+    while ( currNode.nextNode ){
+            currNode = currNode.nextNode ;
+            amounts.push(currNode.amount);
         }
-    };
-
-    get Chainname() : string  {
-        return this.chainName ;
-    } ;
-    set Chainname(_name : string) {
-        this.chainName = _name ;
-    }
-
-    get CurrentNode() : ShapeNode  {
-        return this.currentNode ;
-    } ;
-    set CurrentNode( _cnode : ShapeNode) {
-        this.currentNode = _cnode ;
-    };
-
-    get RootNode() : ShapeNode {
-        return this.rootNode  ;
-    }
-
-    getallValues =  (): number[] => {
-        let amounts : number[] = [] ;
-        let currNode : ShapeNode = null ;
-            currNode = this.rootNode ;
-        
-        while ( currNode.nextNode ){
-                amounts.push(currNode.amount);
-                currNode = currNode.nextNode ;
-            }
-        return  amounts ;
-    } 
+    return  amounts ;
+} 
 
 
  
