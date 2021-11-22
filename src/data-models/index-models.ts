@@ -13,13 +13,23 @@ export interface Point {
     yPos   : number ;
     width? : number
     }
+
+export enum  Style  {
+    Info      = "Info"      ,
+    Primary   = "Primary"   ,
+    Secondary = "Secondary" ,
+    Warning   = "Warning"   ,
+    Success   = "Success"   ,
+    Light     = "Light"     ,
+    Dark      =  "Dark"
+}    
         
   export  interface IShapeNode {
-        preNode  :  IShapeNode  ;
-        nextNode :  IShapeNode  ;
+        preNode    : ShapeNode  ;
+        nextNode   : ShapeNode  ;
         amount   : number ; 
         label  ? : string ;
-        color  ? : Color  ;
+        style    : Style  ;
         payload ?: string ;
         position : Point   ;
         draw :  () => boolean  ; 
@@ -28,16 +38,19 @@ export interface Point {
     };
 
   export class ShapeNode implements IShapeNode {
-        public preNode    : ShapeNode  = null   ;
-        public nextNode   : ShapeNode  = null   ;
-        public amount     : number     = 0      ;
-        public position   : Point   = null   ;
-        public mintUrl    : string     =  ""    ; 
+        private _preNode    : ShapeNode  = null    ;
+        private _nextNode   : ShapeNode  = null    ;
+        private _amount     : number     = 0       ;
+        private _label      : string     = ""      ;
+        private _position   : Point      = null    ;
+        private _mintUrl    : string     =  ""     ; 
+        private _style      : Style      = Style.Primary ; 
+
     
         constructor(
             _amount    : number ) 
         {
-            this.amount   = _amount   ;   
+            this._amount   = _amount   ;   
         } ;
 
     draw = (): boolean => {
@@ -52,22 +65,58 @@ export interface Point {
 
     move = (point : Point)  => {
         console.log("move from to");
-        this.position.xPos = point.xPos ;
+        this._position.xPos = point.xPos ;
         return true ;
     } 
 
     get Position() : Point  {
-        return this.position ;
+        return this._position ;
     } ;
 
-    set Position(pos :Point) {
+    set position(pos :Point) {
         this.position.xPos = pos.xPos ;
         this.position.yPos = pos.yPos ;
     } ;
 
     mintNodeUrl = () => {
-
     }
+
+    get preNode() : ShapeNode {
+        return this._preNode ;
+    }
+
+    set preNode( nNode : ShapeNode)  {
+        this._preNode = nNode ;
+    }
+
+    get nextNode() : ShapeNode {
+        return this._nextNode ;
+    }
+
+    set nextNode( nNode : ShapeNode)  {
+        this._nextNode = nNode ;
+    }
+
+    get amount() : number {
+        return this._amount ;
+    }
+
+    get label() : string {
+        return this._label ;
+    }
+
+    set label( label : string)  {
+        this._label = label ;
+    }
+
+    get style( )  {
+        return this._style ;
+    }
+
+    set style( style : Style)  {
+        this._style = style ;
+    }
+
 }
 
 export interface BlockChainProps {

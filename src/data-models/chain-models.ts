@@ -1,4 +1,4 @@
-import { ShapeNode} from  "./index-models" ;
+import { ShapeNode, IShapeNode} from  "./index-models" ;
 
 
 export class BlockChain {
@@ -20,7 +20,7 @@ public addnextNode = (itemNode : ShapeNode) => {
     this.currentNode.nextNode = itemNode ;
     this.lastNode = itemNode    ;
     this.currentNode = itemNode ;
-    console.log("adding Node",itemNode.amount.toString()) ;
+    console.log("adding Node",itemNode.label.toString()) ;
     return this ;
 } ;
 
@@ -62,16 +62,16 @@ get RootNode() : ShapeNode {
     return this.rootNode  ;
 }
 
-getallValues =  (): number[] => {
-    let amounts : number[] = [] ;
+getallValues =  (): IShapeNode[] => {
+    let nodes : IShapeNode[] = [] ;
     let currNode : ShapeNode = null ;
         currNode = this.rootNode ;
     
     while ( currNode.nextNode ){
             currNode = currNode.nextNode ;
-            amounts.push(currNode.amount);
+            nodes.push(currNode);
         }
-    return  amounts ;
+    return  nodes ;
 } 
 
 

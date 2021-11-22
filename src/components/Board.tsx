@@ -12,8 +12,9 @@ interface BlockChainProps {
     amounts    : Array<number> ;
  }
 const Board : React.FC<BlockChainProps> = (props : BlockChainProps) =>  {
-    const [chain, setChain]    =  useState<BlockChain>(null) ;
-    const [amount, setAmount]  =  useState<number[]>(null)   ;
+    const [chain   , setChain]    =  useState<BlockChain>(null) ;
+    const [amount  , setAmount]   =  useState<number[]>(null)   ;
+    const [render, setRerender] = useState(false);
 
     let isLoaded : Boolean = false ;
     let htmlBlockInfo : string     ;
@@ -21,22 +22,15 @@ const Board : React.FC<BlockChainProps> = (props : BlockChainProps) =>  {
       useEffect( () => {
           setChain(props.blockChain) ;
           setAmount(props.amounts)   ;
+          setRerender(!render) ;
        },[]) ;
-
-       if( chain){
-         console.log("Traverse BlockChain Node: Value" + chain.RootNode.amount);
-         htmlBlockInfo = "Fertig geladen" ;
-       }
 
     return (
         <div>
         <h3> Graph Component</h3>
         <h5> {chain && chain.Chainname} </h5>
-        <div id="DrawBoard" >
-        <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }>  {isLoaded ? htmlBlockInfo : props.amounts[3]} </Button>
-        { chain && <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }>  {isLoaded ? htmlBlockInfo : chain.Chainname} </Button>}
-        { chain && <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }> DOT </Button>}
-        { chain && chain.getallValues().map( (item, index) => ( <Button className="mt-1" variant="info" onClick={()=> { alert("here we go")} }>  {isLoaded ? htmlBlockInfo : item} </Button>))}
+        <div id="DrawBoard" >       
+        { chain && chain.getallValues().map( (item, index) => ( <Button className="mt-1" variant="outline-success" onClick={()=> { alert(item.amount)} }>  {isLoaded ? htmlBlockInfo : item.amount} </Button>))}
         </div>
         </div>
     )
