@@ -15,13 +15,13 @@ export interface Point {
     }
 
 export enum  Style  {
-    Info      = "Info"      ,
-    Primary   = "Primary"   ,
+    Info      = "outline-info"      ,
+    Primary   = "outline-primary"   ,
     Secondary = "Secondary" ,
-    Warning   = "Warning"   ,
-    Success   = "Success"   ,
-    Light     = "Light"     ,
-    Dark      =  "Dark"
+    Warning   = "outline-warning"   ,
+    Success   = "outline-success"   ,
+    Light     = "outline-light"     ,
+    Dark      = "outline-dark"      
 }    
         
   export  interface IShapeNode {
@@ -38,20 +38,25 @@ export enum  Style  {
     };
 
   export class ShapeNode implements IShapeNode {
-        private _preNode    : ShapeNode  = null    ;
-        private _nextNode   : ShapeNode  = null    ;
-        private _amount     : number     = 0       ;
-        private _label      : string     = ""      ;
-        private _position   : Point      = null    ;
-        private _mintUrl    : string     =  ""     ; 
-        private _style      : Style      = Style.Primary ; 
+    private _preNode    : ShapeNode  = null    ;
+    private _nextNode   : ShapeNode  = null    ;
+    private _amount     : number     = 0       ;
+    private _label      : string     = ""      ;
+    private _position   : Point      = null    ;
+    private _mintUrl    : string     =  ""     ; 
+    private _style?      : Style      = Style.Warning ; 
 
     
-        constructor(
-            _amount    : number ) 
+    constructor(
+        _amount    : number ,
+        _style?     : Style) 
         {
-            this._amount   = _amount   ;   
-        } ;
+        this._amount   = _amount   ;   
+        if (_style) {
+        this._style    = _style    ;
+        }
+    } ;
+
 
     draw = (): boolean => {
         console.log("drawing");

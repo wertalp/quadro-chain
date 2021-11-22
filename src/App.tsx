@@ -3,9 +3,11 @@ import logo from './logo.svg';
 import './App.css';
 import {ShapeNode, Point, BlockChainProps} from './data-models/index-models'  ;
 import {BlockChain} from './data-models/chain-models' ;
-import Board from './components/Board' ;
-import Button from 'react-bootstrap/esm/Button';
-import { render } from '@testing-library/react';
+import Board        from './components/Board' ;
+import Button       from 'react-bootstrap/esm/Button';
+import {render}     from '@testing-library/react';
+import {Form}       from 'react-bootstrap' ;
+import {Style}      from './data-models/index-models' ;
 
 
 
@@ -15,10 +17,11 @@ import { render } from '@testing-library/react';
    let testMapper : Array<number>    = [2,3,4,5,6,7]; 
 
 
-   const [chain,     setChain] = useState<BlockChain>(null) ;
-   const [name ,      setName] = useState<string>("")       ;
-   const [counter, setCounter] = useState<number>(0)        ;  
-   const [rerender, setRerender] = useState(false);
+   const [chain,    setChain]    = useState<BlockChain>(null) ;
+   const [name ,    setName]     = useState<string>("")       ;
+   const [counter,  setCounter]  = useState<number>(0)        ;  
+   const [rerender, setRerender] = useState(false)      ;
+   const [style,    setStyle]    = useState(Style.Info) ;
   
 
    useEffect( 
@@ -35,15 +38,15 @@ import { render } from '@testing-library/react';
 
     const createChain =  () : BlockChain => {
         console.log("starting ... creating Chain ") ;
+        setTimeout(() => { console.log("Waiting TiemOut ....")},1000) ;
         myChain = new BlockChain("QuadroChain",createRootNode()) ;
         console.log("starting ... creating Chain ") ;
         return myChain ;      
     }
 
-  const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve , rejected ) =>  {
-        resolve( createChain())
-        rejected(null)   }
-        )
+  const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
+          resolve( createChain())  
+        );
     
   const addtoChain = async () => {
         console.log("starting ... adding Node") ;
@@ -59,7 +62,7 @@ import { render } from '@testing-library/react';
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setChain(chain.addnextNode(new ShapeNode(counter)) ) ;
+        setChain(chain.addnextNode(new ShapeNode(counter,style)) ) ;
         setRerender(!rerender); 
   }
 
@@ -73,6 +76,10 @@ import { render } from '@testing-library/react';
   const updateInputValue = (event: any) => {
         setCounter(event.target.value)
     }
+
+  const onChangeStyle = ( e: React.FormEvent<any>) =>  {
+     setStyle(e.currentTarget.value)
+  }  
     
 return (
   <div className="App">
@@ -80,6 +87,12 @@ return (
       <label>
         Knoten:
         <input type="number" value={counter} onChange={evt => updateInputValue(evt)} />
+      </label>
+      <label>
+        <select onChange={(event) => onChangeStyle(event)}>
+        {(Object.keys(Style) as (keyof typeof Style)[])
+           .map( enumKey =>  <option key={Style[enumKey]} label={enumKey} value={Style[enumKey]} /> )}
+        </select>;
       </label>
       <input type="submit" value="ADD" />
     </form>
