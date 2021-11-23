@@ -7,7 +7,6 @@ enum Color {
     "yellow"
 };
 
-
 export interface Point {
     xPos   : number ; 
     yPos   : number ;
