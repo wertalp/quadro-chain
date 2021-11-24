@@ -1,13 +1,14 @@
 import React, { ChangeEventHandler, FunctionComponent, useEffect, useState} from 'react' ;
 import logo from './logo.svg';
 import './App.css';
-import {ShapeNode, Point, BlockChainProps} from './data-models/index-models'  ;
+import {ShapeNode, Point, BlockChainProps, IFormData} from './data-models/index-models'  ;
 import {BlockChain} from './data-models/chain-models' ;
 import Board        from './components/Board' ;
 import Button       from 'react-bootstrap/esm/Button';
 import {render}     from '@testing-library/react';
-import {Form}       from 'react-bootstrap' ;
+import {Container, Form, Row, Col}       from 'react-bootstrap' ;
 import {Style}      from './data-models/index-models' ;
+import {FormCreate} from './components/FormCreate' ;
 
 
 
@@ -33,7 +34,7 @@ import {Style}      from './data-models/index-models' ;
 
 
     const createRootNode = () => {
-        return new ShapeNode(1) ;
+        return new ShapeNode(1,Style.Info,"") ;
     }
 
     const createChain =  () : BlockChain => {
@@ -50,7 +51,7 @@ import {Style}      from './data-models/index-models' ;
     
   const addtoChain = async () => {
         console.log("starting ... adding Node") ;
-        myChain.addnextNode(new ShapeNode(10))
+        myChain.addnextNode(new ShapeNode(10,Style.Success,"First"))
         isLoading = false ;
       } ;
 
@@ -59,10 +60,9 @@ import {Style}      from './data-models/index-models' ;
     };
     
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        setChain(chain.addnextNode(new ShapeNode(counter,style)) ) ;
+  const handleSubmit = ( formInfo : IFormData) => {
+    
+        setChain(chain.addnextNode(new ShapeNode(formInfo.val,formInfo.art,formInfo.name)) ) ;
         setRerender(!rerender); 
   }
 
@@ -83,7 +83,19 @@ import {Style}      from './data-models/index-models' ;
     
 return (
   <div className="App">
-      <form onSubmit={ (e) => handleSubmit(e)}>
+   <Container>
+     <Row>
+       <Col>
+       <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
+       </Col>
+       <Col>
+    {chain && <Board blockChain={chain} amounts={testMapper}> </Board> }
+    </Col>
+    <Col>
+    {chain && <Board blockChain={chain} amounts={testMapper}> </Board> }
+    </Col>
+  </Row>
+  <form onSubmit={ (e) => updateInputValue(e)}>
       <label>
         Knoten:
         <input type="number" value={counter} onChange={evt => updateInputValue(evt)} />
@@ -97,7 +109,8 @@ return (
       <input type="submit" value="ADD" />
     </form>
     <p> {counter}</p>
-    { chain && <Board blockChain={chain} amounts={testMapper}> </Board> }
+
+  </Container>
   </div>
 )}
 

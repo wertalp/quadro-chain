@@ -14,7 +14,7 @@ interface BlockChainProps {
 const Board : React.FC<BlockChainProps> = (props : BlockChainProps) =>  {
     const [chain   , setChain]    =  useState<BlockChain>(null) ;
     const [amount  , setAmount]   =  useState<number[]>(null)   ;
-    const [render, setRerender] = useState(false);
+    const [render, setRerender]   = useState(false);
 
     let isLoaded : Boolean = false ;
     let htmlBlockInfo : string     ;
@@ -26,12 +26,13 @@ const Board : React.FC<BlockChainProps> = (props : BlockChainProps) =>  {
        },[]) ;
 
     return (
-        <div>
+        <div id="DrawBoard" >      
         <h3> Graph Component</h3>
-        <h5> {chain && chain.Chainname} </h5>
-        <div id="DrawBoard" >       
-        { chain && chain.getallValues().map( (item, index) => ( <Button className="mt-1" variant={item.style} onClick={()=> { alert(item.amount)} }>  {isLoaded ? htmlBlockInfo : item.amount} </Button>))}
-        </div>
+        <h5> {chain && chain.Chainname} </h5> 
+        { chain && chain.getallValues()
+            .map( (item, index) => ( 
+            <Button className="mt-1" variant={item.style} onClick={()=> { alert(item.amount)} }> 
+             {isLoaded ? htmlBlockInfo : item.label} </Button>))}
         </div>
     )
 

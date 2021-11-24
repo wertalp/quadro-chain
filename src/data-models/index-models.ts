@@ -22,6 +22,12 @@ export enum  Style  {
     Light     = "outline-light"     ,
     Dark      = "outline-dark"      
 }    
+
+export interface IFormData{
+    name : string ;
+    val  : number ;
+    art  : Style  ;
+} 
         
   export  interface IShapeNode {
         preNode    : ShapeNode  ;
@@ -43,18 +49,20 @@ export enum  Style  {
     private _label      : string     = ""      ;
     private _position   : Point      = null    ;
     private _mintUrl    : string     =  ""     ; 
-    private _style?      : Style      = Style.Warning ; 
+    private _style     : Style      = Style.Warning ; 
 
     
     constructor(
-        _amount    : number ,
-        _style?     : Style) 
+     _amount : number ,
+     _style  : Style  ,
+     _label  : string ) 
         {
         this._amount   = _amount   ;   
         if (_style) {
         this._style    = _style    ;
         }
-    } ;
+        this._label    = _label 
+    }  ;
 
 
     draw = (): boolean => {
