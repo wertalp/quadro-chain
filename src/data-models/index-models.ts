@@ -10,7 +10,6 @@ enum Color {
 export interface Point {
     xPos   : number ; 
     yPos   : number ;
-    width? : number
     }
 
 export enum  Style  {
@@ -55,13 +54,15 @@ export interface IFormData{
     constructor(
      _amount : number ,
      _style  : Style  ,
-     _label  : string ) 
+     _label  : string ,
+     _position : Point) 
         {
         this._amount   = _amount   ;   
         if (_style) {
         this._style    = _style    ;
         }
         this._label    = _label 
+        this.position  = _position
     }  ;
 
 
@@ -81,7 +82,7 @@ export interface IFormData{
         return true ;
     } 
 
-    get Position() : Point  {
+    get position() : Point  {
         return this._position ;
     } ;
 

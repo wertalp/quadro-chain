@@ -10,7 +10,7 @@ export class BlockChain {
     private lastNode    : ShapeNode ;
     
 constructor( _chainName : string, 
-                _rootNode  : ShapeNode  )
+             _rootNode  : ShapeNode  )
 {
     this.chainName   = _chainName    ;
     this.rootNode    = _rootNode     ;

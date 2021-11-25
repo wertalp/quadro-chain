@@ -23,18 +23,23 @@ import {FormCreate} from './components/FormCreate' ;
    const [counter,  setCounter]  = useState<number>(0)        ;  
    const [rerender, setRerender] = useState(false)      ;
    const [style,    setStyle]    = useState(Style.Info) ;
-  
+ 
+ 
+   let position :Point  = { xPos: 10, yPos :10};
+
 
    useEffect( 
      () => {  
-           console.log("starting ... hooking; use Effect ") ;
+
+           console.log("starting ... hooking; use Effect ") ; 
            setCounter(counter+1) ;
            handleStart() ;
+           
         },[] )
 
 
     const createRootNode = () => {
-        return new ShapeNode(1,Style.Info,"") ;
+        return new ShapeNode(1,Style.Info,"", position) ;
     }
 
     const createChain =  () : BlockChain => {
@@ -51,14 +56,14 @@ import {FormCreate} from './components/FormCreate' ;
     
   const addtoChain = async () => {
         console.log("starting ... adding Node") ;
-        myChain.addnextNode(new ShapeNode(10,Style.Success,"First"))
+        myChain.addnextNode(new ShapeNode(10,Style.Success,"First",position))
         isLoading = false ;
       } ;
     
 
   const handleSubmit = ( formInfo : IFormData) => {
     
-        setChain(chain.addnextNode(new ShapeNode(formInfo.val,formInfo.art,formInfo.name)) ) ;
+        setChain(chain.addnextNode(new ShapeNode(formInfo.val,formInfo.art,formInfo.name,position)) ) ;
         setRerender(!rerender); 
   }
 
@@ -80,7 +85,7 @@ import {FormCreate} from './components/FormCreate' ;
        
         sortedChainArray
               .forEach( item => { console.log("Sortierter Array: wert: "+ item.amount) ;  sortedChain
-                                  .addnextNode(new ShapeNode(item.amount,Style.Dark, item.label))})
+                                  .addnextNode(new ShapeNode(item.amount,Style.Dark, item.label,position))})
 
         alert("sortedchainName"+ sortedChain.Chainname ) ;
         setChain(sortedChain) ;
@@ -107,7 +112,7 @@ return (
        <Col>
     <p> {counter}</p>
     <Button variant={Style.Dark} onClick={(e)=> onSort(e)} > SORT</Button>
-    </Col>
+    </Col>  
   </Row>
   </Container>
   </div>
