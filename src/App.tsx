@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, FunctionComponent, useEffect, useState} from 'react' ;
 import logo from './logo.svg';
 import './App.css';
-import {ShapeNode, Point, BlockChainProps, IFormData} from './data-models/index-models'  ;
+import {ShapeNode, Point, BlockChainProps, IFormData, IShapeNode} from './data-models/index-models'  ;
 import {BlockChain} from './data-models/chain-models' ;
 import Board        from './components/Board' ;
 import Button       from 'react-bootstrap/esm/Button';
@@ -54,10 +54,6 @@ import {FormCreate} from './components/FormCreate' ;
         myChain.addnextNode(new ShapeNode(10,Style.Success,"First"))
         isLoading = false ;
       } ;
-
-  const printmyChain = () => {
-        myChain.drawChain() ;
-    };
     
 
   const handleSubmit = ( formInfo : IFormData) => {
@@ -73,13 +69,25 @@ import {FormCreate} from './components/FormCreate' ;
         setRerender(!render) ;
     }
 
-  const updateInputValue = (event: any) => {
-        setCounter(event.target.value)
+  const onSort = (event: any) => {
+        let sortedChain      : BlockChain   = null ;
+        let sortedChainArray : IShapeNode[] = null ;
+       
+        console.log("Sorting the Array now" )     ;
+            sortedChain      = createChain()      ;
+            sortedChain.Chainname = "SortedChain" ;
+            sortedChainArray = chain.sortValues() ;
+       
+        sortedChainArray
+              .forEach( item => { console.log("Sortierter Array: wert: "+ item.amount) ;  sortedChain
+                                  .addnextNode(new ShapeNode(item.amount,Style.Dark, item.label))})
+
+        alert("sortedchainName"+ sortedChain.Chainname ) ;
+        setChain(sortedChain) ;
+        setRerender(!render) ;
+
     }
 
-  const onChangeStyle = ( e: React.FormEvent<any>) =>  {
-     setStyle(e.currentTarget.value)
-  }  
     
 return (
   <div className="App">
@@ -89,27 +97,18 @@ return (
        <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
        </Col>
        <Col>
-    {chain && <Board blockChain={chain} amounts={testMapper}> </Board> }
+    {chain && <Board   blockChain={chain}  amounts={testMapper}> </Board> }
     </Col>
     <Col>
-    {chain && <Board blockChain={chain} amounts={testMapper}> </Board> }
+    {chain && <Board   blockChain={chain} amounts={testMapper}> </Board> }
     </Col>
   </Row>
-  <form onSubmit={ (e) => updateInputValue(e)}>
-      <label>
-        Knoten:
-        <input type="number" value={counter} onChange={evt => updateInputValue(evt)} />
-      </label>
-      <label>
-        <select onChange={(event) => onChangeStyle(event)}>
-        {(Object.keys(Style) as (keyof typeof Style)[])
-           .map( enumKey =>  <option key={Style[enumKey]} label={enumKey} value={Style[enumKey]} /> )}
-        </select>;
-      </label>
-      <input type="submit" value="ADD" />
-    </form>
+  <Row>
+       <Col>
     <p> {counter}</p>
-
+    <Button variant={Style.Dark} onClick={(e)=> onSort(e)} > SORT</Button>
+    </Col>
+  </Row>
   </Container>
   </div>
 )}

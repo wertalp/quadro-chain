@@ -1,3 +1,4 @@
+import { Context } from "vm";
 import { ShapeNode, IShapeNode} from  "./index-models" ;
 
 
@@ -36,7 +37,7 @@ private findLastNode = (currentNode : ShapeNode): ShapeNode => {
     return lastNode ;
 }
 
-drawChain   = () =>  {
+drawChain   = (ctx : Context) =>  {
     this.currentNode = this.rootNode ;
     while ( this.currentNode ){
     console.log("here we paint node " +this.currentNode.amount );
@@ -62,7 +63,7 @@ get RootNode() : ShapeNode {
     return this.rootNode  ;
 }
 
-getallValues =  (): IShapeNode[] => {
+  getallValues =  (): IShapeNode[] => {
     let nodes : IShapeNode[] = [] ;
     let currNode : ShapeNode = null ;
         currNode = this.rootNode ;
@@ -74,7 +75,12 @@ getallValues =  (): IShapeNode[] => {
     return  nodes ;
 } 
 
+  sortValues = (): IShapeNode[] => {
+    if (! this.rootNode){
+    return ;
+    }
+    return this.getallValues().sort( (a,b) =>  a.amount - b.amount )   
+}
 
- 
 
 }
