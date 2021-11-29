@@ -1,121 +1,133 @@
 import React, { ChangeEventHandler, FunctionComponent, useEffect, useState} from 'react' ;
+import ReactDOM from 'react-dom' ;
 import logo from './logo.svg';
 import './App.css';
 import {ShapeNode, Point, BlockChainProps, IFormData, IShapeNode} from './data-models/index-models'  ;
-import {BlockChain} from './data-models/chain-models' ;
-import Board        from './components/Board' ;
-import Button       from 'react-bootstrap/esm/Button';
-import {render}     from '@testing-library/react';
-import {Container, Form, Row, Col}       from 'react-bootstrap' ;
-import {Style}      from './data-models/index-models' ;
-import {FormCreate} from './components/FormCreate' ;
-
-
+import {BlockChain}    from './data-models/chain-models' ;
+import Board           from './components/Board'         ;
+import Button          from 'react-bootstrap/esm/Button' ;
+import {render}        from '@testing-library/react'     ;
+import {Container, Form, Row, Col}  from 'react-bootstrap' ;
+import {Style}         from './data-models/index-models' ;
+import {FormCreate}    from './components/FormCreate'    ;
+import Canvas          from './components/Canvas'        ;
+import * as Utils      from './utils/chain-utils'        ;
+import {CanvasContext} from './components/CanvasContext' ;   
 
  export  const App : FunctionComponent<{}> = () =>  {
-   let myChain    : BlockChain  = null ; 
-   let isLoading  : boolean     = true ;
-   let testMapper : Array<number>    = [2,3,4,5,6,7]; 
+    let myChain    : BlockChain  = null ; 
+    let isLoading  : boolean     = true ;
+    let position   : Point  = { xPos: 25, yPos :50};
 
-
-   const [chain,    setChain]    = useState<BlockChain>(null) ;
-   const [name ,    setName]     = useState<string>("")       ;
-   const [counter,  setCounter]  = useState<number>(0)        ;  
-   const [rerender, setRerender] = useState(false)      ;
-   const [style,    setStyle]    = useState(Style.Info) ;
+    const [chain,    setChain]    = useState<BlockChain>(null) ;
+    const [counter,  setCounter]   = useState<number>(0)       ;  
+    const [rerender, setRerender]  = useState(false)           ;
+    const [currentNode, setCurrentNode]  = useState(null)      ;
+    const [context, setContext]  = useState(null)              ;
+    let   _ctx : any = null ; 
  
- 
-   let position :Point  = { xPos: 10, yPos :10};
-
 
    useEffect( 
-     () => {  
-
-           console.log("starting ... hooking; use Effect ") ; 
-           setCounter(counter+1) ;
-           handleStart() ;
-           
+        () => {  
+        console.log("starting ... hooking; use Effect ") ; 
+        setCounter(counter+1) ;
+        initSetup()           ;  
         },[] )
 
 
-    const createRootNode = () => {
-        return new ShapeNode(1,Style.Info,"", position) ;
-    }
-
-    const createChain =  () : BlockChain => {
-        console.log("starting ... creating Chain ") ;
-        setTimeout(() => { console.log("Waiting TiemOut ....")},1000) ;
-        myChain = new BlockChain("QuadroChain",createRootNode()) ;
-        console.log("starting ... creating Chain ") ;
-        return myChain ;      
-    }
-
   const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
-          resolve( createChain())  
-        );
-    
-  const addtoChain = async () => {
-        console.log("starting ... adding Node") ;
-        myChain.addnextNode(new ShapeNode(10,Style.Success,"First",position))
-        isLoading = false ;
-      } ;
-    
+        resolve( Utils.createChain())  
+        );      
+     
 
   const handleSubmit = ( formInfo : IFormData) => {
-    
-        setChain(chain.addnextNode(new ShapeNode(formInfo.val,formInfo.art,formInfo.name,position)) ) ;
-        setRerender(!rerender); 
-  }
+          position.xPos = chain.CurrentNode.position.xPos + 5 ;
+          position.yPos = chain.CurrentNode.position.yPos + 5 ;
+        setChain(chain.addnextNode(
+                new ShapeNode(formInfo.val ,
+                              formInfo.art ,
+                              formInfo.name,
+                              position)))   ;  
+        chain.CurrentNode.draw(context)     ;                                
+   
+        }
 
-  const handleStart = () => {
-        promiseBC.then( item =>  setChain(item));  
-        //myChain.addnextNode(new ShapeNode(100)) ;
-        setChain(myChain)    ;
-        setRerender(!render) ;
-    }
+  const initSetup = async () => {
+         promiseBC
+                 .then( item =>  
+                          { setChain(item) ; 
+                    } );  
+       
+        }
 
   const onSort = (event: any) => {
         let sortedChain      : BlockChain   = null ;
         let sortedChainArray : IShapeNode[] = null ;
        
-        console.log("Sorting the Array now" )     ;
-            sortedChain      = createChain()      ;
-            sortedChain.Chainname = "SortedChain" ;
-            sortedChainArray = chain.sortValues() ;
+        console.log("Sorting the Array now" )      ;
+        sortedChain           = Utils.createChain()      ;
+        sortedChain.Chainname = "SortedChain"      ;
+        sortedChainArray      = chain.sortValues() ;
        
         sortedChainArray
-              .forEach( item => { console.log("Sortierter Array: wert: "+ item.amount) ;  sortedChain
-                                  .addnextNode(new ShapeNode(item.amount,Style.Dark, item.label,position))})
-
-        alert("sortedchainName"+ sortedChain.Chainname ) ;
+        .forEach( item => { console.log("Sortierter Array: wert: "+ item.amount) ;  sortedChain
+          .addnextNode(
+            new ShapeNode(item.amount,
+                Style.Dark, 
+                item.label,position))})
         setChain(sortedChain) ;
         setRerender(!render) ;
+        }
 
+  const draw = (ctx : any) => {
+    if(chain) {
+      _ctx = ctx ;
+      ctx.strokeStyle = "#000000";
+      ctx.strokeRect(chain.CurrentNode.position.xPos, chain.CurrentNode.position.yPos, 60, 25);
+      console.log("Hallo hier Holzhammer :" + chain.CurrentNode.position.yPos) ;
+      setRerender(!render) ;
+    } else {
+      console.log("Hallo hier Holzhammer :" + chain.CurrentNode.position.yPos) ;
+    }
+      setRerender(!render) ;
+    return ; 
     }
 
-    
-return (
-  <div className="App">
-   <Container>
-     <Row>
-       <Col>
-       <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
-       </Col>
-       <Col>
-    {chain && <Board   blockChain={chain}  amounts={testMapper}> </Board> }
-    </Col>
-    <Col>
-    {chain && <Board   blockChain={chain} amounts={testMapper}> </Board> }
-    </Col>
-  </Row>
-  <Row>
-       <Col>
-    <p> {counter}</p>
-    <Button variant={Style.Dark} onClick={(e)=> onSort(e)} > SORT</Button>
-    </Col>  
-  </Row>
-  </Container>
-  </div>
-)}
+  const drawNode = (ctx: any) => { 
+        chain && chain.CurrentNode.draw(ctx) ;
+        setRerender(!render) ;
+        }  
+
+  const changeContext = (val : any) => {
+        setContext(val);
+
+  }      
+
+  return (
+    <div className="App">
+    <Container>
+      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
+      <Row>
+        <Col>
+        <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
+        </Col>
+        <Col>
+      {chain && <Board blockChain={chain} > </Board> }
+      </Col>
+      <Col>
+      {chain && <Board blockChain={chain} > </Board> }
+      </Col>
+    </Row>
+    <Row>
+        <Col>
+      <p> {counter}</p>
+      <Button variant={Style.Dark} onClick={(e)=> onSort(e)} > SORT</Button>
+      </Col>  
+    </Row>
+    {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={draw} drawNode={drawNode} width={400}  height={280} > </Canvas>}
+    </CanvasContext.Provider>
+    </Container>
+    </div>
+  )}
 
 export default App;

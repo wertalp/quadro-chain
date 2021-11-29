@@ -1,47 +1,45 @@
-import React, {FormEvent, FormEventHandler, FunctionComponent, useEffect, useState} from'react';
-import ReactDOM from 'react-dom';
-import Button from 'react-bootstrap/Button';
+import React, {FormEvent, FormEventHandler, FunctionComponent, useContext, useEffect, useState} from'react';
+import ReactDOM  from 'react-dom';
+import Button    from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BlockChain } from '../data-models/chain-models';
+import { BlockChain }                       from '../data-models/chain-models';
 import { IShapeNode, ShapeNode, IFormData } from '../data-models/index-models';
 import { getEmitHelpers } from 'typescript';
 import {Form, FormSelect} from 'react-bootstrap'
-import {Style}      from '../data-models/index-models' ;
+import {Style}            from '../data-models/index-models' ;
+import {CanvasContext} from './components/CanvasContext' ;   
 
 
 
 interface FormProps {
     blockChain : BlockChain              ;
     submitForm : (formInfo :IFormData) => void     ;
- }
-
+}
 
 export const FormCreate : React.FC<FormProps> = (props : FormProps) =>  {
     const [style , setStyle]     = useState(Style.Info)  ;
     const [option, setOption]    = useState<string>( "") ;
     const [formData , setFormData ] = useState<IFormData>(({name:"", val:1,art: Style.Info})) ;
+    const { value, changeContext } = useContext(CanvasContext);
 
-useEffect( () => {              
-       
-})
+    useEffect( () => {              
+                    })
 
 const handleSubmit = (event : FormEvent<HTMLFormElement>) => {
     event.preventDefault() ; 
-
     if(formData.name) {
         props.submitForm(formData) ;
-    }
-   //setFormData( name : event.currentTarget.value )
-}
+    }}
 
 const onChangeStyle = ( e: React.FormEvent<any>) =>  {
     console.log("you clicked" + e.currentTarget.value);
     setFormData( {...formData , art : e.currentTarget.value })
  }  
 
- const changeState = ( event: React.FormEvent<any>) =>  {
-     setFormData( { ...formData, [event.currentTarget.name] : event.currentTarget.value})
- }  
+const changeState = ( event: React.FormEvent<any>) =>  {
+    setFormData( { ...formData, 
+                [event.currentTarget.name] : event.currentTarget.value})
+}  
 
 return (
     <div style={{ display: 'inline-flex', 
