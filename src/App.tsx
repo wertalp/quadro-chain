@@ -24,7 +24,6 @@ import {CanvasContext} from './components/CanvasContext' ;
     const [rerender, setRerender]  = useState(false)           ;
     const [currentNode, setCurrentNode]  = useState(null)      ;
     const [context, setContext]  = useState(null)              ;
-    let   _ctx : any = null ; 
  
 
    useEffect( 
@@ -41,8 +40,8 @@ import {CanvasContext} from './components/CanvasContext' ;
      
 
   const handleSubmit = ( formInfo : IFormData) => {
-          position.xPos = chain.CurrentNode.position.xPos + 80 ;
-          position.yPos = chain.CurrentNode.position.yPos   ;
+          position.xPos = chain.CurrentNode.position.xPos + 100 ;
+          position.yPos = chain.CurrentNode.position.yPos       ;
         setChain(chain.addnextNode(
                 new ShapeNode(formInfo.val ,
                               formInfo.art ,
@@ -124,7 +123,7 @@ import {CanvasContext} from './components/CanvasContext' ;
       <Button variant={Style.Dark} onClick={(e)=> onSort(e)} > SORT</Button>
       </Col>  
     </Row>
-    {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={draw} drawNode={drawNode} width={400}  height={280} > </Canvas>}
+    {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={draw} drawNode={drawNode} width={800}  height={400} > </Canvas>}
     </CanvasContext.Provider>
     </Container>
     </div>
