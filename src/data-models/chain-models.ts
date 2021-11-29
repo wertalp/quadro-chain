@@ -11,11 +11,11 @@ export class BlockChain {
     
 constructor( _chainName : string, 
              _rootNode  : ShapeNode  )
-{
+    {
     this.chainName   = _chainName    ;
     this.rootNode    = _rootNode     ;
     this.currentNode = this.rootNode ;
-}
+    }
 
 public addnextNode = (itemNode : ShapeNode) => { 
     this.currentNode.nextNode = itemNode ;
@@ -37,13 +37,33 @@ private findLastNode = (currentNode : ShapeNode): ShapeNode => {
     return lastNode ;
 }
 
-drawChain   = (ctx : Context) =>  {
+drawChaintoCanvas   = (ctx : any) =>  {
     this.currentNode = this.rootNode ;
     while ( this.currentNode ){
-    console.log("here we paint node " +this.currentNode.amount );
+    this.currentNode.draw(ctx) ;
     this.currentNode = this.currentNode.nextNode ;
     }
 };
+
+
+getallValues =  (): IShapeNode[] => {
+    let nodes : IShapeNode[] = [] ;
+    let currNode : ShapeNode = null ;
+        currNode = this.rootNode ;
+
+    while ( currNode.nextNode ){
+            currNode = currNode.nextNode ;
+            nodes.push(currNode);
+        }
+    return  nodes ;
+} 
+
+sortValues = (): IShapeNode[] => {
+    if (! this.rootNode){
+    return ;
+    }
+    return this.getallValues().sort( (a,b) =>  a.amount - b.amount )   
+}
 
 get Chainname() : string  {
     return this.chainName ;
@@ -61,25 +81,6 @@ set CurrentNode( _cnode : ShapeNode) {
 
 get RootNode() : ShapeNode {
     return this.rootNode  ;
-}
-
-  getallValues =  (): IShapeNode[] => {
-    let nodes : IShapeNode[] = [] ;
-    let currNode : ShapeNode = null ;
-        currNode = this.rootNode ;
-    
-    while ( currNode.nextNode ){
-            currNode = currNode.nextNode ;
-            nodes.push(currNode);
-        }
-    return  nodes ;
-} 
-
-  sortValues = (): IShapeNode[] => {
-    if (! this.rootNode){
-    return ;
-    }
-    return this.getallValues().sort( (a,b) =>  a.amount - b.amount )   
 }
 
 

@@ -7,7 +7,7 @@ import { IShapeNode, ShapeNode, IFormData } from '../data-models/index-models';
 import { getEmitHelpers } from 'typescript';
 import {Form, FormSelect} from 'react-bootstrap'
 import {Style}            from '../data-models/index-models' ;
-import {CanvasContext} from './components/CanvasContext' ;   
+import {CanvasContext} from './CanvasContext' ;   
 
 
 

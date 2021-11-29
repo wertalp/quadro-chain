@@ -1,3 +1,5 @@
+import { captureRejectionSymbol } from "events";
+import { Context } from "vm";
 import {BlockChain}  from  "./chain-models" ;
 
 enum Color {
@@ -36,7 +38,7 @@ export interface IFormData{
         style    : Style  ;
         payload ?: string ;
         position : Point   ;
-        draw :  () => boolean  ; 
+        draw :  (ctx: Context) => void  ; 
         delete: () => boolean ;
         move: (pos : Point) => void ;
     };
@@ -46,7 +48,7 @@ export interface IFormData{
     private _nextNode   : ShapeNode  = null    ;
     private _amount     : number     = 0       ;
     private _label      : string     = ""      ;
-    private _position   : Point      = null    ;
+    private _position   : Point      = {xPos:10 , yPos:10}    ;
     private _mintUrl    : string     =  ""     ; 
     private _style     : Style      = Style.Warning ; 
 
@@ -66,9 +68,20 @@ export interface IFormData{
     }  ;
 
 
-    draw = (): boolean => {
-        console.log("drawing");
-        return true ;
+    draw = (ctx : any): void => {
+
+        ctx.fillStyle = '#666666'
+        ctx.beginPath()
+        console.log("start drawing on Board");
+        let sizeWidth = ctx.canvas.clientWidth;
+        let sizeHeight = ctx.canvas.clientHeight;
+        ctx.beginPath();
+        ctx.font = '48px serif';
+
+        ctx.rect(this.position.xPos,this.position.yPos, 40, 25);        
+        ctx.lineWidth = "2";
+        ctx.strokeStyle = "red";
+        ctx.stroke();
     }
 
     delete = (): boolean => {

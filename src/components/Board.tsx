@@ -8,13 +8,11 @@ import { getEmitHelpers } from 'typescript';
 
 
 interface BlockChainProps {
-    blockChain : BlockChain    ;
-    amounts    : Array<number> ;
+    blockChain : BlockChain    
  }
 
 const Board : React.FC<BlockChainProps> = (props : BlockChainProps) =>  {
         const [chain   , setChain]    =  useState<BlockChain>(null) ;
-        const [amount  , setAmount]   =  useState<number[]>(null)   ;
         const [render, setRerender]   = useState(false);
 
         let isLoaded : Boolean = false ;
@@ -22,7 +20,6 @@ const Board : React.FC<BlockChainProps> = (props : BlockChainProps) =>  {
 
 useEffect( () => {
         setChain(props.blockChain) ;
-        setAmount(props.amounts)   ;
         setRerender(!render) ;
         //const interval_id = setInterval(() => reurn), 5000);
         //return () => clearInterval(interval_id)
@@ -32,7 +29,6 @@ useEffect( () => {
 const refreshControls = () => {
         alert("Here comes setinterval");
         setChain(props.blockChain) ;
-        setAmount(props.amounts)   ;
         setRerender(!render) ;
 }
 
