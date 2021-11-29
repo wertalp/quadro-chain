@@ -17,7 +17,7 @@ import {CanvasContext} from './components/CanvasContext' ;
  export  const App : FunctionComponent<{}> = () =>  {
     let myChain    : BlockChain  = null ; 
     let isLoading  : boolean     = true ;
-    let position   : Point  = { xPos: 25, yPos :50};
+    let position   : Point  = { xPos: 10, yPos :20};
 
     const [chain,    setChain]    = useState<BlockChain>(null) ;
     const [counter,  setCounter]   = useState<number>(0)       ;  
@@ -41,8 +41,8 @@ import {CanvasContext} from './components/CanvasContext' ;
      
 
   const handleSubmit = ( formInfo : IFormData) => {
-          position.xPos = chain.CurrentNode.position.xPos + 5 ;
-          position.yPos = chain.CurrentNode.position.yPos + 5 ;
+          position.xPos = chain.CurrentNode.position.xPos + 80 ;
+          position.yPos = chain.CurrentNode.position.yPos   ;
         setChain(chain.addnextNode(
                 new ShapeNode(formInfo.val ,
                               formInfo.art ,
@@ -81,7 +81,7 @@ import {CanvasContext} from './components/CanvasContext' ;
 
   const draw = (ctx : any) => {
     if(chain) {
-      _ctx = ctx ;
+
       ctx.strokeStyle = "#000000";
       ctx.strokeRect(chain.CurrentNode.position.xPos, chain.CurrentNode.position.yPos, 60, 25);
       console.log("Hallo hier Holzhammer :" + chain.CurrentNode.position.yPos) ;

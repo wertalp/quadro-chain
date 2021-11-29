@@ -70,18 +70,29 @@ export interface IFormData{
 
     draw = (ctx : any): void => {
 
-        ctx.fillStyle = '#666666'
-        ctx.beginPath()
-        console.log("start drawing on Board");
         let sizeWidth = ctx.canvas.clientWidth;
         let sizeHeight = ctx.canvas.clientHeight;
+
+        ctx.fillStyle = '#000000'
+        ctx.font = "10px Verdana";
+
         ctx.beginPath();
         ctx.font = '48px serif';
+        let xPos = this.position.xPos ;
+        let yPos = this.position.yPos ;
 
-        ctx.rect(this.position.xPos,this.position.yPos, 40, 25);        
+        if ( xPos > sizeWidth){
+            this.position.xPos = 10 ;
+            this.position.yPos = this.position.yPos +20 ;
+        }
+
+        ctx.rect(xPos,yPos, 90, 25);   
+        ctx.font = "16px Verdana";
+        ctx.fillText( this.label ,xPos+15,yPos+20 )    ; 
         ctx.lineWidth = "2";
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = "black";
         ctx.stroke();
+
     }
 
     delete = (): boolean => {
