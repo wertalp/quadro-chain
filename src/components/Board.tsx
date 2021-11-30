@@ -8,21 +8,21 @@ import { getEmitHelpers } from 'typescript';
 
 
 interface BlockChainProps {
-    blockChain : BlockChain    
+    blockChain : BlockChain  ,
+    counter    : number   
  }
 
 const Board : React.FC<BlockChainProps> = (props : BlockChainProps) =>  {
-        const [chain   , setChain]    =  useState<BlockChain>(null) ;
-        const [render, setRerender]   = useState(false);
+        const [chain  , setChain]     =  useState<BlockChain>(null) ;
+        const [render , setRerender]  = useState(false);
+        const [counter, setCounter]   = useState<number>(0);
 
-        let isLoaded : Boolean = false ;
-        let htmlBlockInfo : string     ;
+        let isLoaded      : Boolean = false ;
+        let htmlBlockInfo : string          ;
 
 useEffect( () => {
         setChain(props.blockChain) ;
         setRerender(!render) ;
-        //const interval_id = setInterval(() => reurn), 5000);
-        //return () => clearInterval(interval_id)
 },[]) ;
 
 
@@ -30,23 +30,19 @@ const refreshControls = () => {
         alert("Here comes setinterval");
         setChain(props.blockChain) ;
         setRerender(!render) ;
-}
-
+    }
 
 return (
     <div>
     <Row>
     <div id="DrawBoard" >      
     <h3> Graph Component</h3>
-    <h5> {chain && chain.Chainname} </h5> 
+    <h5> {chain && chain.Chainname} {counter} </h5> 
         { chain && chain.getallValues()
         .map( (item, index) => ( 
         <Button className="mt-1" variant={item.style} onClick={()=> { alert(item.amount)} }> 
         {isLoaded ? htmlBlockInfo : item.label} </Button>))}
         </div>
-    <ListGroup>
-        { chain && chain.getallValues().map( (item,i)  => ( <ListGroup.Item> {item.label}</ListGroup.Item>))}
-    </ListGroup>
     </Row>
     </div>)
 

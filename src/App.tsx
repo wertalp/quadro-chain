@@ -18,9 +18,10 @@ import {CanvasContext} from './components/CanvasContext' ;
     let myChain    : BlockChain  = null ; 
     let isLoading  : boolean     = true ;
     let position   : Point  = { xPos: 10, yPos :20};
+    let startCounter       : number = 1 ;
 
     const [chain,    setChain]    = useState<BlockChain>(null) ;
-    const [counter,  setCounter]   = useState<number>(0)       ;  
+    const [counter,  setCounter]   = useState<number>(startCounter)       ;  
     const [rerender, setRerender]  = useState(false)           ;
     const [currentNode, setCurrentNode]  = useState(null)      ;
     const [context, setContext]  = useState(null)              ;
@@ -29,7 +30,7 @@ import {CanvasContext} from './components/CanvasContext' ;
    useEffect( 
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
-        setCounter(counter+1) ;
+        setCounter(() => counter+1) ;
         initSetup()           ;  
         },[] )
 
@@ -40,21 +41,22 @@ import {CanvasContext} from './components/CanvasContext' ;
      
 
   const handleSubmit = ( formInfo : IFormData) => {
-          position.xPos = chain.CurrentNode.position.xPos + 100 ;
+          position.xPos = chain.CurrentNode.position.xPos + 130 ;
           position.yPos = chain.CurrentNode.position.yPos       ;
-        setChain(chain.addnextNode(
-                new ShapeNode(formInfo.val ,
-                              formInfo.art ,
-                              formInfo.name,
-                              position)))   ;  
-        chain.CurrentNode.draw(context)     ;                                
-   
+          setChain(chain.addnextNode(
+                   new ShapeNode(formInfo.val ,
+                                formInfo.art ,
+                                formInfo.name,
+                                position)))   ;  
+          chain.CurrentNode.draw(context)     ; 
+          setCounter( (counter) => ( counter +1 ))
+          setRerender(!render) ;                               
         }
 
   const initSetup = async () => {
          promiseBC
                  .then( item =>  
-                          { setChain(item) ; 
+                { setChain(item) ; 
                     } );  
        
         }
@@ -78,18 +80,28 @@ import {CanvasContext} from './components/CanvasContext' ;
         setRerender(!render) ;
         }
 
-  const draw = (ctx : any) => {
-    if(chain) {
 
-      ctx.strokeStyle = "#000000";
-      ctx.strokeRect(chain.CurrentNode.position.xPos, chain.CurrentNode.position.yPos, 60, 25);
-      console.log("Hallo hier Holzhammer :" + chain.CurrentNode.position.yPos) ;
+  const drawList = (e : any) => {
+     drawLinkedList( context) ;
+  }       
+
+  const drawLinkedList = (ctx : any):Boolean => {
+    if( Utils.clearCanvas(ctx))
+        return true 
+    if(chain) {
+      let cNode : ShapeNode =  chain.RootNode ;
+
+      while (cNode.nextNode) {
+        cNode.draw(ctx) ;
+        cNode = cNode.nextNode ;
+      }
       setRerender(!render) ;
+ 
     } else {
-      console.log("Hallo hier Holzhammer :" + chain.CurrentNode.position.yPos) ;
+      return ;
     }
       setRerender(!render) ;
-    return ; 
+     return ; 
     }
 
   const drawNode = (ctx: any) => { 
@@ -111,19 +123,19 @@ import {CanvasContext} from './components/CanvasContext' ;
         <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
         </Col>
         <Col>
-      {chain && <Board blockChain={chain} > </Board> }
+      {chain && <Board blockChain={chain}  counter={counter}> </Board> }
       </Col>
       <Col>
-      {chain && <Board blockChain={chain} > </Board> }
+      {chain && <Board blockChain={chain}  counter={counter}> </Board> }
       </Col>
     </Row>
     <Row>
         <Col>
       <p> {counter}</p>
-      <Button variant={Style.Dark} onClick={(e)=> onSort(e)} > SORT</Button>
+      <Button variant={Style.Dark} onClick={(e)=> drawList(e)} > SORT</Button>
       </Col>  
     </Row>
-    {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={draw} drawNode={drawNode} width={800}  height={400} > </Canvas>}
+    {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={800}  height={400} > </Canvas>}
     </CanvasContext.Provider>
     </Container>
     </div>

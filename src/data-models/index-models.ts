@@ -1,6 +1,7 @@
 import { captureRejectionSymbol } from "events";
 import { Context } from "vm";
 import {BlockChain}  from  "./chain-models" ;
+import {canvas_arrow} from '../utils/chain-utils' ;
 
 enum Color {
     "red", 
@@ -70,28 +71,31 @@ export interface IFormData{
 
     draw = (ctx : any): void => {
 
-        let sizeWidth = ctx.canvas.clientWidth;
-        let sizeHeight = ctx.canvas.clientHeight;
+        if (!ctx) return ;
+            let sizeWidth = ctx.canvas.clientWidth;
+            let sizeHeight = ctx.canvas.clientHeight;
 
-        ctx.fillStyle = '#000000'
-        ctx.font = "10px Verdana";
+            ctx.fillStyle = '#000000'
+            ctx.font = "10px Verdana";
+            ctx.beginPath();
+            ctx.font = '48px serif';
+            let xPos = this.position.xPos ;
+            let yPos = this.position.yPos ;
 
-        ctx.beginPath();
-        ctx.font = '48px serif';
-        let xPos = this.position.xPos ;
-        let yPos = this.position.yPos ;
-
-        if ( xPos > sizeWidth){
-            this.position.xPos = 10 ;
-            this.position.yPos = this.position.yPos +20 ;
-        }
-
-        ctx.rect(xPos,yPos, 90, 25);   
-        ctx.font = "16px Verdana";
-        ctx.fillText( this.label ,xPos+15,yPos+20 )    ; 
-        ctx.lineWidth = "2";
-        ctx.strokeStyle = "black";
-        ctx.stroke();
+            if ( xPos+200 > sizeWidth){
+                this.position.xPos = 0 ;
+                this.position.yPos = this.position.yPos +40 ;
+            }
+            canvas_arrow(ctx, this.position ,this.position) ;
+            ctx.fillStyle = "#FFFF00";
+            ctx.fillRect(xPos,yPos, 90, 30);   
+            ctx.font = "16px Verdana";
+            ctx.fillStyle = "#000000";
+            ctx.fillText( this.label ,xPos+15,yPos+18 )    ; 
+            ctx.lineWidth = "1";
+            ctx.strokeStyle = "black";
+         
+            ctx.stroke();
 
     }
 
