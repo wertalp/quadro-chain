@@ -2,6 +2,7 @@ import { captureRejectionSymbol } from "events";
 import { Context } from "vm";
 import {BlockChain}  from  "./chain-models" ;
 import {canvas_arrow, drawArrowhead, drawConnectLine} from '../utils/chain-utils' ;
+import {NODE} from '../utils/util-constants' ;
 
 enum Color {
     "red", 
@@ -80,20 +81,20 @@ export interface IFormData{
             let xPos = this.position.xPos ;
             let yPos = this.position.yPos ;
 
-            if ( xPos+200 > sizeWidth){
+            if ( xPos + NODE.WIDTH+40 > sizeWidth){
                 this.position.xPos = 0 ;
                 this.position.yPos = this.position.yPos +40 ;
             }
             ctx.strokeStyle = "black";
-            ctx.rect(xPos,yPos, 90, 30);
-            ctx.fillStyle = "#FFFF00";
-            ctx.fillRect(xPos,yPos, 90, 30);   
-            ctx.font = "16px Verdana";
+            ctx.rect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);
+            ctx.fillStyle = NODE.COLOR ;
+            ctx.fillRect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);   
+            ctx.font = "12px Verdana";
             ctx.fillStyle = "#000000";
-            ctx.fillText( this.label ,xPos+15,yPos+18 )    ; 
+            ctx.fillText( this.label ,xPos+10,yPos+15 )    ; 
             ctx.lineWidth = "1";
             ctx.strokeStyle = "black";
-            if (this._preNode) {
+            if (this.preNode) {
                 drawConnectLine( ctx,this.position, this.position);
              }
          

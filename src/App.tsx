@@ -43,14 +43,17 @@ import {CanvasContext} from './components/CanvasContext' ;
   const handleSubmit = ( formInfo : IFormData) => {
           position.xPos = chain.CurrentNode.position.xPos + 130 ;
           position.yPos = chain.CurrentNode.position.yPos       ;
-          setChain(chain.addnextNode(
-                   new ShapeNode(formInfo.val ,
-                                formInfo.art ,
-                                formInfo.name,
-                                position)))   ;  
-          chain.CurrentNode.draw(context)     ; 
-          setCounter( (counter) => ( counter +1 ))
-          setRerender(!render) ;                               
+
+          let currNode : ShapeNode =   
+                            new ShapeNode(
+                                    formInfo.val ,
+                                    formInfo.art ,
+                                    formInfo.name,
+                                    position)
+          setChain(chain.addnextNode(currNode))  ;  
+          currNode.draw(context)     ; 
+          setCounter( (counter) => ( counter +1 ))     
+          setRerender(!render) ;                     
         }
 
   const initSetup = async () => {
