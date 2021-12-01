@@ -1,7 +1,7 @@
 import { captureRejectionSymbol } from "events";
 import { Context } from "vm";
 import {BlockChain}  from  "./chain-models" ;
-import {canvas_arrow} from '../utils/chain-utils' ;
+import {canvas_arrow, drawArrowhead, drawConnectLine} from '../utils/chain-utils' ;
 
 enum Color {
     "red", 
@@ -51,7 +51,7 @@ export interface IFormData{
     private _label      : string     = ""      ;
     private _position   : Point      = {xPos:10 , yPos:10}    ;
     private _mintUrl    : string     =  ""     ; 
-    private _style     : Style      = Style.Warning ; 
+    private _style      : Style      = Style.Warning ; 
 
     
     constructor(
@@ -76,9 +76,7 @@ export interface IFormData{
             let sizeHeight = ctx.canvas.clientHeight;
 
             ctx.fillStyle = '#000000'
-            ctx.font = "10px Verdana";
             ctx.beginPath();
-            ctx.font = '48px serif';
             let xPos = this.position.xPos ;
             let yPos = this.position.yPos ;
 
@@ -86,7 +84,8 @@ export interface IFormData{
                 this.position.xPos = 0 ;
                 this.position.yPos = this.position.yPos +40 ;
             }
-            canvas_arrow(ctx, this.position ,this.position) ;
+            ctx.strokeStyle = "black";
+            ctx.rect(xPos,yPos, 90, 30);
             ctx.fillStyle = "#FFFF00";
             ctx.fillRect(xPos,yPos, 90, 30);   
             ctx.font = "16px Verdana";
@@ -94,6 +93,9 @@ export interface IFormData{
             ctx.fillText( this.label ,xPos+15,yPos+18 )    ; 
             ctx.lineWidth = "1";
             ctx.strokeStyle = "black";
+            if (this._preNode) {
+                drawConnectLine( ctx,this.position, this.position);
+             }
          
             ctx.stroke();
 

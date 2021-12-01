@@ -8,6 +8,7 @@ export class BlockChain {
     private rootNode    : ShapeNode ;
     private currentNode : ShapeNode ;
     private lastNode    : ShapeNode ;
+    private preNode     : ShapeNode ;
     
 constructor( _chainName : string, 
              _rootNode  : ShapeNode  )
@@ -18,6 +19,7 @@ constructor( _chainName : string,
     }
 
 public addnextNode = (itemNode : ShapeNode) => { 
+    this.preNode = itemNode ;
     this.currentNode.nextNode = itemNode ;
     this.lastNode = itemNode    ;
     this.currentNode = itemNode ;
@@ -77,6 +79,13 @@ get CurrentNode() : ShapeNode  {
 } ;
 set CurrentNode( _cnode : ShapeNode) {
     this.currentNode = _cnode ;
+};
+
+get PreNode() : ShapeNode  {
+    return this.preNode ;
+} ;
+set PreNode( _cnode : ShapeNode) {
+    this.preNode = _cnode ;
 };
 
 get RootNode() : ShapeNode {

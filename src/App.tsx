@@ -86,22 +86,24 @@ import {CanvasContext} from './components/CanvasContext' ;
   }       
 
   const drawLinkedList = (ctx : any):Boolean => {
-    if( Utils.clearCanvas(ctx))
-        return true 
-    if(chain) {
-      let cNode : ShapeNode =  chain.RootNode ;
-
-      while (cNode.nextNode) {
-        cNode.draw(ctx) ;
-        cNode = cNode.nextNode ;
+    if( Utils.clearCanvas(ctx)) {
+      if(chain) {
+        let cNode : ShapeNode =  chain.RootNode ;
+  
+        while (cNode.nextNode) {
+          cNode.draw(ctx) ;
+          cNode = cNode.nextNode ;
+        }
+        setRerender(!render) ;
+   
+      } else {
+        return ;
       }
-      setRerender(!render) ;
- 
-    } else {
-      return ;
+        setRerender(!render) ;
+       return ; 
+
     }
-      setRerender(!render) ;
-     return ; 
+
     }
 
   const drawNode = (ctx: any) => { 
