@@ -31,57 +31,44 @@ import {CanvasContext} from './components/CanvasContext' ;
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
         setCounter(() => counter+1) ;
-        initSetup()           ;  
         },[] )
 
 
-  const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
-        resolve( Utils.createChain())  
-        );      
+ // const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
+ //       resolve( Utils.createChain())  
+ //       );      
      
 
   const handleSubmit = ( formInfo : IFormData) => {
-          position.xPos = chain.CurrentNode.position.xPos + 130 ;
-          position.yPos = chain.CurrentNode.position.yPos       ;
+    let currNode : ShapeNode =   
+    new ShapeNode(
+          formInfo.val ,
+          formInfo.art ,
+          formInfo.name,
+          position)
+    if (!chain){
+     setChain(Utils.createChain(currNode)) ;  
+     currNode.draw(context)                ; 
+    
+    }  
+      position.xPos = chain.CurrentNode.position.xPos + 130 ;
+      position.yPos = chain.CurrentNode.position.yPos       ;
+  
+        setChain(chain.addnextNode(currNode))  ;  
+        currNode.draw(context)                 ; 
+        setCounter( (counter) => ( counter +1 ))     
+        setRerender(!render) ;   
+    } 
+     
 
-          let currNode : ShapeNode =   
-                            new ShapeNode(
-                                    formInfo.val ,
-                                    formInfo.art ,
-                                    formInfo.name,
-                                    position)
-          setChain(chain.addnextNode(currNode))  ;  
-          currNode.draw(context)     ; 
-          setCounter( (counter) => ( counter +1 ))     
-          setRerender(!render) ;                     
-        }
+ // const initSetup = async (currNode : ShapeNode) => {
+ //        promiseBC
+ //                .then( item =>  
+ //               { setChain(item) ; 
+ //                   } );  
+       
+ //       }
 
-  const initSetup = async () => {
-         promiseBC
-                 .then( item =>  
-                { setChain(item) ; 
-                    } );  
-       
-        }
-
-  const onSort = (event: any) => {
-        let sortedChain      : BlockChain   = null ;
-        let sortedChainArray : IShapeNode[] = null ;
-       
-        console.log("Sorting the Array now" )      ;
-        sortedChain           = Utils.createChain()      ;
-        sortedChain.Chainname = "SortedChain"      ;
-        sortedChainArray      = chain.sortValues() ;
-       
-        sortedChainArray
-        .forEach( item => { console.log("Sortierter Array: wert: "+ item.amount) ;  sortedChain
-          .addnextNode(
-            new ShapeNode(item.amount,
-                Style.Dark, 
-                item.label,position))})
-        setChain(sortedChain) ;
-        setRerender(!render) ;
-        }
 
 
   const drawList = (e : any) => {

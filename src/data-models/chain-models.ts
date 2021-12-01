@@ -15,7 +15,7 @@ constructor( _chainName : string,
     {
     this.chainName   = _chainName    ;
     this.rootNode    = _rootNode     ;
-    this.currentNode = this.rootNode ;
+    this.currentNode = _rootNode     ;
     }
 
 public addnextNode = (itemNode : ShapeNode) => { 

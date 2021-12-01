@@ -9,11 +9,11 @@ export const createRootNode = () => {
  }
 
 
-export const createChain = () : BlockChain => {
+export const createChain = (currNode : ShapeNode) : BlockChain => {
     let myChain : BlockChain ;
     console.log("starting ... creating Chain ") ;
     setTimeout(() => { console.log("Waiting short TiemOut ....")},5000) ;
-    myChain = new BlockChain("QuadroChain",createRootNode()) ;
+    myChain = new BlockChain("QuadroChain",currNode) ;
     console.log("starting ... creating Chain ") ;
     return myChain ;      
 }
