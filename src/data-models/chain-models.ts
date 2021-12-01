@@ -28,6 +28,8 @@ public addnextNode = (itemNode : ShapeNode) => {
 } ;
 
 private findLastNode = (currentNode : ShapeNode): ShapeNode => {  
+    
+    
     let lastNode : ShapeNode = null ;
     if ( ! currentNode.nextNode ){
         return currentNode ; }
