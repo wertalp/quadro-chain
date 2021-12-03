@@ -95,7 +95,8 @@ export const drawConnectLine = (context : any , from :Point, to : Point) => {
 
 export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
     clearCanvas(ctx) ;
-    let  space       : number = 40;   
+    let  hspace : number = 20;   
+    let  vspace : number = 10;
     let  currentNode : ShapeNode = chain.RootNode ;
     let  _xpos : number = 0 ;
     let  _ypos : number = 0 ;
@@ -106,25 +107,28 @@ export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
             if  (! currentNode.preNode) {
                 currentNode = currentNode.nextNode ;
                 currentNode.position.xPos = sizeWidth/2 -NODE.WIDTH/2 ;
-                currentNode.position.yPos = 200 ;
+                currentNode.position.yPos = 100 ;
 
             } else {
 
             if (currentNode.amount < currentNode.preNode.amount){
                 console.log("compare to nodes :" + currentNode.amount + " - < " + currentNode.preNode.amount);
-                 _xpos =  currentNode.position.xPos +NODE.WIDTH  +  20 ;
+                 _xpos =  currentNode.preNode.position.xPos - NODE.WIDTH  -  hspace ;
 
-                 if (currentNode.position.xPos + NODE.WIDTH > sizeWidth ){
-                    _xpos =  sizeWidth - NODE.WIDTH ;
+                 if (currentNode.position.xPos + NODE.WIDTH < hspace ){
+                    _xpos =   NODE.WIDTH ;
                  }
-                 _ypos =  currentNode.position.yPos +NODE.HEIGHT + 120 ;
+                 _ypos =  currentNode.preNode.position.yPos +NODE.HEIGHT + vspace ;
                 currentNode.position = {xPos: _xpos , yPos: _ypos} ;
               
             }
             if (currentNode.amount > currentNode.preNode.amount){
                 console.log("compare to nodes :" + currentNode.amount + " - > " + currentNode.preNode.amount);
-                _xpos =  currentNode.position.xPos - NODE.WIDTH  - 20 ;
-                _ypos =  currentNode.position.yPos + NODE.HEIGHT + 120 ;
+                _xpos =  currentNode.preNode.position.xPos + NODE.WIDTH  - hspace     ;
+                _ypos =  currentNode.preNode.position.yPos + NODE.HEIGHT + hspace    ;
+                if (currentNode.position.xPos+ NODE.WIDTH > sizeWidth){
+                    _xpos = sizeWidth - NODE.WIDTH -40 ;
+                }
                currentNode.position = {xPos: _xpos , yPos: _ypos} ;
             }
         }
