@@ -1,6 +1,8 @@
 import {ShapeNode, Point,  IFormData, IShapeNode} from '../data-models/index-models'  ;
 import { BlockChain}                              from '../data-models/chain-models'  ; 
 import {Style}                                    from '../data-models/index-models'  ;
+import { NODE } from './util-constants';
+import { SIGXFSZ } from 'constants';
 
 let position : Point  = { xPos: 10, yPos :10};
 
@@ -12,7 +14,6 @@ export const createRootNode = () => {
 export const createChain = (currNode : ShapeNode) : BlockChain => {
     let myChain : BlockChain ;
     console.log("starting ... creating Chain ") ;
-    setTimeout(() => { console.log("Waiting short TiemOut ....")},5000) ;
     myChain = new BlockChain("QuadroChain",currNode) ;
     console.log("starting ... creating Chain ") ;
     return myChain ;      
@@ -89,6 +90,50 @@ export const drawConnectLine = (context : any , from :Point, to : Point) => {
     context.lineTo(from.xPos+130,from.yPos+15) 
     context.stroke() ;
     context.closePath();
+
+}
+
+export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
+    clearCanvas(ctx) ;
+    let  space       : number = 40;   
+    let  currentNode : ShapeNode = chain.RootNode ;
+    let  _xpos : number = 0 ;
+    let  _ypos : number = 0 ;
+    let sizeWidth = ctx.canvas.clientWidth;
+    let sizeHeight = ctx.canvas.clientHeight;
+     
+     while (currentNode) {
+            if  (! currentNode.preNode) {
+                currentNode = currentNode.nextNode ;
+                currentNode.position.xPos = sizeWidth/2 -NODE.WIDTH/2 ;
+                currentNode.position.yPos = 200 ;
+
+            } else {
+
+            if (currentNode.amount < currentNode.preNode.amount){
+                console.log("compare to nodes :" + currentNode.amount + " - < " + currentNode.preNode.amount);
+                 _xpos =  currentNode.position.xPos +NODE.WIDTH  +  20 ;
+
+                 if (currentNode.position.xPos + NODE.WIDTH > sizeWidth ){
+                    _xpos =  sizeWidth - NODE.WIDTH ;
+                 }
+                 _ypos =  currentNode.position.yPos +NODE.HEIGHT + 120 ;
+                currentNode.position = {xPos: _xpos , yPos: _ypos} ;
+              
+            }
+            if (currentNode.amount > currentNode.preNode.amount){
+                console.log("compare to nodes :" + currentNode.amount + " - > " + currentNode.preNode.amount);
+                _xpos =  currentNode.position.xPos - NODE.WIDTH  - 20 ;
+                _ypos =  currentNode.position.yPos + NODE.HEIGHT + 120 ;
+               currentNode.position = {xPos: _xpos , yPos: _ypos} ;
+            }
+        }
+
+            currentNode.draw(ctx) ;
+            currentNode = currentNode.nextNode ;
+    
+      }
+
 
 }
 

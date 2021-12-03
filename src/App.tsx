@@ -31,12 +31,20 @@ import {CanvasContext} from './components/CanvasContext' ;
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
         setCounter(() => counter+1) ;
+        
+        const initSetup = async () => {
+         promiseBC
+                 .then( item =>  { setChain(item) ; return item  })
+                 .then( item =>  item.RootNode.draw(context) )
+        };        
+        initSetup() ;
+
         },[] )
 
 
- // const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
- //       resolve( Utils.createChain())  
- //       );      
+ const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
+         resolve( Utils.createChain( new ShapeNode(10,Style.Dark,"Init",{ xPos:0 ,yPos:0})))  
+          );      
      
 
   const handleSubmit = ( formInfo : IFormData) => {
@@ -49,10 +57,11 @@ import {CanvasContext} from './components/CanvasContext' ;
     if (!chain){
      setChain(Utils.createChain(currNode)) ;  
      currNode.draw(context)                ; 
+     return
     
     }  
-      position.xPos = chain.CurrentNode.position.xPos + 130 ;
-      position.yPos = chain.CurrentNode.position.yPos       ;
+      currNode.position.xPos = chain.CurrentNode.position.xPos + 130 ;
+      currNode.position.yPos = chain.CurrentNode.position.yPos       ;
   
         setChain(chain.addnextNode(currNode))  ;  
         currNode.draw(context)                 ; 
@@ -61,19 +70,15 @@ import {CanvasContext} from './components/CanvasContext' ;
     } 
      
 
- // const initSetup = async (currNode : ShapeNode) => {
- //        promiseBC
- //                .then( item =>  
- //               { setChain(item) ; 
- //                   } );  
-       
- //       }
-
-
 
   const drawList = (e : any) => {
      drawLinkedList( context) ;
   }       
+
+  const buildtree = (e : any) => {
+    Utils.buildTree( chain , context) ;
+    //setChain(null) ;
+ }       
 
   const drawLinkedList = (ctx : any):Boolean => {
     if( Utils.clearCanvas(ctx)) {
@@ -109,7 +114,6 @@ import {CanvasContext} from './components/CanvasContext' ;
   return (
     <div className="App">
     <Container>
-      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
       <Row>
         <Col>
         <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
@@ -117,19 +121,23 @@ import {CanvasContext} from './components/CanvasContext' ;
         <Col>
       {chain && <Board blockChain={chain}  counter={counter}> </Board> }
       </Col>
-      <Col>
-      {chain && <Board blockChain={chain}  counter={counter}> </Board> }
-      </Col>
     </Row>
-    <Row>
-        <Col>
-      <p> {counter}</p>
-      <Button variant={Style.Dark} onClick={(e)=> drawList(e)} > SORT</Button>
-      </Col>  
-    </Row>
-    {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={800}  height={400} > </Canvas>}
+  <Row>
+    <Col>
+    <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
+    </Col>
+    <Col>
+      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
+      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={800}  height={400} > </Canvas>}
     </CanvasContext.Provider>
-    </Container>
+    </Col>
+    <Col>
+      <p> {counter}</p>
+      <Button variant={Style.Dark} onClick={(e)=> buildtree(e)} > SORT</Button>
+      </Col>
+  </Row>
+  </Container>
+
     </div>
   )}
 
