@@ -73,29 +73,31 @@ export interface IFormData{
     draw = (ctx : any): void => {
 
         if (!ctx) return ;
-            let sizeWidth = ctx.canvas.clientWidth;
+            let sizeWidth  = ctx.canvas.clientWidth;
             let sizeHeight = ctx.canvas.clientHeight;
 
-            ctx.fillStyle = '#000000'
+            ctx.fillStyle = '#FF0000'
             ctx.beginPath();
             let xPos = this.position.xPos ;
             let yPos = this.position.yPos ;
 
             if ( xPos + NODE.WIDTH+40 > sizeWidth){
-                this.position.xPos = 0 ;
-                this.position.yPos = this.position.yPos +40 ;
+                this.position.xPos = 20 ;
+                this.position.yPos = this.position.yPos + NODE.HEIGHT+5 ;
             }
             ctx.strokeStyle = "black";
             ctx.rect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);
             ctx.fillStyle = NODE.COLOR ;
             ctx.fillRect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);   
-            ctx.font = "12px Verdana";
+            ctx.font = "9px Verdana";
             ctx.fillStyle = "#000000";
             ctx.fillText( this.label ,xPos+10,yPos+15 )    ; 
-            ctx.lineWidth = "1";
+            ctx.font = "8px Verdana";
+            ctx.fillText( this._amount ,xPos+NODE.WIDTH-20,yPos+8 )    ; 
+            ctx.lineWidth = "2";
             ctx.strokeStyle = "black";
             if (this.preNode) {
-                drawConnectLine( ctx,this.position, this.position);
+              //  drawConnectLine( ctx,this.position, this.position);
              }
          
             ctx.stroke();

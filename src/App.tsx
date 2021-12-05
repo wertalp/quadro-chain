@@ -15,10 +15,11 @@ import * as Utils      from './utils/chain-utils'        ;
 import {CanvasContext} from './components/CanvasContext' ;   
 
  export  const App : FunctionComponent<{}> = () =>  {
-    let myChain    : BlockChain  = null ; 
-    let isLoading  : boolean     = true ;
-    let position   : Point  = { xPos: 10, yPos :20};
-    let startCounter       : number = 1 ;
+    let myChain       : BlockChain  = null ; 
+    let isLoading     : boolean     = true ;
+    let position      : Point  = { xPos: 10, yPos :20};
+    let startCounter  : number = 1  ;
+    let hspacer       : number = 80 ;
 
     const [chain,    setChain]    = useState<BlockChain>(null) ;
     const [counter,  setCounter]   = useState<number>(startCounter)       ;  
@@ -60,7 +61,7 @@ import {CanvasContext} from './components/CanvasContext' ;
      return
     
     }  
-      currNode.position.xPos = chain.CurrentNode.position.xPos + 130 ;
+      currNode.position.xPos = chain.CurrentNode.position.xPos + hspacer ;
       currNode.position.yPos = chain.CurrentNode.position.yPos       ;
   
         setChain(chain.addnextNode(currNode))  ;  
