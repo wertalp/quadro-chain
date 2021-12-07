@@ -92,6 +92,9 @@ set CurrentNode( _cnode : ShapeNode) {
 get RootNode() : ShapeNode {
     return this.rootNode  ;
 }
+set RootNode( _node :ShapeNode)  {
+    this.rootNode =_node ;
+}
 
 
 }

@@ -13,6 +13,7 @@ import {FormCreate}    from './components/FormCreate'    ;
 import Canvas          from './components/Canvas'        ;
 import * as Utils      from './utils/chain-utils'        ;
 import {CanvasContext} from './components/CanvasContext' ;   
+import dataNodes       from './test/test-data/test-tree.json';
 
  export  const App : FunctionComponent<{}> = () =>  {
     let myChain       : BlockChain  = null ; 
@@ -26,6 +27,7 @@ import {CanvasContext} from './components/CanvasContext' ;
     const [rerender, setRerender]  = useState(false)           ;
     const [currentNode, setCurrentNode]  = useState(null)      ;
     const [context, setContext]  = useState(null)              ;
+
  
 
    useEffect( 
@@ -34,11 +36,15 @@ import {CanvasContext} from './components/CanvasContext' ;
         setCounter(() => counter+1) ;
         
         const initSetup = async () => {
+          if (isLoading){
+
+          }
          promiseBC
                  .then( item =>  { setChain(item) ; return item  })
                  .then( item =>  item.RootNode.draw(context) )
         };        
         initSetup() ;
+        
 
         },[] )
 
@@ -55,12 +61,13 @@ import {CanvasContext} from './components/CanvasContext' ;
           formInfo.art ,
           formInfo.name,
           position)
-    if (!chain){
+    if (!chain.CurrentNode){
      setChain(Utils.createChain(currNode)) ;  
      currNode.draw(context)                ; 
      return
     
     }  
+    //  chain.RootNode = currNode ;
       currNode.position.xPos = chain.CurrentNode.position.xPos + hspacer ;
       currNode.position.yPos = chain.CurrentNode.position.yPos       ;
   
@@ -120,6 +127,9 @@ import {CanvasContext} from './components/CanvasContext' ;
         <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
         </Col>
         <Col>
+        {chain && <Board blockChain={chain}  counter={counter}> </Board> }</Col>
+        <Col></Col>
+        <Col>
       {chain && <Board blockChain={chain}  counter={counter}> </Board> }
       </Col>
     </Row>
@@ -128,9 +138,12 @@ import {CanvasContext} from './components/CanvasContext' ;
     <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
     </Col>
     <Col>
-      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
+    <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
       {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={800}  height={400} > </Canvas>}
     </CanvasContext.Provider>
+    </Col>
+    <Col>
+
     </Col>
     <Col>
       <p> {counter}</p>

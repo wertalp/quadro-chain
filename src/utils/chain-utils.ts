@@ -95,13 +95,15 @@ export const drawConnectLine = (context : any , from :Point, to : Point) => {
 
 export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
     clearCanvas(ctx) ;
+    chain.CurrentNode = chain.RootNode ;
     let  hspace : number = 20;   
     let  vspace : number = 20;
     let  currentNode : ShapeNode = chain.RootNode ;
-    let  _xpos : number = 0 ;
-    let  _ypos : number = 0 ;
+    let  _xpos : number  =  0;
+    let  _ypos : number  =  0;
     let sizeWidth  = ctx.canvas.clientWidth;
     let sizeHeight = ctx.canvas.clientHeight;
+                   
      
      while (currentNode) {
 
@@ -109,6 +111,9 @@ export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
             currentNode = currentNode.nextNode ;
             currentNode.position.xPos = sizeWidth/2 -NODE.WIDTH/2 ;
             currentNode.position.yPos = 20 ;
+            chain.RootNode = currentNode ;
+            currentNode.preNode = null ;
+            
         } else {
 
         if (currentNode.amount < currentNode.preNode.amount){
@@ -134,7 +139,10 @@ export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
         }
         }
             currentNode.draw(ctx) ;
-            drawlines(currentNode,currentNode.nextNode,ctx) ;
+            if(currentNode.preNode) {
+            drawlines(currentNode.preNode,currentNode,ctx) ;
+            }
+           
             currentNode = currentNode.nextNode ;
       }
 }

@@ -12,6 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "strictNullChecks": false,
+    "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",

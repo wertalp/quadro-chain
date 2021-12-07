@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import React, { useRef,useEffect, useState, Props , useContext} from 'react'
+import React, { useRef,useEffect, useState, Props , useContext, Fragment} from 'react'
 import {Button} from 'react-bootstrap';
 import { Context } from 'vm'
 import { BlockChain } from '../data-models/chain-models';
@@ -56,15 +56,17 @@ const Canvas : React.FC<PropsCanvas> = (props : PropsCanvas) =>  {
     
     
     return ( 
-      <div>
-         <h3> {anz} {props.node.label} {props.node.position.yPos} </h3>
+    <Fragment>
+               <h3> {anz} {props.node.label} {props.node.position.yPos} </h3>
         <CanvasContext.Consumer>
           {({value, changeContext}) => (
           <canvas id="BCanvas" ref={canvasRef} style={{color: "red" , border : "1px solid red"}} {...props}/>   ) }
           </CanvasContext.Consumer>
         <Button variant={Style.Dark} > SORT</Button>
+
+    </Fragment>
+
        
-      </div> 
         )
 
 }
