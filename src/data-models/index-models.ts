@@ -2,6 +2,7 @@ import { captureRejectionSymbol } from "events";
 import { Context } from "vm";
 import {BlockChain}  from  "./chain-models" ;
 import {canvas_arrow, drawArrowhead, drawConnectLine} from '../utils/chain-utils' ;
+import {NODE} from '../utils/util-constants' ;
 
 enum Color {
     "red", 
@@ -72,29 +73,31 @@ export interface IFormData{
     draw = (ctx : any): void => {
 
         if (!ctx) return ;
-            let sizeWidth = ctx.canvas.clientWidth;
+            let sizeWidth  = ctx.canvas.clientWidth;
             let sizeHeight = ctx.canvas.clientHeight;
 
-            ctx.fillStyle = '#000000'
+            ctx.fillStyle = '#FF0000'
             ctx.beginPath();
             let xPos = this.position.xPos ;
             let yPos = this.position.yPos ;
 
-            if ( xPos+200 > sizeWidth){
-                this.position.xPos = 0 ;
-                this.position.yPos = this.position.yPos +40 ;
+            if ( xPos + NODE.WIDTH+40 > sizeWidth){
+                this.position.xPos = 20 ;
+                this.position.yPos = this.position.yPos + NODE.HEIGHT+5 ;
             }
             ctx.strokeStyle = "black";
-            ctx.rect(xPos,yPos, 90, 30);
-            ctx.fillStyle = "#FFFF00";
-            ctx.fillRect(xPos,yPos, 90, 30);   
-            ctx.font = "16px Verdana";
+            ctx.rect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);
+            ctx.fillStyle = NODE.COLOR ;
+            ctx.fillRect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);   
+            ctx.font = "9px Verdana";
             ctx.fillStyle = "#000000";
-            ctx.fillText( this.label ,xPos+15,yPos+18 )    ; 
-            ctx.lineWidth = "1";
+            ctx.fillText( this.label ,xPos+10,yPos+15 )    ; 
+            ctx.font = "8px Verdana";
+            ctx.fillText( this._amount ,xPos+NODE.WIDTH-20,yPos+8 )    ; 
+            ctx.lineWidth = "2";
             ctx.strokeStyle = "black";
-            if (this._preNode) {
-                drawConnectLine( ctx,this.position, this.position);
+            if (this.preNode) {
+              //  drawConnectLine( ctx,this.position, this.position);
              }
          
             ctx.stroke();

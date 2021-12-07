@@ -1,2 +1,6 @@
-export const NODE_WIDTH  = 90;
-export const NODE_HEIGHT = 30;
+
+export const NODE = {
+   WIDTH   : 55 ,
+   HEIGHT  : 16 ,
+   COLOR   : "orange"
+}

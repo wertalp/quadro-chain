@@ -1,0 +1,54 @@
+ [
+    {
+        "label"  : "Patrick",
+        "amount" : 47     
+    },
+    {      
+        "label"  : "Tosky",
+        "amount" : 44     
+    },
+    { 
+        "label"  : "Florina",
+        "amount" : 11     
+    },
+    {      
+        "label"  : "Mama",
+        "amount" : 68    
+     },
+    {      
+        "label"  : "Nino",
+        "amount" : 42    
+     },
+    {       
+        "label"  : "Michael",
+        "amount" : 37    
+     },
+    {       
+        "label"  : "Sergio",
+        "amount" : 52    
+     },
+    {        
+        "label"  : "Tatjana",
+        "amount" : 69    
+     },
+    {       
+        "label"  : "Opa",
+        "amount" : 91    
+     },
+    {       
+        "label"  : "Christa",
+        "amount" : 65    
+     },
+    {       
+        "label"  : "Wesy",
+        "amount" : 63    
+     },
+    {      
+        "label"  : "Martina",
+        "amount" : 55    
+     },
+    {       
+        "label"  : "Moritz",
+        "amount" : 16    
+     }
+]

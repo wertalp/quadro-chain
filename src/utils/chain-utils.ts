@@ -1,6 +1,8 @@
 import {ShapeNode, Point,  IFormData, IShapeNode} from '../data-models/index-models'  ;
 import { BlockChain}                              from '../data-models/chain-models'  ; 
 import {Style}                                    from '../data-models/index-models'  ;
+import { NODE } from './util-constants';
+import { SIGXFSZ } from 'constants';
 
 let position : Point  = { xPos: 10, yPos :10};
 
@@ -9,11 +11,10 @@ export const createRootNode = () => {
  }
 
 
-export const createChain = () : BlockChain => {
+export const createChain = (currNode : ShapeNode) : BlockChain => {
     let myChain : BlockChain ;
     console.log("starting ... creating Chain ") ;
-    setTimeout(() => { console.log("Waiting short TiemOut ....")},5000) ;
-    myChain = new BlockChain("QuadroChain",createRootNode()) ;
+    myChain = new BlockChain("QuadroChain",currNode) ;
     console.log("starting ... creating Chain ") ;
     return myChain ;      
 }
@@ -91,5 +92,90 @@ export const drawConnectLine = (context : any , from :Point, to : Point) => {
     context.closePath();
 
 }
+
+export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
+    clearCanvas(ctx) ;
+    chain.CurrentNode = chain.RootNode ;
+    let  hspace : number = 20;   
+    let  vspace : number = 20;
+    let  currentNode : ShapeNode = chain.RootNode ;
+    let  _xpos : number  =  0;
+    let  _ypos : number  =  0;
+    let sizeWidth  = ctx.canvas.clientWidth;
+    let sizeHeight = ctx.canvas.clientHeight;
+                   
+     
+     while (currentNode) {
+
+        if  (! currentNode.preNode) {
+            currentNode = currentNode.nextNode ;
+            currentNode.position.xPos = sizeWidth/2 -NODE.WIDTH/2 ;
+            currentNode.position.yPos = 20 ;
+            chain.RootNode = currentNode ;
+            currentNode.preNode = null ;
+            
+        } else {
+
+        if (currentNode.amount < currentNode.preNode.amount){
+            console.log("compare to nodes :" 
+                        + currentNode.amount + " - < " + currentNode.preNode.amount);
+            _xpos =  currentNode.preNode.position.xPos - NODE.WIDTH  -  hspace ;
+
+            if (currentNode.position.xPos + NODE.WIDTH < NODE.WIDTH -hspace ){
+            _xpos =   NODE.WIDTH+hspace ;
+            }
+            _ypos =  currentNode.preNode.position.yPos +NODE.HEIGHT + vspace ;
+            currentNode.position = {xPos: _xpos , yPos: _ypos} ;
+        }
+        if (currentNode.amount > currentNode.preNode.amount){
+            console.log("compare to nodes :" 
+                        + currentNode.amount + " - > " + currentNode.preNode.amount);
+            _xpos =  currentNode.preNode.position.xPos + NODE.WIDTH  + hspace     ;
+            _ypos =  currentNode.preNode.position.yPos + NODE.HEIGHT + vspace     ;
+            if (currentNode.preNode.position.xPos+ NODE.WIDTH > sizeWidth-200 ){
+                _xpos = currentNode.preNode.position.xPos ;
+            }
+            currentNode.position = {xPos: _xpos , yPos: _ypos} ;
+        }
+        }
+            currentNode.draw(ctx) ;
+            if(currentNode.preNode) {
+            drawlines(currentNode.preNode,currentNode,ctx) ;
+            }
+           
+            currentNode = currentNode.nextNode ;
+      }
+}
+
+   const drawlines = (fromNode : ShapeNode , toNode : ShapeNode, ctx : any) : void => {
+        
+        let pointFrom : Point = {xPos:0  ,yPos:0} ;
+        let pointTo   : Point = {xPos:0 , yPos:0} ;      
+
+       console.log("Drawing from X pos: " + fromNode.position.xPos+NODE.WIDTH/2 ) ; 
+       console.log("Drawing from Y pos: " + fromNode.position.xPos+NODE.WIDTH/2 ) ; 
+
+ 
+      if (toNode){
+
+        pointFrom.xPos = fromNode.position.xPos+NODE.WIDTH/2 ;
+        pointFrom.yPos = fromNode.position.yPos+NODE.HEIGHT  ;
+
+        pointTo.xPos = toNode.position.xPos+NODE.WIDTH/2 ;
+        pointTo.yPos = toNode.position.yPos ;
+
+        console.log("Drawing to X pos: " + toNode.position.xPos+NODE.WIDTH/2 ) ; 
+        console.log("Drawing to Y pos: " + toNode.position.xPos+NODE.WIDTH/2 ) ; 
+      }
+  
+        
+        ctx.beginPath();       // Start a new path
+        ctx.moveTo(pointFrom.xPos, pointFrom.yPos);    // Move the pen to (30, 50)
+        ctx.lineTo(pointTo.xPos, pointTo.yPos);  // Draw a line to (150, 100)
+        ctx.lineWidth   =         2;
+        ctx.strokeStyle = '#ff0000';
+
+        ctx.stroke();          // Render the path
+     }
 
 

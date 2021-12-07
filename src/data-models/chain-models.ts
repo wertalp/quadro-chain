@@ -8,26 +8,33 @@ export class BlockChain {
     private rootNode    : ShapeNode ;
     private currentNode : ShapeNode ;
     private lastNode    : ShapeNode ;
-    private preNode     : ShapeNode ;
+
     
 constructor( _chainName : string, 
              _rootNode  : ShapeNode  )
     {
     this.chainName   = _chainName    ;
     this.rootNode    = _rootNode     ;
-    this.currentNode = this.rootNode ;
+    this.currentNode = _rootNode     ;
     }
 
 public addnextNode = (itemNode : ShapeNode) => { 
-    this.preNode = itemNode ;
+    itemNode.preNode =this.currentNode   ;
     this.currentNode.nextNode = itemNode ;
-    this.lastNode = itemNode    ;
-    this.currentNode = itemNode ;
+
+    this.currentNode = itemNode    ;
+    this.lastNode    = itemNode    ;
+    if (!itemNode.preNode){
+         itemNode.preNode = this.currentNode ;
+    }
+    this.currentNode = itemNode    ;
     console.log("adding Node",itemNode.label.toString()) ;
     return this ;
 } ;
 
+
 private findLastNode = (currentNode : ShapeNode): ShapeNode => {  
+    
     let lastNode : ShapeNode = null ;
     if ( ! currentNode.nextNode ){
         return currentNode ; }
@@ -81,15 +88,12 @@ set CurrentNode( _cnode : ShapeNode) {
     this.currentNode = _cnode ;
 };
 
-get PreNode() : ShapeNode  {
-    return this.preNode ;
-} ;
-set PreNode( _cnode : ShapeNode) {
-    this.preNode = _cnode ;
-};
 
 get RootNode() : ShapeNode {
     return this.rootNode  ;
+}
+set RootNode( _node :ShapeNode)  {
+    this.rootNode =_node ;
 }
 
 

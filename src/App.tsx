@@ -13,77 +13,80 @@ import {FormCreate}    from './components/FormCreate'    ;
 import Canvas          from './components/Canvas'        ;
 import * as Utils      from './utils/chain-utils'        ;
 import {CanvasContext} from './components/CanvasContext' ;   
+import dataNodes       from './test/test-data/test-tree.json';
 
  export  const App : FunctionComponent<{}> = () =>  {
-    let myChain    : BlockChain  = null ; 
-    let isLoading  : boolean     = true ;
-    let position   : Point  = { xPos: 10, yPos :20};
-    let startCounter       : number = 1 ;
+    let myChain       : BlockChain  = null ; 
+    let isLoading     : boolean     = true ;
+    let position      : Point  = { xPos: 10, yPos :20};
+    let startCounter  : number = 1  ;
+    let hspacer       : number = 80 ;
 
     const [chain,    setChain]    = useState<BlockChain>(null) ;
     const [counter,  setCounter]   = useState<number>(startCounter)       ;  
     const [rerender, setRerender]  = useState(false)           ;
     const [currentNode, setCurrentNode]  = useState(null)      ;
     const [context, setContext]  = useState(null)              ;
+
  
 
    useEffect( 
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
         setCounter(() => counter+1) ;
-        initSetup()           ;  
+        
+        const initSetup = async () => {
+          if (isLoading){
+
+          }
+         promiseBC
+                 .then( item =>  { setChain(item) ; return item  })
+                 .then( item =>  item.RootNode.draw(context) )
+        };        
+        initSetup() ;
+        
+
         },[] )
 
 
-  const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
-        resolve( Utils.createChain())  
-        );      
+ const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
+         resolve( Utils.createChain( new ShapeNode(10,Style.Dark,"Init",{ xPos:0 ,yPos:0})))  
+          );      
      
 
   const handleSubmit = ( formInfo : IFormData) => {
-          position.xPos = chain.CurrentNode.position.xPos + 130 ;
-          position.yPos = chain.CurrentNode.position.yPos       ;
-          setChain(chain.addnextNode(
-                   new ShapeNode(formInfo.val ,
-                                formInfo.art ,
-                                formInfo.name,
-                                position)))   ;  
-          chain.CurrentNode.draw(context)     ; 
-          setCounter( (counter) => ( counter +1 ))
-          setRerender(!render) ;                               
-        }
-
-  const initSetup = async () => {
-         promiseBC
-                 .then( item =>  
-                { setChain(item) ; 
-                    } );  
-       
-        }
-
-  const onSort = (event: any) => {
-        let sortedChain      : BlockChain   = null ;
-        let sortedChainArray : IShapeNode[] = null ;
-       
-        console.log("Sorting the Array now" )      ;
-        sortedChain           = Utils.createChain()      ;
-        sortedChain.Chainname = "SortedChain"      ;
-        sortedChainArray      = chain.sortValues() ;
-       
-        sortedChainArray
-        .forEach( item => { console.log("Sortierter Array: wert: "+ item.amount) ;  sortedChain
-          .addnextNode(
-            new ShapeNode(item.amount,
-                Style.Dark, 
-                item.label,position))})
-        setChain(sortedChain) ;
-        setRerender(!render) ;
-        }
+    let currNode : ShapeNode =   
+    new ShapeNode(
+          formInfo.val ,
+          formInfo.art ,
+          formInfo.name,
+          position)
+    if (!chain.CurrentNode){
+     setChain(Utils.createChain(currNode)) ;  
+     currNode.draw(context)                ; 
+     return
+    
+    }  
+    //  chain.RootNode = currNode ;
+      currNode.position.xPos = chain.CurrentNode.position.xPos + hspacer ;
+      currNode.position.yPos = chain.CurrentNode.position.yPos       ;
+  
+        setChain(chain.addnextNode(currNode))  ;  
+        currNode.draw(context)                 ; 
+        setCounter( (counter) => ( counter +1 ))     
+        setRerender(!render) ;   
+    } 
+     
 
 
   const drawList = (e : any) => {
      drawLinkedList( context) ;
   }       
+
+  const buildtree = (e : any) => {
+    Utils.buildTree( chain , context) ;
+    //setChain(null) ;
+ }       
 
   const drawLinkedList = (ctx : any):Boolean => {
     if( Utils.clearCanvas(ctx)) {
@@ -119,27 +122,36 @@ import {CanvasContext} from './components/CanvasContext' ;
   return (
     <div className="App">
     <Container>
-      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
       <Row>
         <Col>
         <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
         </Col>
         <Col>
-      {chain && <Board blockChain={chain}  counter={counter}> </Board> }
-      </Col>
-      <Col>
-      {chain && <Board blockChain={chain}  counter={counter}> </Board> }
-      </Col>
-    </Row>
-    <Row>
+        {chain && <Board blockChain={chain}  counter={counter}> </Board> }</Col>
+        <Col></Col>
         <Col>
-      <p> {counter}</p>
-      <Button variant={Style.Dark} onClick={(e)=> drawList(e)} > SORT</Button>
-      </Col>  
+      {chain && <Board blockChain={chain}  counter={counter}> </Board> }
+      </Col>
     </Row>
-    {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={800}  height={400} > </Canvas>}
+  <Row>
+    <Col>
+    <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
+    </Col>
+    <Col>
+    <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
+      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={800}  height={400} > </Canvas>}
     </CanvasContext.Provider>
-    </Container>
+    </Col>
+    <Col>
+
+    </Col>
+    <Col>
+      <p> {counter}</p>
+      <Button variant={Style.Dark} onClick={(e)=> buildtree(e)} > SORT</Button>
+      </Col>
+  </Row>
+  </Container>
+
     </div>
   )}
 
