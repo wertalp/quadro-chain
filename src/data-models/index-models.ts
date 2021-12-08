@@ -78,18 +78,35 @@ export interface NodeData{
     draw = (ctx : any): void => {
 
         if (!ctx) return ;
+
             let sizeWidth  = ctx.canvas.clientWidth;
             let sizeHeight = ctx.canvas.clientHeight;
 
-            ctx.fillStyle = '#FF0000'
-            ctx.beginPath();
             let xPos = this.position.xPos ;
             let yPos = this.position.yPos ;
 
-            if ( xPos + NODE.WIDTH+40 > sizeWidth){
-                this.position.xPos = 20 ;
-                this.position.yPos = this.position.yPos + NODE.HEIGHT+5 ;
+            ctx.fillStyle = '#FF0000'
+            ctx.beginPath();
+  
+
+            if (this.preNode == null) {
+                 xPos = this.position.xPos ;
+                 yPos = this.position.yPos ;
             }
+            else {
+                 xPos = this.preNode.position.xPos + NODE.WIDTH + 25;
+             
+            }
+
+            this.position.xPos = xPos ;
+            this.position.yPos = this.preNode.position.yPos ;
+            if ( xPos + NODE.WIDTH+40 > sizeWidth){
+                this.position.xPos = 40 ;
+                this.position.yPos = this.position.yPos + NODE.HEIGHT+5 ;
+                xPos = this.position.xPos ;
+                yPos = this.position.yPos ;
+            }
+
             ctx.strokeStyle = "black";
             ctx.rect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);
             ctx.fillStyle = NODE.COLOR ;

@@ -33,16 +33,14 @@ const Canvas : React.FC<PropsCanvas> = (props : PropsCanvas) =>  {
       const ctx   = canvas.getContext('2d')       ;
       changeContext(ctx) ;
       let  chain = props.blockchain               ;
-      let  node  : ShapeNode  = chain.CurrentNode ;
-    
+      let  node  : ShapeNode  = chain.RootNode    ;
+     
       const updateBoard = (ctx : any) => {  
         if (chain) {
           while ( node.nextNode ) {
             node.draw(ctx);
-            console.log("We are in uodate Board") ;
             node = node.nextNode ;
-            setRerender(!render) ;
-            setChain(chain)      ;
+
         }}
          else {
           console.log("We are not in uodate Board") ;
@@ -57,7 +55,7 @@ const Canvas : React.FC<PropsCanvas> = (props : PropsCanvas) =>  {
     
     return ( 
     <Fragment>
-               <h3> {anz} {props.node.label} {props.node.position.yPos} </h3>
+          <h3> {anz} {props.node.label} {props.node.position.yPos} </h3>
         <CanvasContext.Consumer>
           {({value, changeContext}) => (
           <canvas id="BCanvas" ref={canvasRef} style={{color: "red" , border : "1px solid red"}} {...props}/>   ) }

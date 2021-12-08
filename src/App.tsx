@@ -41,10 +41,10 @@ import dataNodes       from './test/test-data/test-tree.json';
         myChain = Utils.createChain() ;
         
     const initSetup = async () => {
-      if (isLoading && !isTest) {
-          promiseBC
-          .then( item =>  { setChain(item) ; return item  })
-        };  
+        if (isLoading && !isTest) {
+            promiseBC
+            .then( item =>  { setChain(item) ; return item  })
+          };  
         
       if (isLoading && isTest){
         loadedData = [...dataNodes];
@@ -92,7 +92,6 @@ import dataNodes       from './test/test-data/test-tree.json';
 
   const buildtree = (e : any) => {
     Utils.buildTree( chain , context) ;
-    //setChain(null) ;
  }       
 
   const drawLinkedList = (ctx : any):Boolean => {
@@ -143,13 +142,13 @@ import dataNodes       from './test/test-data/test-tree.json';
   <Row>
   <Col>
     <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
-      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={200}  height={400} > </Canvas>}
+      {false && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={180}  height={200} > </Canvas>}
     </CanvasContext.Provider>
 
     </Col>
     <Col>
     <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
-      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={800}  height={400} > </Canvas>}
+      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={850}  height={800} > </Canvas>}
     </CanvasContext.Provider>
     </Col>
     <Col>

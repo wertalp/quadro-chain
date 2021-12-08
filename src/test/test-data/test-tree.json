@@ -50,5 +50,43 @@
     {       
         "label"  : "Moritz",
         "amount" : 16    
+     },
+     {       
+        "label"  : "MIller",
+        "amount" : 22    
+     },
+     {       
+        "label"  : "Danile",
+        "amount" : 44    
+     },
+     {       
+        "label"  : "Kimmi",
+        "amount" : 50    
+     },
+     {       
+        "label"  : "Alfons",
+        "amount" : 55    
+     },
+     {       
+        "label"  : "Stefan",
+        "amount" : 60    
+     } ,
+        {       
+        "label"  : "Vera",
+        "amount" : 67    
+     },
+     {       
+        "label"  : "Isabelle",
+        "amount" : 70    
+     },
+     {       
+        "label"  : "Gerfreid",
+        "amount" : 90    
+     },
+     
+     {       
+        "label"  : "Adam",
+        "amount" : 95    
      }
+
 ]
