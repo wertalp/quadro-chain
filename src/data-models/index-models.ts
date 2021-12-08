@@ -31,6 +31,11 @@ export interface IFormData{
     val  : number ;
     art  : Style  ;
 } 
+
+export interface NodeData{
+    label  :  string ;
+    amount :  number ;
+}
         
   export  interface IShapeNode {
         preNode    : ShapeNode  ;

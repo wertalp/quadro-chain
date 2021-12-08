@@ -11,10 +11,10 @@ export const createRootNode = () => {
  }
 
 
-export const createChain = (currNode : ShapeNode) : BlockChain => {
+export const createChain = () : BlockChain => {
     let myChain : BlockChain ;
     console.log("starting ... creating Chain ") ;
-    myChain = new BlockChain("QuadroChain",currNode) ;
+    myChain = new BlockChain("QuadroChain",true) ;
     console.log("starting ... creating Chain ") ;
     return myChain ;      
 }
