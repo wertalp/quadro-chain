@@ -95,17 +95,23 @@ export interface NodeData{
             }
             else {
                  xPos = this.preNode.position.xPos + NODE.WIDTH + 25;
+                 this.position.yPos = this.preNode.position.yPos ;
+    
+                 xPos = this.position.xPos ;
+                 yPos = this.position.yPos ;
              
             }
 
-            this.position.xPos = xPos ;
-            this.position.yPos = this.preNode.position.yPos ;
+             this.position.xPos = xPos ;
+            
+            
             if ( xPos + NODE.WIDTH+40 > sizeWidth){
-                this.position.xPos = 40 ;
+                this.position.xPos = 20 ;
                 this.position.yPos = this.position.yPos + NODE.HEIGHT+5 ;
                 xPos = this.position.xPos ;
                 yPos = this.position.yPos ;
             }
+      
 
             ctx.strokeStyle = "black";
             ctx.rect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);
