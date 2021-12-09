@@ -20,7 +20,7 @@ import dataNodes       from './test/test-data/test-tree.json';
     let myChain       : BlockChain  = null ; 
     let isLoading     : boolean     = true ;
     let isTest        : boolean     = true ;
-    let position      : Point  = { xPos: 30, yPos :20};
+    let position      : Point  = { xPos: 20, yPos :20};
     let startCounter  : number = 1  ;
     let hspacer       : number = 10 ;
     let loadedData    : NodeData[] = [] ;
@@ -92,9 +92,10 @@ import dataNodes       from './test/test-data/test-tree.json';
 
   const buildtree = (e : any) => {
     Utils.buildTree( chain , context) ;
- }       
+      }       
 
-  const drawLinkedList = (ctx : any):Boolean => {
+  
+      const drawLinkedList = (ctx : any):Boolean => {
     if( Utils.clearCanvas(ctx)) {
       if(chain) {
         let cNode : ShapeNode =  chain.RootNode ;

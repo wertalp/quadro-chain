@@ -58,7 +58,7 @@ const Canvas : React.FC<PropsCanvas> = (props : PropsCanvas) =>  {
           <h3> {anz} {props.node.label} {props.node.position.yPos} </h3>
         <CanvasContext.Consumer>
           {({value, changeContext}) => (
-          <canvas id="BCanvas" ref={canvasRef} style={{color: "red" , border : "1px solid red"}} {...props}/>   ) }
+          <canvas id="BCanvas" ref={canvasRef} style={{color: "red" , backgroundColor :"white", border : "1px solid red"}} {...props}/>   ) }
           </CanvasContext.Consumer>
         <Button variant={Style.Dark} > SORT</Button>
 
