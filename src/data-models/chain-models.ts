@@ -27,19 +27,21 @@ constructor( _chainName : string,
 
 public addnextNode = (itemNode : ShapeNode) => { 
     if (this.is_Root){
-        this.isRoot = false ;
-        this.rootNode = itemNode ;
+        this.isRoot   = false       ;
+        this.rootNode = itemNode    ;
+        this.currentNode = itemNode ;
+        this.lastNode    = itemNode ;
+        this.rootNode.preNode    = null ;
+        this.currentNode.preNode = null ;
         }
     else {
         itemNode.preNode =this.currentNode   ;
         this.currentNode.nextNode = itemNode ;
+        this.currentNode = itemNode    ;
+        this.lastNode    = itemNode    ;
     }    
 
-    this.currentNode = itemNode    ;
-    this.lastNode    = itemNode    ;
-    if (!itemNode.preNode){
-         itemNode.preNode = this.currentNode ;
-    }
+
     this.currentNode = itemNode    ;
     console.log("adding Node",itemNode.label.toString()) ;
     return this ;
