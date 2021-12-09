@@ -20,9 +20,9 @@ import dataNodes       from './test/test-data/test-tree.json';
     let myChain       : BlockChain  = null ; 
     let isLoading     : boolean     = true ;
     let isTest        : boolean     = true ;
-    let position      : Point  = { xPos: 10, yPos :20};
+    let position      : Point  = { xPos: 30, yPos :20};
     let startCounter  : number = 1  ;
-    let hspacer       : number = 80 ;
+    let hspacer       : number = 10 ;
     let loadedData    : NodeData[] = [] ;
 
 
@@ -54,7 +54,7 @@ import dataNodes       from './test/test-data/test-tree.json';
             myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
             myChain.addnextNode(myNode);   
           });
-        setChain(myChain) ; 
+            setChain(myChain) ;
       }
     };        
       initSetup() ;
