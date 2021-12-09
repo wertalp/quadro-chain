@@ -5,11 +5,11 @@
     },
     {      
         "label"  : "Tosky",
-        "amount" : 44     
+        "amount" : 49     
     },
     { 
         "label"  : "Florina",
-        "amount" : 11     
+        "amount" : 111     
     },
     {      
         "label"  : "Mama",
@@ -50,5 +50,78 @@
     {       
         "label"  : "Moritz",
         "amount" : 16    
+     },
+     {       
+        "label"  : "MIller",
+        "amount" : 22    
+     },
+     {       
+        "label"  : "Danile",
+        "amount" : 44    
+     },
+     {       
+        "label"  : "Kimmi",
+        "amount" : 50    
+     },
+     {       
+        "label"  : "Alfons",
+        "amount" : 55    
+     },
+     {       
+        "label"  : "Stefan",
+        "amount" : 60    
+     } ,
+        {       
+        "label"  : "Vera",
+        "amount" : 67    
+     },
+     {       
+        "label"  : "Isabelle",
+        "amount" : 70    
+     },
+     {       
+        "label"  : "Gerfreid",
+        "amount" : 90    
+     },
+     
+     {       
+        "label"  : "Mister",
+        "amount" : 88    
+     },
+     {       
+        "label"  : "Justin",
+        "amount" : 82    
+     },
+     {       
+        "label"  : "Helge",
+        "amount" : 75    
+     },
+     {       
+        "label"  : "Marion",
+        "amount" : 66    
+     },
+     {       
+        "label"  : "Lotte",
+        "amount" : 55    
+     },
+     {       
+        "label"  : "Quentschy",
+        "amount" : 45    
+     },     {       
+        "label"  : "Reini",
+        "amount" : 20    
+     },
+     {       
+        "label"  : "Maggie",
+        "amount" : 18    
+     },
+     {       
+        "label"  : "Lumpi",
+        "amount" : 16    
+     },
+     {       
+        "label"  : "Merli",
+        "amount" : 5    
      }
+
 ]

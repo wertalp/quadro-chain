@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, FunctionComponent, useEffect, useState} from
 import ReactDOM from 'react-dom' ;
 import logo from './logo.svg';
 import './App.css';
-import {ShapeNode, Point, BlockChainProps, IFormData, IShapeNode} from './data-models/index-models'  ;
+import {ShapeNode, Point, BlockChainProps, IFormData, IShapeNode, NodeData} from './data-models/index-models'  ;
 import {BlockChain}    from './data-models/chain-models' ;
 import Board           from './components/Board'         ;
 import Button          from 'react-bootstrap/esm/Button' ;
@@ -12,45 +12,58 @@ import {Style}         from './data-models/index-models' ;
 import {FormCreate}    from './components/FormCreate'    ;
 import Canvas          from './components/Canvas'        ;
 import * as Utils      from './utils/chain-utils'        ;
+import * as MAPPING    from './utils/map-utils'         ;
 import {CanvasContext} from './components/CanvasContext' ;   
 import dataNodes       from './test/test-data/test-tree.json';
 
  export  const App : FunctionComponent<{}> = () =>  {
     let myChain       : BlockChain  = null ; 
     let isLoading     : boolean     = true ;
-    let position      : Point  = { xPos: 10, yPos :20};
+    let isTest        : boolean     = true ;
+    let position      : Point  = { xPos: 20, yPos :20};
     let startCounter  : number = 1  ;
-    let hspacer       : number = 80 ;
+    let hspacer       : number = 10 ;
+    let loadedData    : NodeData[] = [] ;
+
 
     const [chain,    setChain]    = useState<BlockChain>(null) ;
-    const [counter,  setCounter]   = useState<number>(startCounter)       ;  
+    const [counter,  setCounter]   = useState<number>(startCounter) ;  
     const [rerender, setRerender]  = useState(false)           ;
     const [currentNode, setCurrentNode]  = useState(null)      ;
     const [context, setContext]  = useState(null)              ;
 
- 
+
 
    useEffect( 
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
         setCounter(() => counter+1) ;
+        myChain = Utils.createChain() ;
         
-        const initSetup = async () => {
-          if (isLoading){
-
-          }
-         promiseBC
-                 .then( item =>  { setChain(item) ; return item  })
-                 .then( item =>  item.RootNode.draw(context) )
-        };        
-        initSetup() ;
+    const initSetup = async () => {
+        if (isLoading && !isTest) {
+            promiseBC
+            .then( item =>  { setChain(item) ; return item  })
+          };  
         
+      if (isLoading && isTest){
+        loadedData = [...dataNodes];
+        loadedData
+        .forEach( async (item ) => {
+        var myNode : ShapeNode ;
+            myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
+            myChain.addnextNode(myNode);   
+          });
+            setChain(myChain) ;
+      }
+    };        
+      initSetup() ;
 
-        },[] )
+    },[] )
 
 
  const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
-         resolve( Utils.createChain( new ShapeNode(10,Style.Dark,"Init",{ xPos:0 ,yPos:0})))  
+         resolve( Utils.createChain( ))  
           );      
      
 
@@ -62,12 +75,11 @@ import dataNodes       from './test/test-data/test-tree.json';
           formInfo.name,
           position)
     if (!chain.CurrentNode){
-     setChain(Utils.createChain(currNode)) ;  
+     setChain(Utils.createChain()) ;  
      currNode.draw(context)                ; 
      return
     
     }  
-    //  chain.RootNode = currNode ;
       currNode.position.xPos = chain.CurrentNode.position.xPos + hspacer ;
       currNode.position.yPos = chain.CurrentNode.position.yPos       ;
   
@@ -78,17 +90,12 @@ import dataNodes       from './test/test-data/test-tree.json';
     } 
      
 
-
-  const drawList = (e : any) => {
-     drawLinkedList( context) ;
-  }       
-
   const buildtree = (e : any) => {
     Utils.buildTree( chain , context) ;
-    //setChain(null) ;
- }       
+      }       
 
-  const drawLinkedList = (ctx : any):Boolean => {
+  
+      const drawLinkedList = (ctx : any):Boolean => {
     if( Utils.clearCanvas(ctx)) {
       if(chain) {
         let cNode : ShapeNode =  chain.RootNode ;
@@ -134,20 +141,24 @@ import dataNodes       from './test/test-data/test-tree.json';
       </Col>
     </Row>
   <Row>
-    <Col>
-    <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
+  <Col>
+    <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
+      {false && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={180}  height={200} > </Canvas>}
+    </CanvasContext.Provider>
+
     </Col>
     <Col>
     <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
-      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={800}  height={400} > </Canvas>}
+      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={850}  height={800} > </Canvas>}
     </CanvasContext.Provider>
-    </Col>
-    <Col>
-
     </Col>
     <Col>
       <p> {counter}</p>
       <Button variant={Style.Dark} onClick={(e)=> buildtree(e)} > SORT</Button>
+      <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Reverse</Button>
+      <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Alpha</Button>
+      <Button variant={Style.Success} onClick={(e)=> buildtree(e)} > Numeric</Button>
+
       </Col>
   </Row>
   </Container>

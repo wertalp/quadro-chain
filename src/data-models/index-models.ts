@@ -31,6 +31,11 @@ export interface IFormData{
     val  : number ;
     art  : Style  ;
 } 
+
+export interface NodeData{
+    label  :  string ;
+    amount :  number ;
+}
         
   export  interface IShapeNode {
         preNode    : ShapeNode  ;
@@ -73,35 +78,60 @@ export interface IFormData{
     draw = (ctx : any): void => {
 
         if (!ctx) return ;
-            let sizeWidth  = ctx.canvas.clientWidth;
-            let sizeHeight = ctx.canvas.clientHeight;
 
-            ctx.fillStyle = '#FF0000'
-            ctx.beginPath();
-            let xPos = this.position.xPos ;
-            let yPos = this.position.yPos ;
 
-            if ( xPos + NODE.WIDTH+40 > sizeWidth){
-                this.position.xPos = 20 ;
-                this.position.yPos = this.position.yPos + NODE.HEIGHT+5 ;
-            }
-            ctx.strokeStyle = "black";
-            ctx.rect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);
-            ctx.fillStyle = NODE.COLOR ;
-            ctx.fillRect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);   
-            ctx.font = "9px Verdana";
-            ctx.fillStyle = "#000000";
-            ctx.fillText( this.label ,xPos+10,yPos+15 )    ; 
-            ctx.font = "8px Verdana";
-            ctx.fillText( this._amount ,xPos+NODE.WIDTH-20,yPos+8 )    ; 
-            ctx.lineWidth = "2";
-            ctx.strokeStyle = "black";
-            if (this.preNode) {
-              //  drawConnectLine( ctx,this.position, this.position);
-             }
-         
-            ctx.stroke();
+        let sizeWidth  = ctx.canvas.clientWidth;
+        let sizeHeight = ctx.canvas.clientHeight;
 
+        let xPos = this.position.xPos ;
+        let yPos = this.position.yPos ;
+
+        ctx.fillStyle = '#FF0000'
+        ctx.beginPath();
+
+        if (this.preNode == null) {
+                xPos = this.position.xPos ;
+                yPos = this.position.yPos ;
+        }
+        else {
+                xPos = this.preNode.position.xPos + NODE.WIDTH + 25;
+                this.position.yPos = this.preNode.position.yPos ;
+                yPos = this.preNode.position.yPos ;
+        }
+
+            this.position.xPos = xPos ;
+        
+                
+        if ( xPos + NODE.WIDTH+40 > sizeWidth){
+            this.position.xPos = 10 ;
+            this.position.yPos = this.position.yPos + NODE.HEIGHT+5 ;
+        }
+    
+        this.paintLabel(ctx , this.position) ;
+        
+        ctx.stroke();
+
+    }
+
+    paintLabel = (ctx : any , pos :Point) => {
+        let xPos = pos.xPos ;
+        let yPos = pos.yPos ;
+        ctx.beginPath()     ; 
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = "2";
+        ctx.rect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);
+        ctx.fillStyle = NODE.COLOR ;
+        ctx.fillRect(xPos,yPos, NODE.WIDTH, NODE.HEIGHT);   
+        ctx.font = "9px Verdana";
+        ctx.fillStyle = "#000000";
+        ctx.fillText( this.label ,xPos+10,yPos+15 )    ; 
+        ctx.font = "8px Verdana";
+        ctx.fillText( this._amount ,xPos+NODE.WIDTH-20,yPos+8 )    ; 
+        if (this.preNode) {
+           // drawConnectLine( ctx,this.position, this.position);
+         }
+     
+        ctx.stroke();
     }
 
     delete = (): boolean => {

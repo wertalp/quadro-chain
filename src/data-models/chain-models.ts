@@ -8,25 +8,40 @@ export class BlockChain {
     private rootNode    : ShapeNode ;
     private currentNode : ShapeNode ;
     private lastNode    : ShapeNode ;
+    private isRoot      : boolean   ;
 
     
 constructor( _chainName : string, 
-             _rootNode  : ShapeNode  )
+             _isRoot    : boolean = true )
     {
     this.chainName   = _chainName    ;
-    this.rootNode    = _rootNode     ;
-    this.currentNode = _rootNode     ;
+    this.is_Root      = _isRoot      ;
+    
+    if(this.isRoot) {
+        this.currentNode = null ;
+        this.lastNode    = null ;
+        this.rootNode    = null ;
+    }
+
     }
 
 public addnextNode = (itemNode : ShapeNode) => { 
-    itemNode.preNode =this.currentNode   ;
-    this.currentNode.nextNode = itemNode ;
+    if (this.is_Root){
+        this.isRoot   = false       ;
+        this.rootNode = itemNode    ;
+        this.currentNode = itemNode ;
+        this.lastNode    = itemNode ;
+        this.rootNode.preNode    = null ;
+        this.currentNode.preNode = null ;
+        }
+    else {
+        itemNode.preNode =this.currentNode   ;
+        this.currentNode.nextNode = itemNode ;
+        this.currentNode = itemNode    ;
+        this.lastNode    = itemNode    ;
+    }    
 
-    this.currentNode = itemNode    ;
-    this.lastNode    = itemNode    ;
-    if (!itemNode.preNode){
-         itemNode.preNode = this.currentNode ;
-    }
+
     this.currentNode = itemNode    ;
     console.log("adding Node",itemNode.label.toString()) ;
     return this ;
@@ -58,6 +73,9 @@ drawChaintoCanvas   = (ctx : any) =>  {
 getallValues =  (): IShapeNode[] => {
     let nodes : IShapeNode[] = [] ;
     let currNode : ShapeNode = null ;
+       if( typeof this.is_Root === 'undefined'){
+           return [] ;
+       }
         currNode = this.rootNode ;
 
     while ( currNode.nextNode ){
@@ -95,6 +113,13 @@ get RootNode() : ShapeNode {
 set RootNode( _node :ShapeNode)  {
     this.rootNode =_node ;
 }
+
+get is_Root() : boolean  {
+    return this.isRoot ;
+} ;
+set is_Root( _isRoot : boolean) {
+    this.isRoot = _isRoot ;
+};
 
 
 }
