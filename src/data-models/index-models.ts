@@ -108,7 +108,7 @@ export interface NodeData{
         }
     
         this.paintLabel(ctx , this.position) ;
-        
+
         ctx.stroke();
 
     }
@@ -128,7 +128,7 @@ export interface NodeData{
         ctx.font = "8px Verdana";
         ctx.fillText( this._amount ,xPos+NODE.WIDTH-20,yPos+8 )    ; 
         if (this.preNode) {
-           // drawConnectLine( ctx,this.position, this.position);
+          // drawConnectLine( ctx,this.position, this.position);
          }
      
         ctx.stroke();

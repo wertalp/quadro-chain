@@ -8,8 +8,11 @@ let position : Point  = { xPos: 10, yPos :10};
 
 export const createRootNode = () => {
     return new ShapeNode(1,Style.Dark,"RootNode", position ) ;
- }
-
+ };
+ 
+export const  delay = (ms: number) : Promise<number> => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
 
 export const createChain = () : BlockChain => {
     let myChain : BlockChain ;
@@ -95,7 +98,7 @@ export const drawConnectLine = (context : any , from :Point, to : Point) => {
 
 }
 
-export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
+export const buildTree = async (chain : BlockChain, ctx : any)  =>  {
     clearCanvas(ctx) ;
     chain.CurrentNode = chain.RootNode ;
     let  hspace : number = 12;   
@@ -110,47 +113,52 @@ export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
      while (currentNode) {
 
         if  (! currentNode.preNode) {
-            currentNode = currentNode.nextNode ;
+            await delay(2000) ;
+            ctx.font      = "24px Verdana";
+            ctx.fillStyle = "#000000";
+            ctx.fillText( chain.Chainname, sizeWidth/2-80 , 32 )     ; 
+            await delay(2000) ;
+            //currentNode   = currentNode.nextNode ;
             currentNode.position.xPos = sizeWidth/2 -NODE.WIDTH/2 ;
-            currentNode.position.yPos = 20 ;
+            currentNode.position.yPos = 60 ;
             chain.RootNode = currentNode ;
-            currentNode.preNode = null ;
-            
+            currentNode.preNode = null ;  
         } else {
 
-            if (currentNode.amount < currentNode.preNode.amount){
-                console.log("compare to nodes :" 
-                + currentNode.amount 
-                + " - < " 
-                + currentNode.preNode.amount);
-                _xpos =  currentNode.preNode.position.xPos - NODE.WIDTH/2  -  hspace ;
+        if (currentNode.amount < currentNode.preNode.amount){
+            console.log("compare to nodes :" 
+            + currentNode.amount 
+            + " - < " 
+            + currentNode.preNode.amount);
+            _xpos =  currentNode.preNode.position.xPos - NODE.WIDTH/2  -  hspace ;
 
-            if (currentNode.position.xPos + NODE.WIDTH < NODE.WIDTH/2 -hspace ){
-                _xpos =  NODE.WIDTH/2+hspace ; }
-                _ypos =  currentNode.preNode.position.yPos+
-                            NODE.HEIGHT + vspace ;
+        if (currentNode.position.xPos + NODE.WIDTH < NODE.WIDTH/2 -hspace ){
+            _xpos =  NODE.WIDTH/2+hspace  ; }
+            _ypos =  currentNode.preNode.position.yPos+
+                        NODE.HEIGHT + vspace ;
 
-                currentNode.position = {xPos: _xpos , yPos: _ypos} ;
-            }
-            if (currentNode.amount > currentNode.preNode.amount){
-                console.log("compare to nodes :" 
-                + currentNode.amount + " - > " 
-                + currentNode.preNode.amount);
-               
-                _xpos =  currentNode.preNode.position.xPos + NODE.WIDTH/2  + hspace     ;
-                _ypos =  currentNode.preNode.position.yPos + NODE.HEIGHT   + vspace     ;
-               
-            if (currentNode.preNode.position.xPos+ NODE.WIDTH/2 > sizeWidth-200 ){
-                _xpos = currentNode.preNode.position.xPos ;}
-                
             currentNode.position = {xPos: _xpos , yPos: _ypos} ;
         }
+        if (currentNode.amount > currentNode.preNode.amount){
+            console.log("compare to nodes :" 
+            + currentNode.amount + " - > " 
+            + currentNode.preNode.amount);
+            
+            _xpos =  currentNode.preNode.position.xPos + NODE.WIDTH/2  + hspace     ;
+            _ypos =  currentNode.preNode.position.yPos + NODE.HEIGHT   + vspace     ;
+            
+        if (currentNode.preNode.position.xPos+ NODE.WIDTH/2 > sizeWidth-200 ){
+            _xpos = currentNode.preNode.position.xPos ;}
+            
+        currentNode.position = {xPos: _xpos , yPos: _ypos} ;
+        }
     }
-            currentNode.paintLabel(ctx, currentNode.position) ;
+        await delay(20) ; 
+        currentNode.paintLabel(ctx, currentNode.position)  ;
         if(currentNode.preNode) {
             drawlines(currentNode.preNode,currentNode,ctx) ;
         }
-    currentNode = currentNode.nextNode ;
+        currentNode = currentNode.nextNode ;
       }
 }
 
@@ -159,8 +167,8 @@ export const buildTree = (chain : BlockChain, ctx : any) : void =>  {
         let pointFrom : Point = {xPos:0  ,yPos:0} ;
         let pointTo   : Point = {xPos:0 , yPos:0} ;      
 
-       console.log("Drawing from X pos: " + fromNode.position.xPos+NODE.WIDTH/2 ) ; 
-       console.log("Drawing from Y pos: " + fromNode.position.xPos+NODE.WIDTH/2 ) ; 
+        console.log("Drawing from X pos: " + fromNode.position.xPos+NODE.WIDTH/2 ) ; 
+        console.log("Drawing from Y pos: " + fromNode.position.xPos+NODE.WIDTH/2 ) ; 
 
  
       if (toNode){
