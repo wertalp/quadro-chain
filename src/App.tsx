@@ -21,30 +21,30 @@ import dataNodes       from './test/test-data/test-tree.json';
     let isLoading     : boolean     = true ;
     let isTest        : boolean     = true ;
     let position      : Point  = { xPos: 20, yPos :20};
-    let startCounter  : number = 1  ;
-    let hspacer       : number = 10 ;
+    let startCounter  : number = 1      ;
+    let hspacer       : number = 10     ;
     let loadedData    : NodeData[] = [] ;
 
 
-    const [chain,    setChain]    = useState<BlockChain>(null) ;
-    const [counter,  setCounter]   = useState<number>(startCounter) ;  
-    const [rerender, setRerender]  = useState(false)           ;
-    const [currentNode, setCurrentNode]  = useState(null)      ;
-    const [context, setContext]  = useState(null)              ;
+    const [chain,    setChain   ]        = useState<BlockChain>(null)     ;
+    const [counter,  setCounter ]        = useState<number>(startCounter) ;  
+    const [rerender, setRerender]        = useState(false)           ;
+    const [currentNode, setCurrentNode]  = useState(null)            ;
+    const [context, setContext  ]        = useState(null)            ;
 
 
 
    useEffect( 
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
-        setCounter(() => counter+1) ;
+        //setCounter(() => counter+1) ;
         myChain = Utils.createChain() ;
         
     const initSetup = async () => {
-        if (isLoading && !isTest) {
-            promiseBC
-            .then( item =>  { setChain(item) ; return item  })
-          };  
+      if (isLoading && !isTest) {
+          promiseBC
+          .then( item =>  { setChain(item)})
+        };  
         
       if (isLoading && isTest){
         loadedData = [...dataNodes];
@@ -59,7 +59,7 @@ import dataNodes       from './test/test-data/test-tree.json';
     };        
       initSetup() ;
 
-    },[] )
+    },[counter] )
 
 
  const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
@@ -92,16 +92,21 @@ import dataNodes       from './test/test-data/test-tree.json';
 
   const buildtree = (e : any) => {
     Utils.buildTree( chain , context) ;
-      }       
+      } 
+      
+   const onChangeValue = (event : any) => {
+     // setCounter(counter+1) ;
+
+   }   
 
   
-      const drawLinkedList = (ctx : any):Boolean => {
+    const drawLinkedList = (ctx : any):Boolean => {
     if( Utils.clearCanvas(ctx)) {
       if(chain) {
         let cNode : ShapeNode =  chain.RootNode ;
   
         while (cNode.nextNode) {
-          cNode.draw(ctx) ;
+          cNode.draw(ctx)        ;
           cNode = cNode.nextNode ;
         }
         setRerender(!render) ;
@@ -111,9 +116,7 @@ import dataNodes       from './test/test-data/test-tree.json';
       }
         setRerender(!render) ;
        return ; 
-
     }
-
     }
 
   const drawNode = (ctx: any) => { 
@@ -123,7 +126,6 @@ import dataNodes       from './test/test-data/test-tree.json';
 
   const changeContext = (val : any) => {
         setContext(val);
-
   }      
 
   return (
@@ -159,6 +161,12 @@ import dataNodes       from './test/test-data/test-tree.json';
    Name :  {chain && <p>{chain.Chainname} </p>  } 
    RootNode:  {chain && <p>{chain.RootNode.label} </p>} 
    CurrentNode:  {chain && <p> {chain.CurrentNode.label} </p>}
+
+   <div onChange={onChangeValue}>
+        <input type="radio" value="Male" name="gender"  /> Clear
+        <input type="radio" value="Female" name="gender" /> Binary
+        <input type="radio" value="Other" name="gender" /> Sort
+      </div>
       </Col>
     </div>
       <p> {counter}</p>
