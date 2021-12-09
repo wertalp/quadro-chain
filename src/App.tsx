@@ -153,12 +153,19 @@ import dataNodes       from './test/test-data/test-tree.json';
     </CanvasContext.Provider>
     </Col>
     <Col>
+    <div className="nodeInfoDIV">
+    <Col>
       <p> {counter}</p>
-      <Button variant={Style.Dark} onClick={(e)=> buildtree(e)} > SORT</Button>
-      <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Reverse</Button>
+   Name :  {chain && <p>{chain.Chainname} </p>  } 
+   RootNode:  {chain && <p>{chain.RootNode.label} </p>} 
+   CurrentNode:  {chain && <p> {chain.CurrentNode.label} </p>}
+      </Col>
+    </div>
+      <p> {counter}</p>
+      <Button variant={Style.Dark} onClick={(e)=> buildtree(e)} > Tree</Button>
+      <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Sort</Button>
       <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Alpha</Button>
       <Button variant={Style.Success} onClick={(e)=> buildtree(e)} > Numeric</Button>
-
       </Col>
   </Row>
   </Container>

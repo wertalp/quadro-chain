@@ -43,3 +43,12 @@ code {
 #formCreateNode label {
   text-align: left;
 }
+
+.nodeInfoDIV {
+  margin-top: 40px ;
+  width: 220px;
+  height: auto;
+  border: solid 1px ;
+  background-color:honeydew;
+  font-size: 10px;
+}
