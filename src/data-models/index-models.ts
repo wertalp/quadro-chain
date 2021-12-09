@@ -96,13 +96,10 @@ export interface NodeData{
             else {
                  xPos = this.preNode.position.xPos + NODE.WIDTH + 25;
                  this.position.yPos = this.preNode.position.yPos ;
-    
-                 xPos = this.position.xPos ;
-                 yPos = this.position.yPos ;
-             
+                 yPos = this.preNode.position.yPos ;
             }
 
-             this.position.xPos = xPos ;
+                 this.position.xPos = xPos ;
             
             
             if ( xPos + NODE.WIDTH+40 > sizeWidth){

@@ -37,7 +37,7 @@ const Canvas : React.FC<PropsCanvas> = (props : PropsCanvas) =>  {
      
       const updateBoard = (ctx : any) => {  
         if (chain) {
-          while ( node.nextNode ) {
+          while ( node ) {
             node.draw(ctx);
             node = node.nextNode ;
 
