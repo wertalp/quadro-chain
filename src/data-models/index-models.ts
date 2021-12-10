@@ -90,13 +90,13 @@ export interface NodeData{
         ctx.beginPath();
 
         if (this.preNode == null) {
-                xPos = this.position.xPos ;
-                yPos = this.position.yPos ;
+            xPos = this.position.xPos ;
+            yPos = this.position.yPos ;
         }
         else {
-                xPos = this.preNode.position.xPos + NODE.WIDTH + 25;
-                this.position.yPos = this.preNode.position.yPos ;
-                yPos = this.preNode.position.yPos ;
+            xPos = this.preNode.position.xPos + NODE.WIDTH + 25;
+            this.position.yPos = this.preNode.position.yPos ;
+            yPos = this.preNode.position.yPos ;
         }
 
             this.position.xPos = xPos ;

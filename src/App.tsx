@@ -6,6 +6,7 @@ import {ShapeNode, Point, BlockChainProps, IFormData, IShapeNode, NodeData} from
 import {BlockChain}    from './data-models/chain-models' ;
 import Board           from './components/Board'         ;
 import Button          from 'react-bootstrap/esm/Button' ;
+import Spinner          from 'react-bootstrap/esm/Spinner' ;
 import {render}        from '@testing-library/react'     ;
 import {Container, Form, Row, Col}  from 'react-bootstrap' ;
 import {Style}         from './data-models/index-models' ;
@@ -37,9 +38,7 @@ import dataNodes       from './test/test-data/test-tree.json';
    useEffect( 
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
-        //setCounter(() => counter+1) ;
         myChain = Utils.createChain() ;
-        
     const initSetup = async () => {
       if (isLoading && !isTest) {
           promiseBC
@@ -54,7 +53,7 @@ import dataNodes       from './test/test-data/test-tree.json';
             myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
             myChain.addnextNode(myNode);   
           });
-            setChain(myChain) ;
+            setChain(myChain) ;  
       }
     };        
       initSetup() ;
@@ -91,11 +90,12 @@ import dataNodes       from './test/test-data/test-tree.json';
      
 
   const buildtree = (e : any) => {
+    isLoading = true ;
     Utils.buildTree( chain , context) ;
       } 
       
    const onChangeValue = (event : any) => {
-     // setCounter(counter+1) ;
+    isLoading = false ;
 
    }   
 
@@ -150,9 +150,10 @@ import dataNodes       from './test/test-data/test-tree.json';
 
     </Col>
     <Col>
+    {false ? <Spinner animation="border" /> :
     <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
       {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={850}  height={800} > </Canvas>}
-    </CanvasContext.Provider>
+    </CanvasContext.Provider>}
     </Col>
     <Col>
     <div className="nodeInfoDIV">

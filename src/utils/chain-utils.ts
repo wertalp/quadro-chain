@@ -109,7 +109,6 @@ export const buildTree = async (chain : BlockChain, ctx : any)  =>  {
     let sizeWidth  = ctx.canvas.clientWidth;
     let sizeHeight = ctx.canvas.clientHeight;
                    
-     
      while (currentNode) {
 
         if  (! currentNode.preNode) {
@@ -160,6 +159,7 @@ export const buildTree = async (chain : BlockChain, ctx : any)  =>  {
         }
         currentNode = currentNode.nextNode ;
       }
+      
 }
 
    const drawlines = (fromNode : ShapeNode , toNode : ShapeNode, ctx : any) : void => {
