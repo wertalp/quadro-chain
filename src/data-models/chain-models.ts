@@ -70,8 +70,10 @@ drawChaintoCanvas   = (ctx : any) =>  {
 };
 
 buildBinaryTree = (node : ShapeNode ) : BlockChain => {
+    let rightNody : boolean = true ;
     this.currentNode = this.RootNode ;
          bc : BlockChain = new BlockChain("Whatever", true) ;
+
 
     while ( this.currentNode){
 
@@ -80,18 +82,28 @@ buildBinaryTree = (node : ShapeNode ) : BlockChain => {
             
         }
 
-        if (  node.amount > this.currentNode.amount )
+
+        if (  node.amount > this.currentNode.amount && this.currentNode.rightNode )
         {
-            this.currentNode = this.currentNode.rightNode 
+            this.currentNode = this.currentNode.rightNode ;
+            rightNody = true ;
+
         }
-        if (  node.amount < this.currentNode.amount )
+        if (  node.amount < this.currentNode.amount && this.currentNode.leftNode )
         {
             this.currentNode = this.currentNode.leftNode
+            rightNody = false ;
         }
 
+        if (!this.currentNode.rightNode && rightNody){
+            this.currentNode.rightNode = node ;
+        } 
 
-        this.currentNode = this.currentNode.nextNode ;
-        return bc 
+
+        
+
+
+
     }
 
 }
