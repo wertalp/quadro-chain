@@ -80,12 +80,18 @@ buildBinaryTree = (node : ShapeNode ) : BlockChain => {
             
         }
 
-        if (  node.amount > this.currentNode.preNode.amount )
-        { }
+        if (  node.amount > this.currentNode.amount )
+        {
+            this.currentNode = this.currentNode.rightNode 
+        }
+        if (  node.amount < this.currentNode.amount )
+        {
+            this.currentNode = this.currentNode.leftNode
+        }
 
 
         this.currentNode = this.currentNode.nextNode ;
-        return 
+        return bc 
     }
 
 }
