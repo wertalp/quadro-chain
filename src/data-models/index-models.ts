@@ -58,6 +58,8 @@ export interface NodeData{
     private _position   : Point      = {xPos:10 , yPos:10}    ;
     private _mintUrl    : string     =  ""     ; 
     private _style      : Style      = Style.Warning ; 
+    private _leftNode   : ShapeNode  = null    ;
+    private _rightNode  : ShapeNode  = null    ;
 
     
     constructor(
@@ -79,7 +81,6 @@ export interface NodeData{
 
         if (!ctx) return ;
 
-
         let sizeWidth  = ctx.canvas.clientWidth;
         let sizeHeight = ctx.canvas.clientHeight;
 
@@ -98,10 +99,8 @@ export interface NodeData{
             this.position.yPos = this.preNode.position.yPos ;
             yPos = this.preNode.position.yPos ;
         }
-
             this.position.xPos = xPos ;
         
-                
         if ( xPos + NODE.WIDTH+40 > sizeWidth){
             this.position.xPos = 10 ;
             this.position.yPos = this.position.yPos + NODE.HEIGHT+5 ;
@@ -171,6 +170,22 @@ export interface NodeData{
 
     set nextNode( nNode : ShapeNode)  {
         this._nextNode = nNode ;
+    }
+
+    get leftNode() : ShapeNode {
+        return this._leftNode ;
+    }
+
+    set leftNode( nNode : ShapeNode)  {
+        this._leftNode = nNode ;
+    }
+
+    get rightNode() : ShapeNode {
+        return this._rightNode ;
+    }
+
+    set rightNode( nNode : ShapeNode)  {
+        this._rightNode = nNode ;
     }
 
     get amount() : number {
