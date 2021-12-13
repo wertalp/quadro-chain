@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios' ;
+import { BASEURL } from './util-constants';
 
 let client: AxiosInstance = null ;
 
@@ -20,11 +21,12 @@ try {
 }
 }
 
-export const geAPIData =  async (url :string ) => {
+export const getAPIClient =  (url :string ) :AxiosInstance => {
     try {
-        client = ApiClient(url) ;
-        return  client 
+        url = BASEURL ;
+        return   ApiClient(url) ; 
         } catch (error: any) {
             console.log("error")
         }
+        return null ;
 }

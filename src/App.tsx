@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, FunctionComponent, useEffect, useState} from 'react' ;
 import ReactDOM from 'react-dom' ;
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg'    ;
+import './App.css'               ;
 import {ShapeNode, Point, BlockChainProps, IFormData, IShapeNode, NodeData} from './data-models/index-models'  ;
 import {BlockChain}    from './data-models/chain-models' ;
 import Board           from './components/Board'         ;
@@ -15,9 +15,15 @@ import Canvas          from './components/Canvas'        ;
 import * as Utils      from './utils/chain-utils'        ;
 import * as MAPPING    from './utils/map-utils'         ;
 import {CanvasContext} from './components/CanvasContext' ;   
-import dataNodes       from './test/test-data/test-tree.json';
+import dataNodes       from './test/test-data/test-tree.json' ;
+import  * as apiutil   from './utils/api-fetch' ;
+import  axios,{ AxiosInstance} from 'axios';
+import { BASEURL } from './utils/util-constants';
+import { isTemplateSpan } from 'typescript';
+ 
 
- export  const App : FunctionComponent<{}> = () =>  {
+
+export  const App : FunctionComponent<{}> = () =>  {
     let myChain       : BlockChain  = null ; 
     let isLoading     : boolean     = true ;
     let isTest        : boolean     = true ;
@@ -39,24 +45,53 @@ import dataNodes       from './test/test-data/test-tree.json';
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
         myChain = Utils.createChain() ;
-    const initSetup = async () => {
-      if (isLoading && !isTest) {
-          promiseBC
-          .then( item =>  { setChain(item)})
-        };  
+   
+     const initSetup = async () => {
+        if (isLoading && !isTest) {
+            promiseBC
+            .then( item =>  { setChain(item)})
+          };  
+          
+        if (isLoading && isTest){
+          loadedData = [...dataNodes];
+          loadedData
+          .forEach( async (item ) => {
+          var myNode : ShapeNode ;
+              myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
+              myChain.addnextNode(myNode);   
+            });
+              setChain(myChain) ;  
+        }
+      };
+
+      //initSetup() ;
+      
+      const loadAPIDATA = async () => {
+        let client : AxiosInstance = null ;
+        let url = BASEURL;
+        let datas : any[] ;
         
-      if (isLoading && isTest){
-        loadedData = [...dataNodes];
-        loadedData
-        .forEach( async (item ) => {
-        var myNode : ShapeNode ;
-            myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
-            myChain.addnextNode(myNode);   
-          });
-            setChain(myChain) ;  
-      }
-    };        
-      initSetup() ;
+            datas = await axios.get(url)
+                  .then( response => response.data)
+                  .then( res      => res.results  )
+                  .then( (items)  => 
+                          items.map( (item : any) =>  {
+                             const { name , location} : { name: any , location : any} = item ;
+                                return { name , location };} )
+                  ).then(
+                        items => items.map( (items :any) =>  ({ amount : items.location.street.number , label : items.name.last }) ))
+                    
+          datas.forEach( async (item ) => {
+            var myNode : ShapeNode ;
+                myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
+                myChain.addnextNode(myNode);   
+              });
+                setChain(myChain) ;  
+            console.log(datas);
+                                        
+         }
+
+        loadAPIDATA() ;   
 
     },[counter] )
 
@@ -136,10 +171,10 @@ import dataNodes       from './test/test-data/test-tree.json';
         <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
         </Col>
         <Col>
-        {chain && <Board blockChain={chain}  counter={counter}> </Board> }</Col>
+        {!chain && <Board blockChain={chain}  counter={counter}> </Board> }</Col>
         <Col></Col>
         <Col>
-      {chain && <Board blockChain={chain}  counter={counter}> </Board> }
+      {!chain && <Board blockChain={chain}  counter={counter}> </Board> }
       </Col>
     </Row>
   <Row>
