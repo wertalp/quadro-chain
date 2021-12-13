@@ -90,13 +90,13 @@ export interface NodeData{
         ctx.beginPath();
 
         if (this.preNode == null) {
-                xPos = this.position.xPos ;
-                yPos = this.position.yPos ;
+            xPos = this.position.xPos ;
+            yPos = this.position.yPos ;
         }
         else {
-                xPos = this.preNode.position.xPos + NODE.WIDTH + 25;
-                this.position.yPos = this.preNode.position.yPos ;
-                yPos = this.preNode.position.yPos ;
+            xPos = this.preNode.position.xPos + NODE.WIDTH + 25;
+            this.position.yPos = this.preNode.position.yPos ;
+            yPos = this.preNode.position.yPos ;
         }
 
             this.position.xPos = xPos ;
@@ -108,7 +108,7 @@ export interface NodeData{
         }
     
         this.paintLabel(ctx , this.position) ;
-        
+
         ctx.stroke();
 
     }
@@ -128,7 +128,7 @@ export interface NodeData{
         ctx.font = "8px Verdana";
         ctx.fillText( this._amount ,xPos+NODE.WIDTH-20,yPos+8 )    ; 
         if (this.preNode) {
-           // drawConnectLine( ctx,this.position, this.position);
+          // drawConnectLine( ctx,this.position, this.position);
          }
      
         ctx.stroke();

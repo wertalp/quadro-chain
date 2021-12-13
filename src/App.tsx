@@ -1,11 +1,12 @@
 import React, { ChangeEventHandler, FunctionComponent, useEffect, useState} from 'react' ;
 import ReactDOM from 'react-dom' ;
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg'    ;
+import './App.css'               ;
 import {ShapeNode, Point, BlockChainProps, IFormData, IShapeNode, NodeData} from './data-models/index-models'  ;
 import {BlockChain}    from './data-models/chain-models' ;
 import Board           from './components/Board'         ;
 import Button          from 'react-bootstrap/esm/Button' ;
+import Spinner          from 'react-bootstrap/esm/Spinner' ;
 import {render}        from '@testing-library/react'     ;
 import {Container, Form, Row, Col}  from 'react-bootstrap' ;
 import {Style}         from './data-models/index-models' ;
@@ -14,52 +15,86 @@ import Canvas          from './components/Canvas'        ;
 import * as Utils      from './utils/chain-utils'        ;
 import * as MAPPING    from './utils/map-utils'         ;
 import {CanvasContext} from './components/CanvasContext' ;   
-import dataNodes       from './test/test-data/test-tree.json';
+import dataNodes       from './test/test-data/test-tree.json' ;
+import  * as apiutil   from './utils/api-fetch' ;
+import  axios,{ AxiosInstance} from 'axios';
+import { BASEURL } from './utils/util-constants';
+import { isTemplateSpan } from 'typescript';
+ 
 
- export  const App : FunctionComponent<{}> = () =>  {
+
+export  const App : FunctionComponent<{}> = () =>  {
     let myChain       : BlockChain  = null ; 
     let isLoading     : boolean     = true ;
     let isTest        : boolean     = true ;
     let position      : Point  = { xPos: 20, yPos :20};
-    let startCounter  : number = 1  ;
-    let hspacer       : number = 10 ;
+    let startCounter  : number = 1      ;
+    let hspacer       : number = 10     ;
     let loadedData    : NodeData[] = [] ;
 
 
-    const [chain,    setChain]    = useState<BlockChain>(null) ;
-    const [counter,  setCounter]   = useState<number>(startCounter) ;  
-    const [rerender, setRerender]  = useState(false)           ;
-    const [currentNode, setCurrentNode]  = useState(null)      ;
-    const [context, setContext]  = useState(null)              ;
+    const [chain,    setChain   ]        = useState<BlockChain>(null)     ;
+    const [counter,  setCounter ]        = useState<number>(startCounter) ;  
+    const [rerender, setRerender]        = useState(false)           ;
+    const [currentNode, setCurrentNode]  = useState(null)            ;
+    const [context, setContext  ]        = useState(null)            ;
 
 
 
    useEffect( 
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
-        setCounter(() => counter+1) ;
         myChain = Utils.createChain() ;
-        
-    const initSetup = async () => {
+   
+     const initSetup = async () => {
         if (isLoading && !isTest) {
             promiseBC
-            .then( item =>  { setChain(item) ; return item  })
+            .then( item =>  { setChain(item)})
           };  
-        
-      if (isLoading && isTest){
-        loadedData = [...dataNodes];
-        loadedData
-        .forEach( async (item ) => {
-        var myNode : ShapeNode ;
-            myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
-            myChain.addnextNode(myNode);   
-          });
-            setChain(myChain) ;
-      }
-    };        
-      initSetup() ;
+          
+        if (isLoading && isTest){
+          loadedData = [...dataNodes];
+          loadedData
+          .forEach( async (item ) => {
+          var myNode : ShapeNode ;
+              myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
+              myChain.addnextNode(myNode);   
+            });
+              setChain(myChain) ;  
+        }
+      };
 
-    },[] )
+      //initSetup() ;
+      
+      const loadAPIDATA = async () => {
+        let client : AxiosInstance = null ;
+        let url = BASEURL;
+        let datas : any[] ;
+        
+        datas = await axios.get(url)
+              .then( response => response.data)
+              .then( res      => res.results  )
+              .then( (items)  => 
+                      items.map( (item : any) =>  {
+                      const { name , location} : { name: any , location : any} = item ;
+                return { name , location };} )
+              ).then(
+                items => items.map( (items :any) =>  
+                        ({ amount : items.location.street.number , label : items.name.last }) ))
+                    
+        datas.forEach( async (item ) => {
+          var myNode : ShapeNode ;
+              myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
+              myChain.addnextNode(myNode);   
+            });
+              setChain(myChain) ;  
+              console.log(datas);
+
+         }
+
+    loadAPIDATA() ;   
+
+    },[counter] )
 
 
  const promiseBC : Promise<BlockChain> = new Promise<BlockChain>( ( resolve ) => 
@@ -91,17 +126,23 @@ import dataNodes       from './test/test-data/test-tree.json';
      
 
   const buildtree = (e : any) => {
+    isLoading = true ;
     Utils.buildTree( chain , context) ;
-      }       
+      } 
+      
+   const onChangeValue = (event : any) => {
+    isLoading = false ;
+
+   }   
 
   
-      const drawLinkedList = (ctx : any):Boolean => {
+    const drawLinkedList = (ctx : any):Boolean => {
     if( Utils.clearCanvas(ctx)) {
       if(chain) {
         let cNode : ShapeNode =  chain.RootNode ;
   
         while (cNode.nextNode) {
-          cNode.draw(ctx) ;
+          cNode.draw(ctx)        ;
           cNode = cNode.nextNode ;
         }
         setRerender(!render) ;
@@ -111,9 +152,7 @@ import dataNodes       from './test/test-data/test-tree.json';
       }
         setRerender(!render) ;
        return ; 
-
     }
-
     }
 
   const drawNode = (ctx: any) => { 
@@ -123,7 +162,6 @@ import dataNodes       from './test/test-data/test-tree.json';
 
   const changeContext = (val : any) => {
         setContext(val);
-
   }      
 
   return (
@@ -134,10 +172,10 @@ import dataNodes       from './test/test-data/test-tree.json';
         <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
         </Col>
         <Col>
-        {chain && <Board blockChain={chain}  counter={counter}> </Board> }</Col>
+        {!chain && <Board blockChain={chain}  counter={counter}> </Board> }</Col>
         <Col></Col>
         <Col>
-      {chain && <Board blockChain={chain}  counter={counter}> </Board> }
+      {!chain && <Board blockChain={chain}  counter={counter}> </Board> }
       </Col>
     </Row>
   <Row>
@@ -148,17 +186,31 @@ import dataNodes       from './test/test-data/test-tree.json';
 
     </Col>
     <Col>
+    {false ? <Spinner animation="border" /> :
     <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
       {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={850}  height={800} > </Canvas>}
-    </CanvasContext.Provider>
+    </CanvasContext.Provider>}
     </Col>
     <Col>
+    <div className="nodeInfoDIV">
+    <Col>
       <p> {counter}</p>
-      <Button variant={Style.Dark} onClick={(e)=> buildtree(e)} > SORT</Button>
-      <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Reverse</Button>
+   Name :  {chain && <p>{chain.Chainname} </p>  } 
+   RootNode:  {chain && <p>{chain.RootNode.label} </p>} 
+   CurrentNode:  {chain && <p> {chain.CurrentNode.label} </p>}
+
+   <div onChange={onChangeValue}>
+        <input type="radio" value="Male" name="gender"  /> Clear
+        <input type="radio" value="Female" name="gender" /> Binary
+        <input type="radio" value="Other" name="gender" /> Sort
+      </div>
+      </Col>
+    </div>
+      <p> {counter}</p>
+      <Button variant={Style.Dark} onClick={(e)=> buildtree(e)} > Tree</Button>
+      <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Sort</Button>
       <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Alpha</Button>
       <Button variant={Style.Success} onClick={(e)=> buildtree(e)} > Numeric</Button>
-
       </Col>
   </Row>
   </Container>

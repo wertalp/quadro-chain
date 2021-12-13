@@ -37,19 +37,16 @@ const Canvas : React.FC<PropsCanvas> = (props : PropsCanvas) =>  {
      
       const updateBoard = (ctx : any) => {  
         if (chain) {
-          while ( node ) {
-            node.draw(ctx);
-            node = node.nextNode ;
-
-        }}
-         else {
+         while ( node ) {
+          node.draw(ctx)       ;
+          node = node.nextNode ; }
+        } else {
           console.log("We are not in uodate Board") ;
           setChain(chain)  ;
-          return
-        }
-        }
-        console.log("We are not in use effect Board") ;
-        updateBoard(ctx) ;
+         return } 
+      }
+          console.log("We are not in use effect Board") ;
+          updateBoard(ctx) ;
       }, []);
     
     
@@ -58,8 +55,8 @@ const Canvas : React.FC<PropsCanvas> = (props : PropsCanvas) =>  {
           <h3> {anz} {props.node.label} {props.node.position.yPos} </h3>
         <CanvasContext.Consumer>
           {({value, changeContext}) => (
-          <canvas id="BCanvas" ref={canvasRef} style={{color: "red" , backgroundColor :"white", border : "1px solid red"}} {...props}/>   ) }
-          </CanvasContext.Consumer>
+          <canvas id="BCanvas" ref={canvasRef} style={{color: "red" , backgroundColor :"lightGrey", border : "1px solid red"}} {...props}/>   ) }
+        </CanvasContext.Consumer>
         <Button variant={Style.Dark} > SORT</Button>
 
     </Fragment>
