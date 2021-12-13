@@ -69,6 +69,24 @@ drawChaintoCanvas   = (ctx : any) =>  {
     }
 };
 
+drawBinaryTree = (ctx : any) => {
+    this.currentNode = this.RootNode ;
+
+    while ( this.currentNode){
+
+        if(this.currentNode === this.RootNode){
+            this.rootNode.paintLabel(ctx, {xPos:400, yPos:60}) ;
+        }
+
+        if ( this.currentNode.amount > this.currentNode.preNode.amount )
+        { }
+
+
+        this.currentNode = this.currentNode.nextNode ;
+    }
+
+}
+
 
 getallValues =  (): IShapeNode[] => {
     let nodes : IShapeNode[] = [] ;

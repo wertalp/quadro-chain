@@ -112,11 +112,11 @@ export const buildTree = async (chain : BlockChain, ctx : any)  =>  {
      while (currentNode) {
 
         if  (! currentNode.preNode) {
-            await delay(2000) ;
+            await delay(500) ;
             ctx.font      = "24px Verdana";
             ctx.fillStyle = "#000000";
             ctx.fillText( chain.Chainname, sizeWidth/2-80 , 32 )     ; 
-            await delay(2000) ;
+            await delay(800) ;
             //currentNode   = currentNode.nextNode ;
             currentNode.position.xPos = sizeWidth/2 -NODE.WIDTH/2 ;
             currentNode.position.yPos = 60 ;

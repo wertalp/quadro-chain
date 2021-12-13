@@ -71,27 +71,28 @@ export  const App : FunctionComponent<{}> = () =>  {
         let url = BASEURL;
         let datas : any[] ;
         
-            datas = await axios.get(url)
-                  .then( response => response.data)
-                  .then( res      => res.results  )
-                  .then( (items)  => 
-                          items.map( (item : any) =>  {
-                             const { name , location} : { name: any , location : any} = item ;
-                                return { name , location };} )
-                  ).then(
-                        items => items.map( (items :any) =>  ({ amount : items.location.street.number , label : items.name.last }) ))
+        datas = await axios.get(url)
+              .then( response => response.data)
+              .then( res      => res.results  )
+              .then( (items)  => 
+                      items.map( (item : any) =>  {
+                      const { name , location} : { name: any , location : any} = item ;
+                return { name , location };} )
+              ).then(
+                items => items.map( (items :any) =>  
+                        ({ amount : items.location.street.number , label : items.name.last }) ))
                     
-          datas.forEach( async (item ) => {
-            var myNode : ShapeNode ;
-                myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
-                myChain.addnextNode(myNode);   
-              });
-                setChain(myChain) ;  
-            console.log(datas);
-                                        
+        datas.forEach( async (item ) => {
+          var myNode : ShapeNode ;
+              myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
+              myChain.addnextNode(myNode);   
+            });
+              setChain(myChain) ;  
+              console.log(datas);
+
          }
 
-        loadAPIDATA() ;   
+    loadAPIDATA() ;   
 
     },[counter] )
 
