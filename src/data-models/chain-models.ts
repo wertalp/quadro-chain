@@ -80,9 +80,7 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
     
 
     const getNextNode = ( node :ShapeNode)  => {
-        if (!node.preNode ){
-            node.preNode = this.rootNode ;
-        }
+   
     
         if ( node.amount >= node.preNode.amount ){
         if (node.rightNode) {
@@ -106,10 +104,10 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
         }    
     }
      
-     while ( this.currentNode){
-        btreechain.addnextNode(getNextNode(this.currentNode.nextNode)) ;
-        this.currentNode = this.currentNode.nextNode          ;
+     while ( this.currentNode.nextNode){
+        btreechain.addnextNode(getNextNode(this.currentNode)) ;
         this.currentNode.draw(ctx) ;
+        this.currentNode = this.currentNode.nextNode          ;
      }
 
 return btreechain ;
