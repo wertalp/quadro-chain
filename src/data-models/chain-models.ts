@@ -78,43 +78,38 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
     btreechain       =  new BlockChain("Whatever", true) ;
     btreechain.addnextNode(this.rootNode) ;
     
-
     const getNextNode = ( node :ShapeNode)  => {
-   
     
-        if ( node.amount > node.preNode.amount ){
-        if (node.rightNode) {
-            getNextNode( node.rightNode)  ;
-        } 
+    if ( node.amount > node.preNode.amount ){
+    if (node.rightNode) {
+        getNextNode( node.rightNode)  ;
+    } 
         node.preNode.rightNode = node         ;
         node.position = node.preNode.position ;
         node.position.xPos = node.preNode.rightNode.position.xPos + NODE.WIDTH     ;
         node.position.yPos = node.preNode.rightNode.position.yPos + NODE.HEIGHT+20 ;
         node.preNode.rightNode = node ;
         return node ;
+    }
+    if ( node.amount < node.preNode.amount){
+        if (node.leftNode){
+        getNextNode(node.leftNode) ;
         }
-        if ( node.amount < node.preNode.amount){
-            if (node.leftNode){
-            getNextNode(node.leftNode) ;
-            }
         node.preNode.leftNode = node          ;
         node.position = node.preNode.position ;
         node.position.xPos = node.preNode.leftNode.position.xPos - NODE.WIDTH     ;
         node.position.yPos = node.preNode.leftNode.position.yPos + NODE.HEIGHT+20 ;
         node.preNode.leftNode = node ;
         return node ;
-        }    
+    }    
+ }
+    while ( this.currentNode){
+    btreechain.addnextNode(getNextNode(this.currentNode.nextNode)) ;
+    this.currentNode = this.currentNode.nextNode ;
+    this.currentNode.paintLabel(ctx, this.currentNode.position) ;
+    this.currentNode = this.currentNode.nextNode                ;
     }
-     
-     while ( this.currentNode.nextNode){
-        btreechain.addnextNode(getNextNode(this.currentNode.nextNode)) ;
-        this.currentNode = this.currentNode.nextNode ;
-        this.currentNode.paintLabel(ctx, this.currentNode.position) ;
-        this.currentNode = this.currentNode.nextNode          ;
-     }
-
 return btreechain ;
-
 }
 
 

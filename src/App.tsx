@@ -131,6 +131,7 @@ export  const App : FunctionComponent<{}> = () =>  {
       } 
 
   const buildBinaryTRee = ( e: any) => {
+    Utils.clearCanvas(context) ;
         chain.buildBinaryTree(context)
   }   
       
