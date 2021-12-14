@@ -82,14 +82,15 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
     const getNextNode = ( node :ShapeNode)  => {
    
     
-        if ( node.amount >= node.preNode.amount ){
+        if ( node.amount > node.preNode.amount ){
         if (node.rightNode) {
             getNextNode( node.rightNode)  ;
         } 
         node.preNode.rightNode = node         ;
         node.position = node.preNode.position ;
-        node.position.xPos = node.position.xPos + NODE.WIDTH     ;
-        node.position.yPos = node.position.yPos + NODE.HEIGHT+20 ;
+        node.position.xPos = node.preNode.rightNode.position.xPos + NODE.WIDTH     ;
+        node.position.yPos = node.preNode.rightNode.position.yPos + NODE.HEIGHT+20 ;
+        node.preNode.rightNode = node ;
         return node ;
         }
         if ( node.amount < node.preNode.amount){
@@ -98,8 +99,9 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
             }
         node.preNode.leftNode = node          ;
         node.position = node.preNode.position ;
-        node.position.xPos = node.position.xPos - NODE.WIDTH     ;
-        node.position.yPos = node.position.yPos + NODE.HEIGHT+20 ;
+        node.position.xPos = node.preNode.leftNode.position.xPos - NODE.WIDTH     ;
+        node.position.yPos = node.preNode.leftNode.position.yPos + NODE.HEIGHT+20 ;
+        node.preNode.leftNode = node ;
         return node ;
         }    
     }
@@ -107,7 +109,7 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
      while ( this.currentNode.nextNode){
         btreechain.addnextNode(getNextNode(this.currentNode.nextNode)) ;
         this.currentNode = this.currentNode.nextNode ;
-        this.currentNode.draw(ctx) ;
+        this.currentNode.paintLabel(ctx, this.currentNode.position) ;
         this.currentNode = this.currentNode.nextNode          ;
      }
 
