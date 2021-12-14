@@ -105,7 +105,8 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
     }
      
      while ( this.currentNode.nextNode){
-        btreechain.addnextNode(getNextNode(this.currentNode)) ;
+        btreechain.addnextNode(getNextNode(this.currentNode.nextNode)) ;
+        this.currentNode = this.currentNode.nextNode ;
         this.currentNode.draw(ctx) ;
         this.currentNode = this.currentNode.nextNode          ;
      }
