@@ -3,6 +3,7 @@ import { BlockChain}                              from '../data-models/chain-mod
 import {Style}                                    from '../data-models/index-models'  ;
 import { NODE } from './util-constants';
 import { SIGXFSZ } from 'constants';
+import { Block } from 'typescript';
 
 let position : Point  = { xPos: 10, yPos :10};
 
@@ -111,45 +112,45 @@ export const buildTree = async (chain : BlockChain, ctx : any)  =>  {
                    
      while (currentNode) {
 
-        if  (! currentNode.preNode) {
-            await delay(500) ;
-            ctx.font      = "24px Verdana";
-            ctx.fillStyle = "#000000";
-            ctx.fillText( chain.Chainname, sizeWidth/2-80 , 32 )     ; 
-            await delay(800) ;
-            //currentNode   = currentNode.nextNode ;
-            currentNode.position.xPos = sizeWidth/2 -NODE.WIDTH/2 ;
-            currentNode.position.yPos = 60 ;
-            chain.RootNode = currentNode ;
-            currentNode.preNode = null ;  
-        } else {
+    if  (! currentNode.preNode) {
+        await delay(500) ;
+        ctx.font      = "24px Verdana";
+        ctx.fillStyle = "#000000";
+        ctx.fillText( chain.Chainname, sizeWidth/2-80 , 32 )     ; 
+        await delay(800) ;
+        //currentNode   = currentNode.nextNode ;
+        currentNode.position.xPos = sizeWidth/2 -NODE.WIDTH/2 ;
+        currentNode.position.yPos = 60 ;
+        chain.RootNode = currentNode ;
+        currentNode.preNode = null ;  
+    } else {
 
-        if (currentNode.amount < currentNode.preNode.amount){
-            console.log("compare to nodes :" 
-            + currentNode.amount 
-            + " - < " 
-            + currentNode.preNode.amount);
-            _xpos =  currentNode.preNode.position.xPos - NODE.WIDTH/2  -  hspace ;
+    if (currentNode.amount < currentNode.preNode.amount){
+        console.log("compare to nodes :" 
+        + currentNode.amount 
+        + " - < " 
+        + currentNode.preNode.amount);
+        _xpos =  currentNode.preNode.position.xPos - NODE.WIDTH/2  -  hspace ;
 
-        if (currentNode.position.xPos + NODE.WIDTH < NODE.WIDTH/2 -hspace ){
-            _xpos =  NODE.WIDTH/2+hspace  ; }
-            _ypos =  currentNode.preNode.position.yPos+
-                        NODE.HEIGHT + vspace ;
+    if (currentNode.position.xPos + NODE.WIDTH < NODE.WIDTH/2 -hspace ){
+        _xpos =  NODE.WIDTH/2+hspace  ; }
+        _ypos =  currentNode.preNode.position.yPos+
+                    NODE.HEIGHT + vspace ;
 
-            currentNode.position = {xPos: _xpos , yPos: _ypos} ;
-        }
-        if (currentNode.amount > currentNode.preNode.amount){
-            console.log("compare to nodes :" 
-            + currentNode.amount + " - > " 
-            + currentNode.preNode.amount);
-            
-            _xpos =  currentNode.preNode.position.xPos + NODE.WIDTH/2  + hspace     ;
-            _ypos =  currentNode.preNode.position.yPos + NODE.HEIGHT   + vspace     ;
-            
-        if (currentNode.preNode.position.xPos+ NODE.WIDTH/2 > sizeWidth-200 ){
-            _xpos = currentNode.preNode.position.xPos ;}
-            
         currentNode.position = {xPos: _xpos , yPos: _ypos} ;
+    }
+    if (currentNode.amount > currentNode.preNode.amount){
+        console.log("compare to nodes :" 
+        + currentNode.amount + " - > " 
+        + currentNode.preNode.amount);
+        
+        _xpos =  currentNode.preNode.position.xPos + NODE.WIDTH/2  + hspace     ;
+        _ypos =  currentNode.preNode.position.yPos + NODE.HEIGHT   + vspace     ;
+            
+    if (currentNode.preNode.position.xPos+ NODE.WIDTH/2 > sizeWidth-200 ){
+        _xpos = currentNode.preNode.position.xPos ;}
+        
+       currentNode.position = {xPos: _xpos , yPos: _ypos} ;
         }
     }
         await delay(20) ; 
@@ -158,11 +159,11 @@ export const buildTree = async (chain : BlockChain, ctx : any)  =>  {
             drawlines(currentNode.preNode,currentNode,ctx) ;
         }
         currentNode = currentNode.nextNode ;
-      }
-      
+    }         
 }
 
-   const drawlines = (fromNode : ShapeNode , toNode : ShapeNode, ctx : any) : void => {
+
+    const drawlines = (fromNode : ShapeNode , toNode : ShapeNode, ctx : any) : void => {
         
         let pointFrom : Point = {xPos:0  ,yPos:0} ;
         let pointTo   : Point = {xPos:0 , yPos:0} ;      

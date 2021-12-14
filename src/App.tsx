@@ -125,10 +125,14 @@ export  const App : FunctionComponent<{}> = () =>  {
     } 
      
 
-  const buildtree = (e : any) => {
+  const buildTree = (e : any) => {
     isLoading = true ;
     Utils.buildTree( chain , context) ;
       } 
+
+  const buildBinaryTRee = ( e: any) => {
+        chain.buildBinaryTree(context)
+  }   
       
    const onChangeValue = (event : any) => {
     isLoading = false ;
@@ -207,10 +211,10 @@ export  const App : FunctionComponent<{}> = () =>  {
       </Col>
     </div>
       <p> {counter}</p>
-      <Button variant={Style.Dark} onClick={(e)=> buildtree(e)} > Tree</Button>
-      <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Sort</Button>
-      <Button variant={Style.Info} onClick={(e)=> buildtree(e)} > Alpha</Button>
-      <Button variant={Style.Success} onClick={(e)=> buildtree(e)} > Numeric</Button>
+      <Button variant={Style.Dark} onClick={(e)=> buildTree(e)} > Tree</Button>
+      <Button variant={Style.Info} onClick={(e)=> buildBinaryTRee(e)} > BinaryTree</Button>
+      <Button variant={Style.Info} onClick={(e)=> buildTree(e)} > Alpha</Button>
+      <Button variant={Style.Success} onClick={(e)=> buildTree(e)} > Numeric</Button>
       </Col>
   </Row>
   </Container>
