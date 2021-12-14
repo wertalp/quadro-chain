@@ -76,8 +76,13 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
     let btreechain  : BlockChain  = null ;
     this.currentNode =  this.RootNode    ; 
     btreechain       =  new BlockChain("Whatever", true) ;
+    btreechain.addnextNode(this.rootNode) ;
+    
 
     const getNextNode = ( node :ShapeNode)  => {
+        if (!node.preNode ){
+            node.preNode = this.rootNode ;
+        }
     
         if ( node.amount >= node.preNode.amount ){
         if (node.rightNode) {
@@ -102,7 +107,7 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
     }
      
      while ( this.currentNode){
-        btreechain.addnextNode(getNextNode(this.currentNode)) ;
+        btreechain.addnextNode(getNextNode(this.currentNode.nextNode)) ;
         this.currentNode = this.currentNode.nextNode          ;
         this.currentNode.draw(ctx) ;
      }
