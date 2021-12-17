@@ -73,43 +73,45 @@ drawChaintoCanvas   = (ctx : any) =>  {
 
 buildBinaryTree = ( ctx :any) : BlockChain => {
     
-    let btreechain  : BlockChain  = null ;
-    this.currentNode =  this.RootNode    ; 
+    let btreechain  : BlockChain  = null      ;
+    this.currentNode = this.rootNode          ;
     btreechain       =  new BlockChain("Whatever", true) ;
-    btreechain.addnextNode(this.rootNode) ;
+    btreechain.addnextNode(this.rootNode)     ;
+
+    let treeNode : ShapeNode = this.RootNode  ;
     
-    const getNextNode = ( node :ShapeNode)  => {
+    const getNextNode = ( node :ShapeNode , treeNode :ShapeNode)  => {
     
-    if ( node.amount > node.preNode.amount ){
-    if (node.rightNode) {
-        getNextNode( node.rightNode)  ;
+    if ( node.amount > treeNode.amount ){
+        
+    if (treeNode.rightNode) {
+        getNextNode( node , treeNode.rightNode)  ;
     } 
-        node.preNode.rightNode = node         ;
-        node.position = node.preNode.position ;
-        node.position.xPos = node.preNode.rightNode.position.xPos + NODE.WIDTH     ;
-        node.position.yPos = node.preNode.rightNode.position.yPos + NODE.HEIGHT+20 ;
-        node.preNode.rightNode = node ;
+        treeNode.rightNode = node         ;
+        node.position.xPos = treeNode.position.xPos + NODE.WIDTH     ;
+        node.position.yPos = treeNode.position.yPos + NODE.HEIGHT+20 ;
+       
         return node ;
     }
-    if ( node.amount < node.preNode.amount){
-        if (node.leftNode){
-        getNextNode(node.leftNode) ;
+    if ( node.amount < treeNode.amount){
+      
+        if (treeNode.leftNode){
+        getNextNode(node ,treeNode.leftNode) ;
         }
-        node.preNode.leftNode = node          ;
-        node.position = node.preNode.position ;
-        node.position.xPos = node.preNode.leftNode.position.xPos - NODE.WIDTH     ;
-        node.position.yPos = node.preNode.leftNode.position.yPos + NODE.HEIGHT+20 ;
-        node.preNode.leftNode = node ;
+        treeNode.leftNode = node          ;
+        node.position.xPos = treeNode.position.xPos - NODE.WIDTH     ;
+        node.position.yPos = treeNode.leftNode.position.yPos + NODE.HEIGHT+20 ;
         return node ;
     }    
  }
-    while ( this.currentNode){
-    btreechain.addnextNode(getNextNode(this.currentNode.nextNode)) ;
-    this.currentNode = this.currentNode.nextNode ;
-    this.currentNode.paintLabel(ctx, this.currentNode.position) ;
-    this.currentNode = this.currentNode.nextNode                ;
+    while ( this.currentNode.nextNode){
+
+    let cNode = getNextNode(this.currentNode ,this.rootNode) ;
+    this.currentNode.paintLabel(ctx, cNode.position)         ;
+    this.currentNode = this.currentNode.nextNode             ;
     }
-return btreechain ;
+   
+ return btreechain ;
 }
 
 

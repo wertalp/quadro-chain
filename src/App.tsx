@@ -81,6 +81,7 @@ export  const App : FunctionComponent<{}> = () =>  {
               ).then(
                 items => items.map( (items :any) =>  
                         ({ amount : items.location.street.number , label : items.name.last }) ))
+                        .catch( (error: any) => console.log("Error fetching data fro API: "+error )) ;
                     
         datas.forEach( async (item ) => {
           var myNode : ShapeNode ;
