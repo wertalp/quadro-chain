@@ -75,40 +75,57 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
     
     let btreechain  : BlockChain  = null      ;
     this.currentNode = this.rootNode          ;
-    btreechain       =  new BlockChain("Whatever", true) ;
+    btreechain       =  new BlockChain("BinaryTree", true) ;
     btreechain.addnextNode(this.rootNode)     ;
 
     let treeNode : ShapeNode = this.RootNode  ;
     
     const getNextNode = ( node :ShapeNode , treeNode :ShapeNode)  => {
-    
-    if ( node.amount > treeNode.amount ){
         
-    if (treeNode.rightNode) {
-        getNextNode( node , treeNode.rightNode)  ;
-    } 
-        treeNode.rightNode = node         ;
-        node.position.xPos = treeNode.position.xPos + NODE.WIDTH     ;
-        node.position.yPos = treeNode.position.yPos + NODE.HEIGHT+20 ;
-       
-        return node ;
-    }
-    if ( node.amount < treeNode.amount){
-      
-        if (treeNode.leftNode){
-        getNextNode(node ,treeNode.leftNode) ;
-        }
-        treeNode.leftNode = node          ;
-        node.position.xPos = treeNode.position.xPos - NODE.WIDTH     ;
-        node.position.yPos = treeNode.leftNode.position.yPos + NODE.HEIGHT+20 ;
-        return node ;
-    }    
- }
-    while ( this.currentNode.nextNode){
 
-    let cNode = getNextNode(this.currentNode ,this.rootNode) ;
-    this.currentNode.paintLabel(ctx, cNode.position)         ;
-    this.currentNode = this.currentNode.nextNode             ;
+        if (node.amount > treeNode.amount){
+            if (treeNode.rightNode){
+                node.position.xPos = treeNode.rightNode.position.xPos+ NODE.WIDTH ;
+                node.position.yPos = treeNode.rightNode.position.yPos+NODE.HEIGHT+15 ;
+
+                getNextNode(node , treeNode.rightNode) 
+            }
+            else {
+                node.position.xPos = treeNode.rightNode.position.xPos+ NODE.WIDTH ;
+                node.position.yPos = treeNode.rightNode.position.yPos+NODE.HEIGHT+15 ;
+                treeNode.rightNode = node ;
+                 }
+        
+        }
+        if (node.amount < treeNode.amount){
+            if (treeNode.leftNode){
+                node.position.xPos = treeNode.leftNode.position.xPos-NODE.WIDTH ;
+                node.position.yPos = treeNode.leftNode.position.yPos +NODE.HEIGHT+15;
+                getNextNode(node , treeNode.leftNode) 
+            }
+            else {
+                node.position.xPos = treeNode.leftNode.position.xPos- NODE.WIDTH ;
+                node.position.yPos = treeNode.leftNode.position.yPos+NODE.HEIGHT+15 ;
+                treeNode.leftNode = node ;
+                 }
+
+        }
+        return node ;
+     }
+   
+   
+     while ( this.currentNode.nextNode){
+
+    if (this.currentNode === this.rootNode){
+        this.rootNode.position.xPos = ctx.canvas.width/2 - NODE.WIDTH/2 ;
+        this.currentNode.paintLabel(ctx,this.currentNode.position) ;
+        this.currentNode = this.currentNode.nextNode               ;
+    }
+
+        let cNode = getNextNode(this.currentNode ,this.rootNode) ;
+        this.currentNode.paintLabel(ctx, cNode.position)         ;
+        btreechain.addnextNode(cNode)                            ;
+        this.currentNode = this.currentNode.nextNode             ;
     }
    
  return btreechain ;
