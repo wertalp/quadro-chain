@@ -71,7 +71,7 @@ export  const App : FunctionComponent<{}> = () =>  {
         let url = BASEURL;
         let datas : any[] ;
         
-        datas = await axios.get(url)
+         datas = await axios.get(url)
               .then( response => response.data)
               .then( res      => res.results  )
               .then( (items)  => 

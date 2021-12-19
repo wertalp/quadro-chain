@@ -1,6 +1,7 @@
 import { getNodeMajorVersion } from "typescript";
 import { Context } from "vm";
 import { NODE } from "../utils/util-constants";
+import  {drawlines} from "../utils/chain-utils";
 import { ShapeNode, IShapeNode} from  "./index-models" ;
 
 
@@ -91,22 +92,24 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
                 getNextNode(node , treeNode.rightNode) 
             }
             else {
-                node.position.xPos = treeNode.rightNode.position.xPos+ NODE.WIDTH ;
-                node.position.yPos = treeNode.rightNode.position.yPos+NODE.HEIGHT+15 ;
+                node.position.xPos = treeNode.position.xPos+ NODE.WIDTH ;
+                node.position.yPos = treeNode.position.yPos+NODE.HEIGHT+15 ;
                 treeNode.rightNode = node ;
+                drawlines(treeNode, node,ctx) ;
                  }
         
         }
         if (node.amount < treeNode.amount){
             if (treeNode.leftNode){
-                node.position.xPos = treeNode.leftNode.position.xPos-NODE.WIDTH ;
-                node.position.yPos = treeNode.leftNode.position.yPos +NODE.HEIGHT+15;
+                node.position.xPos = treeNode.position.xPos-NODE.WIDTH ;
+                node.position.yPos = treeNode.position.yPos +NODE.HEIGHT+15;
                 getNextNode(node , treeNode.leftNode) 
             }
             else {
-                node.position.xPos = treeNode.leftNode.position.xPos- NODE.WIDTH ;
-                node.position.yPos = treeNode.leftNode.position.yPos+NODE.HEIGHT+15 ;
+                node.position.xPos = treeNode.position.xPos- NODE.WIDTH ;
+                node.position.yPos = treeNode.position.yPos+NODE.HEIGHT+15 ;
                 treeNode.leftNode = node ;
+                drawlines(treeNode, node,ctx) ;
                  }
 
         }
@@ -120,14 +123,16 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
         this.rootNode.position.xPos = ctx.canvas.width/2 - NODE.WIDTH/2 ;
         this.currentNode.paintLabel(ctx,this.currentNode.position) ;
         this.currentNode = this.currentNode.nextNode               ;
-    }
+    } 
 
         let cNode = getNextNode(this.currentNode ,this.rootNode) ;
         this.currentNode.paintLabel(ctx, cNode.position)         ;
+        drawlines(this.currentNode,this.currentNode.nextNode,ctx) ;
         btreechain.addnextNode(cNode)                            ;
         this.currentNode = this.currentNode.nextNode             ;
     }
    
+
  return btreechain ;
 }
 

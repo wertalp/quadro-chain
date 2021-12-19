@@ -32,7 +32,7 @@ export const clearCanvas = ( ctx : any) : Boolean => {
     return true ;
 }
 
-export const canvas_arrow =(context : any, fromPosition: Point, toPosition :Point) => {
+export const canvas_arrow = (context : any, fromPosition: Point, toPosition :Point) => {
     console.log("WE ARE PAINTING ARROWS Function");
 
 
@@ -163,7 +163,7 @@ export const buildTree = async (chain : BlockChain, ctx : any)  =>  {
 }
 
 
-    const drawlines = (fromNode : ShapeNode , toNode : ShapeNode, ctx : any) : void => {
+    export const drawlines = (fromNode : ShapeNode , toNode : ShapeNode, ctx : any) : void => {
         
         let pointFrom : Point = {xPos:0  ,yPos:0} ;
         let pointTo   : Point = {xPos:0 , yPos:0} ;      
@@ -192,5 +192,7 @@ export const buildTree = async (chain : BlockChain, ctx : any)  =>  {
         ctx.stroke();          // Render the path
        
      }
+
+     
 
 
