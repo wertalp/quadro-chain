@@ -86,7 +86,7 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
 
         if (node.amount > treeNode.amount){
             if (treeNode.rightNode){
-                node.position.xPos = treeNode.rightNode.position.xPos+ NODE.WIDTH ;
+                node.position.xPos = treeNode.rightNode.position.xPos+ NODE.WIDTH*2 ;
                 node.position.yPos = treeNode.rightNode.position.yPos+NODE.HEIGHT+15 ;
 
                 getNextNode(node , treeNode.rightNode) 
@@ -127,7 +127,7 @@ buildBinaryTree = ( ctx :any) : BlockChain => {
 
         let cNode = getNextNode(this.currentNode ,this.rootNode) ;
         this.currentNode.paintLabel(ctx, cNode.position)         ;
-        drawlines(this.currentNode,this.currentNode.nextNode,ctx) ;
+        //drawlines(this.currentNode,this.currentNode.nextNode,ctx) ;
         btreechain.addnextNode(cNode)                            ;
         this.currentNode = this.currentNode.nextNode             ;
     }
