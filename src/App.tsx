@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, FunctionComponent, useEffect, useState} from
 import ReactDOM from 'react-dom' ;
 import logo from './logo.svg'    ;
 import './App.css'               ;
-import {ShapeNode, Point, BlockChainProps, IFormData, IShapeNode, NodeData} from './data-models/index-models'  ;
+import {ShapeNode, Point, BlockChainProps, IFormData, IShapeNode, NodeData, IPersonData, PersonDataProps} from './data-models/index-models'  ;
 import {BlockChain}    from './data-models/chain-models' ;
 import Board           from './components/Board'         ;
 import Button          from 'react-bootstrap/esm/Button' ;
@@ -20,8 +20,10 @@ import  * as apiutil   from './utils/api-fetch' ;
 import  axios,{ AxiosInstance} from 'axios';
 import { BASEURL } from './utils/util-constants';
 import { isTemplateSpan } from 'typescript';
- 
+import { CustSpinner } from './components/CustSpinner';
+import { PersonCard }  from './components/PersonCard' ;
 
+ 
 
 export  const App : FunctionComponent<{}> = () =>  {
     let myChain       : BlockChain  = null ; 
@@ -32,12 +34,13 @@ export  const App : FunctionComponent<{}> = () =>  {
     let hspacer       : number = 10     ;
     let loadedData    : NodeData[] = [] ;
 
-
     const [chain,    setChain   ]        = useState<BlockChain>(null)     ;
     const [counter,  setCounter ]        = useState<number>(startCounter) ;  
     const [rerender, setRerender]        = useState(false)           ;
     const [currentNode, setCurrentNode]  = useState(null)            ;
     const [context, setContext  ]        = useState(null)            ;
+    const [loading, setLoading  ]        = useState(true)            ;
+    const [personDatas , setPersonDatas] = useState<IPersonData[]>(null) ;
 
 
 
@@ -47,12 +50,12 @@ export  const App : FunctionComponent<{}> = () =>  {
         myChain = Utils.createChain() ;
    
      const initSetup = async () => {
-        if (isLoading && !isTest) {
+        if (loading && !isTest) {
             promiseBC
             .then( item =>  { setChain(item)})
           };  
           
-        if (isLoading && isTest){
+        if (loading && isTest){
           loadedData = [...dataNodes];
           loadedData
           .forEach( async (item ) => {
@@ -67,30 +70,32 @@ export  const App : FunctionComponent<{}> = () =>  {
       //initSetup() ;
       
       const loadAPIDATA = async () => {
-        let client : AxiosInstance = null ;
+  
         let url = BASEURL;
-        let datas : any[] ;
+        let datas : IPersonData[] ;
         
-         datas = await axios.get(url)
-              .then( response => response.data)
-              .then( res      => res.results  )
-              .then( (items)  => 
-                      items.map( (item : any) =>  {
-                      const { name , location} : { name: any , location : any} = item ;
-                return { name , location };} )
-              ).then(
-                items => items.map( (items :any) =>  
-                        ({ amount : items.location.street.number , label : items.name.last }) ))
-                        .catch( (error: any) => console.log("Error fetching data fro API: "+error )) ;
+        datas = await axios.get(url)
+          .then( response => response.data)
+          .then( res      => res.results  )
+          .then( (items)  => 
+            items.map( (item : IPersonData) =>  {
+            const { name , location, gender,email, login, registered, id,picture, nat } 
+            : { name: any , location : any , gender: string, email: string, login:any,
+                registered:any, id:any,picture:any,nat:string} = item ;
+          
+          return { name , location,gender,email,login,registered,id,picture,nat };} )
+          )
+          .catch( (error: any) => console.log("Error fetching data fro API: "+error )) ;
+         
+        await new Promise(resolve => setTimeout(resolve, 2000)).then( res => { setLoading(false) ;setPersonDatas(datas) ;  return res})                
                     
-        datas.forEach( async (item ) => {
+        datas.forEach( async (item : IPersonData ) => {
           var myNode : ShapeNode ;
-              myNode = MAPPING.mapJsonToShapeNode(item.label , item.amount ) ;
+              myNode = MAPPING.mapJsonToShapeNode(item.name.last , item.location.postcode ) ;
               myChain.addnextNode(myNode);   
             });
               setChain(myChain) ;  
               console.log(datas);
-
          }
 
     loadAPIDATA() ;   
@@ -133,15 +138,14 @@ export  const App : FunctionComponent<{}> = () =>  {
 
   const buildBinaryTRee = ( e: any) => {
     Utils.clearCanvas(context) ;
-        chain.buildBinaryTree(context)
+        chain.buildBinaryTree(context) ;
   }   
       
    const onChangeValue = (event : any) => {
     isLoading = false ;
 
    }   
-
-  
+   
     const drawLinkedList = (ctx : any):Boolean => {
     if( Utils.clearCanvas(ctx)) {
       if(chain) {
@@ -178,47 +182,58 @@ export  const App : FunctionComponent<{}> = () =>  {
         <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
         </Col>
         <Col>
-        {!chain && <Board blockChain={chain}  counter={counter}> </Board> }</Col>
-        <Col></Col>
-        <Col>
-      {!chain && <Board blockChain={chain}  counter={counter}> </Board> }
-      </Col>
-    </Row>
-  <Row>
-  <Col>
-    <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
-      {false && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={180}  height={200} > </Canvas>}
-    </CanvasContext.Provider>
-
-    </Col>
-    <Col>
-    {false ? <Spinner animation="border" /> :
-    <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
-      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={850}  height={800} > </Canvas>}
-    </CanvasContext.Provider>}
-    </Col>
-    <Col>
-    <div className="nodeInfoDIV">
-    <Col>
+        <div className="nodeInfoDIV">
       <p> {counter}</p>
-   Name :  {chain && <p>{chain.Chainname} </p>  } 
-   RootNode:  {chain && <p>{chain.RootNode.label} </p>} 
-   CurrentNode:  {chain && <p> {chain.CurrentNode.label} </p>}
+      Name :  {chain && <p>{chain.Chainname} </p>  } 
+      RootNode:  {chain && <p>{chain.RootNode.label} </p>} 
+      CurrentNode:  {chain && <p> {chain.CurrentNode.label} </p>}
 
-   <div onChange={onChangeValue}>
+      <div onChange={onChangeValue}>
         <input type="radio" value="Male" name="gender"  /> Clear
         <input type="radio" value="Female" name="gender" /> Binary
         <input type="radio" value="Other" name="gender" /> Sort
       </div>
-      </Col>
+
     </div>
+        </Col>
+
+        <Col>
+      {loading ? <CustSpinner animation="border" /> :
+      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
+      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={420}  height={400} > </Canvas>}
+      </CanvasContext.Provider>}
+
       <p> {counter}</p>
       <Button variant={Style.Dark} onClick={(e)=> buildTree(e)} > Tree</Button>
       <Button variant={Style.Info} onClick={(e)=> buildBinaryTRee(e)} > BinaryTree</Button>
       <Button variant={Style.Info} onClick={(e)=> buildTree(e)} > Alpha</Button>
       <Button variant={Style.Success} onClick={(e)=> buildTree(e)} > Numeric</Button>
       </Col>
-  </Row>
+      <Col>
+      {loading ? <CustSpinner animation="border" /> :
+      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
+      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={420}  height={400} > </Canvas>}
+      </CanvasContext.Provider>}
+      </Col>
+    </Row>
+    <Row>
+      <Col>
+       {personDatas && <PersonCard PersonDatas={personDatas}></PersonCard> } 
+
+      </Col>
+      <Col>
+ 
+      </Col>
+      <Col>
+      {loading ? <Spinner animation="border" /> :
+      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
+      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={500}  height={400} > </Canvas>}
+      </CanvasContext.Provider>}
+      </Col>
+ 
+
+    </Row>
+
   </Container>
 
     </div>

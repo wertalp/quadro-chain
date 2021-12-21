@@ -32,6 +32,58 @@ export interface IFormData{
     art  : Style  ;
 } 
 
+export interface IPersonData{
+    id       : number ;
+    gender   : string ;
+    name : {  
+        title    : string ;
+        first    : string ;
+        last     : string ;
+    },
+    location : {
+        street: {
+            number: number;
+            name  :string ;
+                 }
+        city:  string ;
+        state: string ;
+        country: string;
+        postcode: number;
+    },
+    coordinates : {
+        latitude:  string;
+        longitude: string;
+        },
+    registered  : {
+        date: string ;
+        age: number  ; 
+    } ,
+    email: string,
+    contact :{
+        phone: string,
+        cell: string,
+        id: {
+            name: string,
+            value: string
+        }
+    }
+    login: {
+        uuid: string,
+        username: string,
+        password: string,
+        },
+    picture : {
+            large     : string ,
+            medium    : string ,
+            thumbnail : string ,
+            },
+    nat : string 
+};
+
+export interface PersonDataProps{
+    PersonDatas: IPersonData[];
+}
+
 export interface NodeData{
     label  :  string ;
     amount :  number ;

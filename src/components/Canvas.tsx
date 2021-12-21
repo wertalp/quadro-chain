@@ -52,18 +52,13 @@ const Canvas : React.FC<PropsCanvas> = (props : PropsCanvas) =>  {
     
     return ( 
     <Fragment>
-          <h3> {anz} {props.node.label} {props.node.position.yPos} </h3>
+          <h5> {props.blockchain.Chainname} </h5>
         <CanvasContext.Consumer>
           {({value, changeContext}) => (
           <canvas id="BCanvas" ref={canvasRef} style={{color: "red" , backgroundColor :"lightGrey", border : "1px solid red"}} {...props}/>   ) }
         </CanvasContext.Consumer>
-        <Button variant={Style.Dark} > SORT</Button>
-
-    </Fragment>
-
-       
-        )
-
+    </Fragment>   
+    )
 }
 
 export default Canvas
