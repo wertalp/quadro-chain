@@ -182,6 +182,7 @@ export  const App : FunctionComponent<{}> = () =>  {
         <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
         </Col>
         <Col>
+        {personDatas && <PersonCard PersonDatas={personDatas}></PersonCard> } 
         <div className="nodeInfoDIV">
       <p> {counter}</p>
       Name :  {chain && <p>{chain.Chainname} </p>  } 
@@ -218,11 +219,11 @@ export  const App : FunctionComponent<{}> = () =>  {
     </Row>
     <Row>
       <Col>
-       {personDatas && <PersonCard PersonDatas={personDatas}></PersonCard> } 
+
 
       </Col>
       <Col>
- 
+      {personDatas && <PersonCard PersonDatas={personDatas}></PersonCard> } 
       </Col>
       <Col>
       {loading ? <Spinner animation="border" /> :

@@ -5,5 +5,5 @@ export const NODE = {
    COLOR   : "orange"
 }
 
-let anzResults : number = 15 ;
+let anzResults : number = 100 ;
 export const BASEURL = "https://randomuser.me/api/?page=1&results="+anzResults+"&nat=us";
