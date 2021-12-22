@@ -33,7 +33,7 @@ export const PersonCard : React.FC<PersonDataProps> = ( {PersonDatas} : PersonDa
             console.log( "Error occured " + personData.name.first ) ;
         }
 
-    },[index])
+    },[index, PersonDatas,personData])
 
     return (
   <Fragment>

@@ -79,15 +79,15 @@ export  const App : FunctionComponent<{}> = () =>  {
           .then( res      => res.results  )
           .then( (items)  => 
             items.map( (item : IPersonData) =>  {
-            const { name , location, gender,email, login, registered, id,picture, nat } 
-            : { name: any , location : any , gender: string, email: string, login:any,
-                registered:any, id:any,picture:any,nat:string} = item ;
-          
+            const {  name , location, gender,email, login, registered, id,picture, nat } 
+            :     {  name: any , location : any , gender: string, email: string, login:any,
+                     registered:any, id:any,picture:any,nat:string} = item ;
+      
           return { name , location,gender,email,login,registered,id,picture,nat };} )
           )
           .catch( (error: any) => console.log("Error fetching data fro API: "+error )) ;
          
-        await new Promise(resolve => setTimeout(resolve, 2000)).then( res => { setLoading(false) ;setPersonDatas(datas) ;  return res})                
+        await new Promise(resolve => setTimeout(resolve, 1000)).then( res => { setLoading(false) ;setPersonDatas(datas) ;  return res})                
                     
         datas.forEach( async (item : IPersonData ) => {
           var myNode : ShapeNode ;
@@ -199,10 +199,11 @@ export  const App : FunctionComponent<{}> = () =>  {
         </Col>
 
         <Col>
-      {loading ? <CustSpinner animation="border" /> :
+        {loading ? <Spinner animation="border" /> :
       <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
-      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={420}  height={400} > </Canvas>}
+      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={740}  height={420} > </Canvas>}
       </CanvasContext.Provider>}
+
 
       <p> {counter}</p>
       <Button variant={Style.Dark} onClick={(e)=> buildTree(e)} > Tree</Button>
@@ -210,29 +211,23 @@ export  const App : FunctionComponent<{}> = () =>  {
       <Button variant={Style.Info} onClick={(e)=> buildTree(e)} > Alpha</Button>
       <Button variant={Style.Success} onClick={(e)=> buildTree(e)} > Numeric</Button>
       </Col>
-      <Col>
-      {loading ? <CustSpinner animation="border" /> :
-      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
-      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={420}  height={400} > </Canvas>}
-      </CanvasContext.Provider>}
-      </Col>
+  
     </Row>
     <Row>
       <Col>
-
+  
 
       </Col>
       <Col>
-      {personDatas && <PersonCard PersonDatas={personDatas}></PersonCard> } 
-      </Col>
-      <Col>
-      {loading ? <Spinner animation="border" /> :
-      <CanvasContext.Provider value={{ value : "" , changeContext: (ctx) => changeContext(ctx)}}  >
-      {chain && <Canvas  blockchain={chain} node={chain.CurrentNode} draw={drawLinkedList} drawNode={drawNode} width={500}  height={400} > </Canvas>}
-      </CanvasContext.Provider>}
-      </Col>
- 
+  
+      {chain && <Board blockChain={chain}  counter={counter}> </Board> }
+  </Col>
+  <Col>
+  {chain && <Board blockChain={chain}  counter={counter}> </Board> }
 
+  </Col>
+   
+  
     </Row>
 
   </Container>
