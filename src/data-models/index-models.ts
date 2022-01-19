@@ -177,7 +177,7 @@ export interface NodeData{
         ctx.fillStyle = "#000000";
         ctx.fillText( this.label ,xPos+10,yPos+15 )    ; 
         ctx.font = "8px Verdana";
-        ctx.fillText( this._amount ,xPos+NODE.WIDTH-20,yPos+8 )    ; 
+        ctx.fillText( this._amount ,xPos+NODE.WIDTH-28,yPos+10 )    ; 
         if (this.preNode) {
           // drawConnectLine( ctx,this.position, this.position);
          }
