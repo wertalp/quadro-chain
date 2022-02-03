@@ -51,7 +51,6 @@ export  const App : FunctionComponent<{}> = () =>  {
     const [personDatas , setPersonDatas] = useState<IPersonData[]>(null) ;
 
 
-
    useEffect( 
         () => {  
         console.log("starting ... hooking; use Effect ") ; 
