@@ -22,6 +22,14 @@ import { BASEURL } from './utils/util-constants';
 import { isTemplateSpan } from 'typescript';
 import { CustSpinner } from './components/CustSpinner';
 import { PersonCard }  from './components/PersonCard' ;
+import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
+import { Amplify, Auth } from 'aws-amplify';
+import awsExports from './aws-exports';
+
+import awsconfig from './aws-exports';
+
+Amplify.configure(awsconfig);
+Auth.configure(awsconfig);
 
  
 
@@ -229,10 +237,11 @@ export  const App : FunctionComponent<{}> = () =>  {
    
   
     </Row>
+    <AmplifySignOut/>
 
   </Container>
 
     </div>
   )}
 
-export default App;
+export default withAuthenticator(App);

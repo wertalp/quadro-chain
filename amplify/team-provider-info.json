@@ -10,6 +10,11 @@
       "StackName": "amplify-quadrochain-dev-185809",
       "StackId": "arn:aws:cloudformation:eu-central-1:347987868616:stack/amplify-quadrochain-dev-185809/dc921d90-851a-11ec-83e2-0a74a720992c",
       "AmplifyAppId": "d2stzpxntkjhgi"
+    },
+    "categories": {
+      "auth": {
+        "quadrochain3dc64e16": {}
+      }
     }
   }
 }
