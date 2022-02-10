@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-quadrochain-dev-185809-authRole",
+      "UnauthRoleArn": "arn:aws:iam::347987868616:role/amplify-quadrochain-dev-185809-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::347987868616:role/amplify-quadrochain-dev-185809-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-quadrochain-dev-185809-deployment",
+      "UnauthRoleName": "amplify-quadrochain-dev-185809-unauthRole",
+      "StackName": "amplify-quadrochain-dev-185809",
+      "StackId": "arn:aws:cloudformation:eu-central-1:347987868616:stack/amplify-quadrochain-dev-185809/dc921d90-851a-11ec-83e2-0a74a720992c",
+      "AmplifyAppId": "d2stzpxntkjhgi"
+    },
+    "categories": {
+      "auth": {
+        "quadrochain3dc64e16": {}
+      }
+    }
+  }
+}

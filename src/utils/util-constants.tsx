@@ -1,8 +1,9 @@
 
 export const NODE = {
-   WIDTH   : 55 ,
-   HEIGHT  : 16 ,
-   COLOR   : "orange"
+   WIDTH   : 80 ,
+   HEIGHT  : 22 ,
+   COLOR   : "yellow"
 }
 
-export const BASEURL = "https://randomuser.me/api/?page=1&results=240&nat=us"
+let anzResults : number = 25;
+export const BASEURL = "https://randomuser.me/api/?page=1&results="+anzResults+"&nat=us";

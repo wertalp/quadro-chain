@@ -1,4 +1,7 @@
+import { getNodeMajorVersion } from "typescript";
 import { Context } from "vm";
+import { NODE } from "../utils/util-constants";
+import  {drawlines} from "../utils/chain-utils";
 import { ShapeNode, IShapeNode} from  "./index-models" ;
 
 
@@ -69,22 +72,68 @@ drawChaintoCanvas   = (ctx : any) =>  {
     }
 };
 
-drawBinaryTree = (ctx : any) => {
-    this.currentNode = this.RootNode ;
+buildBinaryTree = ( ctx :any) : BlockChain => {
+    
+    let btreechain  : BlockChain  = null      ;
+    this.currentNode = this.rootNode          ;
+    btreechain       =  new BlockChain("BinaryTree", true) ;
+    btreechain.addnextNode(this.rootNode)     ;
 
-    while ( this.currentNode){
+    let treeNode : ShapeNode = this.RootNode  ;
+    
+    const getNextNode = ( node :ShapeNode , treeNode :ShapeNode)  => {
+        
 
-        if(this.currentNode === this.RootNode){
-            this.rootNode.paintLabel(ctx, {xPos:400, yPos:60}) ;
+        if (node.amount > treeNode.amount){
+            if (treeNode.rightNode){
+                node.position.xPos = treeNode.rightNode.position.xPos+ NODE.WIDTH*2 ;
+                node.position.yPos = treeNode.rightNode.position.yPos+NODE.HEIGHT+15 ;
+
+                getNextNode(node , treeNode.rightNode) 
+            }
+            else {
+                node.position.xPos = treeNode.position.xPos+ NODE.WIDTH ;
+                node.position.yPos = treeNode.position.yPos+NODE.HEIGHT+15 ;
+                treeNode.rightNode = node ;
+                drawlines(treeNode, node,ctx) ;
+                 }
+        
         }
+        if (node.amount < treeNode.amount){
+            if (treeNode.leftNode){
+                node.position.xPos = treeNode.position.xPos-NODE.WIDTH ;
+                node.position.yPos = treeNode.position.yPos +NODE.HEIGHT+15;
+                getNextNode(node , treeNode.leftNode) 
+            }
+            else {
+                node.position.xPos = treeNode.position.xPos- NODE.WIDTH ;
+                node.position.yPos = treeNode.position.yPos+NODE.HEIGHT+15 ;
+                treeNode.leftNode = node ;
+                drawlines(treeNode, node,ctx) ;
+                 }
 
-        if ( this.currentNode.amount > this.currentNode.preNode.amount )
-        { }
+        }
+        return node ;
+     }
+   
+   
+     while ( this.currentNode.nextNode){
 
+    if (this.currentNode === this.rootNode){
+        this.rootNode.position.xPos = ctx.canvas.width/2 - NODE.WIDTH/2 ;
+        this.currentNode.paintLabel(ctx,this.currentNode.position) ;
+        this.currentNode = this.currentNode.nextNode               ;
+    } 
 
-        this.currentNode = this.currentNode.nextNode ;
+        let cNode = getNextNode(this.currentNode ,this.rootNode) ;
+        this.currentNode.paintLabel(ctx, cNode.position)         ;
+        //drawlines(this.currentNode,this.currentNode.nextNode,ctx) ;
+        btreechain.addnextNode(cNode)                            ;
+        this.currentNode = this.currentNode.nextNode             ;
     }
+   
 
+ return btreechain ;
 }
 
 

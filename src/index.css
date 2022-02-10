@@ -52,3 +52,20 @@ code {
   background-color:honeydew;
   font-size: 10px;
 }
+
+.personCard{
+  margin-top: 40px ;
+  width: 220px;
+  height: 280px;
+  border: solid 1px ;
+  background-color: #ededed;
+  font-size: 10px;
+
+}
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}

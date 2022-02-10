@@ -32,6 +32,58 @@ export interface IFormData{
     art  : Style  ;
 } 
 
+export interface IPersonData{
+    id       : number ;
+    gender   : string ;
+    name : {  
+        title    : string ;
+        first    : string ;
+        last     : string ;
+    },
+    location : {
+        street: {
+            number: number;
+            name  :string ;
+                 }
+        city:  string ;
+        state: string ;
+        country: string;
+        postcode: number;
+    },
+    coordinates : {
+        latitude:  string;
+        longitude: string;
+        },
+    registered  : {
+        date: string ;
+        age: number  ; 
+    } ,
+    email: string,
+    contact :{
+        phone: string,
+        cell: string,
+        id: {
+            name: string,
+            value: string
+        }
+    }
+    login: {
+        uuid: string,
+        username: string,
+        password: string,
+        },
+    picture : {
+            large     : string ,
+            medium    : string ,
+            thumbnail : string ,
+            },
+    nat : string 
+};
+
+export interface PersonDataProps{
+    PersonDatas: IPersonData[];
+}
+
 export interface NodeData{
     label  :  string ;
     amount :  number ;
@@ -58,6 +110,8 @@ export interface NodeData{
     private _position   : Point      = {xPos:10 , yPos:10}    ;
     private _mintUrl    : string     =  ""     ; 
     private _style      : Style      = Style.Warning ; 
+    private _leftNode   : ShapeNode  = null    ;
+    private _rightNode  : ShapeNode  = null    ;
 
     
     constructor(
@@ -79,7 +133,6 @@ export interface NodeData{
 
         if (!ctx) return ;
 
-
         let sizeWidth  = ctx.canvas.clientWidth;
         let sizeHeight = ctx.canvas.clientHeight;
 
@@ -98,10 +151,8 @@ export interface NodeData{
             this.position.yPos = this.preNode.position.yPos ;
             yPos = this.preNode.position.yPos ;
         }
-
             this.position.xPos = xPos ;
         
-                
         if ( xPos + NODE.WIDTH+40 > sizeWidth){
             this.position.xPos = 10 ;
             this.position.yPos = this.position.yPos + NODE.HEIGHT+5 ;
@@ -126,7 +177,7 @@ export interface NodeData{
         ctx.fillStyle = "#000000";
         ctx.fillText( this.label ,xPos+10,yPos+15 )    ; 
         ctx.font = "8px Verdana";
-        ctx.fillText( this._amount ,xPos+NODE.WIDTH-20,yPos+8 )    ; 
+        ctx.fillText( this._amount ,xPos+NODE.WIDTH-28,yPos+10 )    ; 
         if (this.preNode) {
           // drawConnectLine( ctx,this.position, this.position);
          }
@@ -171,6 +222,22 @@ export interface NodeData{
 
     set nextNode( nNode : ShapeNode)  {
         this._nextNode = nNode ;
+    }
+
+    get leftNode() : ShapeNode {
+        return this._leftNode ;
+    }
+
+    set leftNode( nNode : ShapeNode)  {
+        this._leftNode = nNode ;
+    }
+
+    get rightNode() : ShapeNode {
+        return this._rightNode ;
+    }
+
+    set rightNode( nNode : ShapeNode)  {
+        this._rightNode = nNode ;
     }
 
     get amount() : number {
