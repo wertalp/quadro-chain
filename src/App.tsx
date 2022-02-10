@@ -25,6 +25,11 @@ import { PersonCard }  from './components/PersonCard' ;
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import { Amplify, Auth } from 'aws-amplify';
 import awsExports from './aws-exports';
+import {
+  BrowserRouter as Router,
+  Route,Routes,
+  Link
+} from "react-router-dom";
 
 import awsconfig from './aws-exports';
 
@@ -49,7 +54,6 @@ export  const App : FunctionComponent<{}> = () =>  {
     const [context, setContext  ]        = useState(null)            ;
     const [loading, setLoading  ]        = useState(true)            ;
     const [personDatas , setPersonDatas] = useState<IPersonData[]>(null) ;
-
 
 
    useEffect( 
@@ -184,7 +188,40 @@ export  const App : FunctionComponent<{}> = () =>  {
 
   return (
     <div className="App">
+
     <Container>
+
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/users">Users</Link>
+            </li>
+          </ul>
+        </nav>
+
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Routes>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/users">
+            <Users />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Routes>
+      </div>
+    </Router>
       <Row>
         <Col>
         <FormCreate blockChain={chain} submitForm={handleSubmit}></FormCreate>
@@ -219,15 +256,11 @@ export  const App : FunctionComponent<{}> = () =>  {
       <Button variant={Style.Info} onClick={(e)=> buildTree(e)} > Alpha</Button>
       <Button variant={Style.Success} onClick={(e)=> buildTree(e)} > Numeric</Button>
       </Col>
-  
     </Row>
     <Row>
       <Col>
-  
-
       </Col>
       <Col>
-  
       {chain && <Board blockChain={chain}  counter={counter}> </Board> }
   </Col>
   <Col>
@@ -243,5 +276,17 @@ export  const App : FunctionComponent<{}> = () =>  {
 
     </div>
   )}
+
+  function Home() {
+    return <h2>Home</h2>;
+  }
+  
+  function About() {
+    return <h2>About</h2>;
+  }
+  
+  function Users() {
+    return <h2>Users</h2>;
+  }
 
 export default withAuthenticator(App);
